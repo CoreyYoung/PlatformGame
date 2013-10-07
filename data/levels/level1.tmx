@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="32" tileheight="32">
+ <tileset firstgid="1" name="Untitled" tilewidth="32" tileheight="32">
+  <image source="block.gif" width="32" height="32"/>
+ </tileset>
+ <layer name="Tiles" width="40" height="30">
+  <data encoding="base64" compression="gzip">
+   H4sIAAAAAAAAA+VWSRLAIAjD/3+61x4YDWuwzYw3IUAAXSKyLjgT8eX4OjTQfGucXm5v/NbcWfpb4svOBfHp0TGrligXIz5vjRENT3e1nC3z8bf9XJkbMj/V2GmJ9lA27/sO6gO16cSk2Yj8raw75+QLRXT3WeCxZeqboRtiW5njbu4nvC0Mfk+/Z3Mz/HVqXs2V9T9i9/8Jk+Y38r6xcEt8k88D/2/eDsASAAA=
+  </data>
+ </layer>
+ <objectgroup name="Objects" width="40" height="30">
+  <object name="Zombie" type="Zombie" x="640" y="864" width="32" height="64"/>
+  <object name="Zombie" type="Zombie" x="768" y="864" width="32" height="64"/>
+  <object name="Zombie" type="Zombie" x="896" y="864" width="32" height="64"/>
+  <object name="Zombie" type="Zombie" x="960" y="864" width="32" height="64"/>
+  <object name="Zombie" type="Zombie" x="832" y="864" width="32" height="64"/>
+  <object name="Zombie" type="Zombie" x="1184" y="224" width="32" height="64"/>
+  <object name="Zombie" type="Zombie" x="1088" y="320" width="32" height="64"/>
+  <object name="Door" type="Door" x="64" y="864" width="32" height="64">
+   <properties>
+    <property name="path" value="data/levels/hub.tmx"/>
+   </properties>
+  </object>
+  <object name="Zombie" type="Zombie" x="576" y="864" width="32" height="64"/>
+  <object name="Zombie" type="Zombie" x="704" y="864" width="32" height="64"/>
+  <object name="Sign" type="Sign" x="128" y="896" width="32" height="32">
+   <properties>
+    <property name="message" value="I am also a sign!"/>
+   </properties>
+  </object>
+ </objectgroup>
+</map>
