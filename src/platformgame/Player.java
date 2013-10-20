@@ -44,7 +44,7 @@ abstract public class Player {
             invincibilityTimer --;
         }
         if (health <= 0) {
-            //Restart game or something...
+            //Player is dead!
         }
     }
     static void render(int camX, int camY, Graphics g) {
@@ -132,14 +132,14 @@ abstract public class Player {
     }
     static void collisions() {
         if (!invincible) {
-            for (int i = 0; i < Enemy.zombieMAX; i ++) {
-                if (Enemy.zombie[i] != null) {
-                    if (x < Enemy.zombie[i].x+32 && x+32 > Enemy.zombie[i].x
-                            && y < Enemy.zombie[i].y+64 && y+64 > Enemy.zombie[i].y) {
-                        xspeed = Math.signum(x-Enemy.zombie[i].x)
+            for (Zombie zombie : Enemy.zombie) {
+                if (zombie != null) {
+                    if (x < zombie.x+32 && x+32 > zombie.x
+                            && y < zombie.y+64 && y+64 > zombie.y) {
+                        xspeed = Math.signum(x-zombie.x)
                                     *CombatSystem.calculateKnockback(Inventory.getStability(), Zombie.knockback);
-                        Enemy.zombie[i].x -= Enemy.zombie[i].xspeed;
-                        Enemy.zombie[i].xspeed = 0;
+                        zombie.x -= zombie.xspeed;
+                        zombie.xspeed = 0;
                         health -= CombatSystem.calculateDamage(Zombie.damage, Inventory.getDefense());
                         invincibilityTimer = invincibilityTimerMAX;
                         invincible = true;
@@ -196,21 +196,21 @@ abstract public class Player {
     
     static void interact(Input input) throws SlickException {
         if (input.isKeyPressed(Input.KEY_DOWN)) {
-            for (int i = 0; i < World.doorMAX; i ++) {
-                if (World.door[i] != null) {
-                    if (x+32 >= World.door[i].x+16 && x <= World.door[i].x+16
-                            && y+64 >= World.door[i].y && y <= World.door[i].y+64) {
-                        openDoor(World.door[i]);
+            for (Door door : World.door) {
+                if (door != null) {
+                    if (x+32 >= door.x+16 && x < door.x+16
+                            && y+64 >= door.y && y <= door.y+64) {
+                        openDoor(door.path);
                         break;
                     }
                 }
             }
             
-            for (int i = 0; i < World.signMAX; i ++ ) {
-                if (World.sign[i] != null) {
-                    if (x+32 >= World.sign[i].x+16 && x <= World.sign[i].x+16
-                            && y+64 >= World.sign[i].y && y <= World.sign[i].y+32) {
-                        readSign(World.sign[i]);
+            for (Sign sign : World.sign) {
+                if (sign != null) {
+                    if (x+32 >= sign.x+16 && x <= sign.x+16
+                            && y+64 >= sign.y && y <= sign.y+32) {
+                        readSign(sign);
                         break;
                     }
                 }
@@ -218,17 +218,18 @@ abstract public class Player {
         }
     }
     
-    static void openDoor(Door door) throws SlickException {
+    static void openDoor(String path) throws SlickException {
+        String levelDeparting = World.levelName;
+        World.init(path);
+        
         xspeed = 0;
         yspeed = 0;
-        String path = door.path;
-        String levelName = World.levelName;
-        World.init(path);
-        for (int ii = 0; ii < World.doorMAX; ii ++) {
-            if (World.door[ii] != null) {
-                if (World.door[ii].path.equals(levelName)) {
-                    x = World.door[ii].x;
-                    y = World.door[ii].y;
+        
+        for (Door door : World.door) {
+            if (door != null) {
+                if (door.path.equals(levelDeparting)) {
+                    x = door.x;
+                    y = door.y;
                     break;
                 }
             }

@@ -3,8 +3,8 @@ package platformgame;
 import org.newdawn.slick.SlickException;
 
 abstract public class Enemy {    
-    static final int zombieMAX = 10;
-    static Zombie[] zombie = new Zombie[zombieMAX];
+    static public final int zombieMAX = 10;
+    static public Zombie[] zombie = new Zombie[zombieMAX];
     
     static void init() throws SlickException {
         Zombie.init();

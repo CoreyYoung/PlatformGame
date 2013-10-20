@@ -116,4 +116,11 @@ abstract public class World {
     static void clearTileMap() {
         tileMap = null;
     }
+    
+    public static boolean isPointInLevel(int x, int y) {
+        if (x >= 0 && x <= levelWidth && y >= 0 && y <= levelHeight) {
+            return true;
+        }
+        return false;
+    }
 }

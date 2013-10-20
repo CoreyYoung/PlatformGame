@@ -7,7 +7,7 @@ import platformgame.inventory.MeleeItem;
 public class IronSword extends MeleeItem {
     boolean automatic = false;
     static final int speed = 5;
-    static Image icon, sprite;
+    //static Image icon, sprite;
     
     @Override
     public void init() throws SlickException {

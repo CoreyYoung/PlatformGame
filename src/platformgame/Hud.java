@@ -18,7 +18,7 @@ abstract public class Hud {
     
     static void update(Input input) {
         if (Game.inventory) {
-            Inventory.update(input);
+            Inventory.useInventory(input);
         }
         if (message[0] != null) {
             Game.paused = true;

@@ -28,6 +28,10 @@ abstract public class Camera {
         
         CombatSystem.render(input, -x, -y);
         
+        for (Projectile projectile : Projectile.projectileList) {
+            projectile.render(-x, -y, g);
+        }
+        
         //render HUD
         Hud.render(g, input);
     }

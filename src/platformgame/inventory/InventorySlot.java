@@ -3,7 +3,7 @@ package platformgame.inventory;
 import org.newdawn.slick.SlickException;
 
 public class InventorySlot {
-    int amount;
+    public int amount;
     public Item item;
     
     InventorySlot (Item item, int amount) throws SlickException {

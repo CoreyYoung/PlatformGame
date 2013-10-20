@@ -131,11 +131,11 @@ public class Zombie {
     }
     
     Zombie zombieAtPosition(int x, int y) {
-        for (int i = 0; i < Enemy.zombieMAX; i ++) {
-            if (Enemy.zombie[i] != null && i != id) {
-                if (Enemy.zombie[i].x <= x+32 && Enemy.zombie[i].x+32 >= x
-                        && Enemy.zombie[i].y <= y+64 && Enemy.zombie[i].y+32 >= y) {
-                    return Enemy.zombie[i];
+        for (Zombie zombie : Enemy.zombie) {
+            if (zombie != null && id != zombie.id) {
+                if (zombie.x <= x+32 && zombie.x+32 >= x
+                        && zombie.y <= y+64 && zombie.y+32 >= y) {
+                    return zombie;
                 }
             }
         }

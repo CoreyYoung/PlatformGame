@@ -43,8 +43,10 @@ public class Game extends BasicGame {
         if (!paused) {
             CombatSystem.update(input);
             Player.update(input);
+            Inventory.update();
             Camera.update(input);
             Enemy.update();
+            Projectile.update();
         }
         
         if (input.isKeyPressed(Input.KEY_ESCAPE)) {

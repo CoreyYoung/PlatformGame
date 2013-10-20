@@ -25,9 +25,17 @@ abstract public class Inventory {
         inventorySlot[1][0] = new InventorySlot(new IronHelmet(), 1);
         inventorySlot[2][0] = new InventorySlot(new IronBoots(), 1);
         inventorySlot[3][0] = new InventorySlot(new CopperHelmet(), 1);
+        //inventorySlot[4][0] = new InventorySlot(new IronBow(), 1);
+        //inventorySlot[5][0] = new InventorySlot(new CopperArrow(), 32);
+        rangedSlot = new InventorySlot(new IronBow(), 1);
+        ammoSlot = new InventorySlot(new CopperArrow(), 250);
     }
     
-    public static void update(Input input) {
+    public static void update() {
+        updateSlots();
+    }
+    
+    public static void useInventory(Input input) {
         if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
             int mouseX = input.getMouseX();
             int mouseY = input.getMouseY();
@@ -166,6 +174,35 @@ abstract public class Inventory {
         }
     }
     
+    private static void updateSlots() {
+        for (int i = 0; i < inventorySlot.length; i++) {
+            for (int ii = 0; ii < inventorySlot[i].length; ii++) {
+                inventorySlot[i][ii] = updatedSlot(inventorySlot[i][ii]);
+            }
+        }
+        mouseSlot = updatedSlot(mouseSlot);
+        helmetSlot = updatedSlot(helmetSlot);
+        rangedSlot = updatedSlot(rangedSlot);
+        amuletSlot = updatedSlot(amuletSlot);
+        ammoSlot = updatedSlot(ammoSlot);
+        rightHandSlot = updatedSlot(rightHandSlot);
+        chestPlateSlot= updatedSlot(chestPlateSlot);
+        leftHandSlot = updatedSlot(leftHandSlot);
+        meleeSlot = updatedSlot(meleeSlot);
+        leggingsSlot = updatedSlot(leggingsSlot);
+        sheildSlot = updatedSlot(sheildSlot);
+        bootsSlot = updatedSlot(bootsSlot);
+    }
+    
+    private static InventorySlot updatedSlot(InventorySlot invSlot) {
+        if (invSlot != null) {
+            if (invSlot.amount <= 0) {
+                invSlot = null;
+            }
+        }
+        return invSlot;
+    }
+    
     public static int getDefense() {
         int defense = 0;
         if (helmetSlot != null) {
@@ -194,6 +231,20 @@ abstract public class Inventory {
     public static MeleeItem getMeleeItem() {
         if (meleeSlot != null) {
             return (MeleeItem) meleeSlot.item;
+        }
+        return null;
+    }
+    
+    public static RangedItem getRangedItem() {
+        if (rangedSlot != null) {
+            return (RangedItem) rangedSlot.item;
+        }
+        return null;
+    }
+    
+    public static AmmoItem getAmmoItem() {
+        if (ammoSlot != null) {
+            return (AmmoItem) ammoSlot.item;
         }
         return null;
     }

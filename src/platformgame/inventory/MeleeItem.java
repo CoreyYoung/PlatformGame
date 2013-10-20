@@ -9,5 +9,5 @@ public abstract class MeleeItem implements Item {
     public int height;
     public int width;
     public int attack;
-    Image icon, sprite;
+    public Image icon, sprite;
 }
