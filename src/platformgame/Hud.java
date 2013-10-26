@@ -94,7 +94,7 @@ abstract public class Hud {
             }
 
             if (i-lineStart == 65) {
-                result[spaceIndex] = '\n';
+                result[spaceIndex] = System.lineSeparator().charAt(0);
                 lineStart = spaceIndex+1;
             }
             

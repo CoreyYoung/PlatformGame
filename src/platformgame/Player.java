@@ -68,7 +68,7 @@ abstract public class Player {
         
         int width = 32;
         int height = 16;
-        if (Inventory.meleeSlot != null) {
+        if (Inventory.equipSlots[EquipmentSlot.MELEE_SLOT].itemStack != null) {
             width = Inventory.getMeleeItem().width;
             height = Inventory.getMeleeItem().height;
         }

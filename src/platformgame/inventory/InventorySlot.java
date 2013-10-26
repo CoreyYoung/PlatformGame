@@ -1,18 +1,27 @@
 package platformgame.inventory;
 
-import org.newdawn.slick.SlickException;
-
 public class InventorySlot {
-    public int amount;
-    public Item item;
+    public int x;
+    public int y;
+    public ItemStack itemStack;
     
-    InventorySlot (Item item, int amount) throws SlickException {
-        this.item = item;
-        this.amount = amount;
-        this.item.init();
+    public InventorySlot(int x, int y, ItemStack itemStack) {
+        this.x = x;
+        this.y = y;
+        this.itemStack = itemStack;
     }
     
-    void render(int x, int y) {
-        item.renderIcon(x, y);
+    public void update() {
+        if (itemStack != null) {
+            if (itemStack.amount <= 0) {
+                itemStack = null;
+            }
+        }
+    }
+    
+    public void render() {
+        if (itemStack != null) {
+            itemStack.render(x, y);
+        }
     }
 }

@@ -46,7 +46,6 @@ abstract public class CombatSystem {
             boxWidth = Inventory.getMeleeItem().width;
             boxHeight = Inventory.getMeleeItem().height;
             knockback = Inventory.getMeleeItem().knockback;
-            System.out.println(knockback);
         }
         
         int x1, x2, y1, y2;
@@ -81,14 +80,20 @@ abstract public class CombatSystem {
             if (input.isKeyDown(Input.KEY_UP)) {
                 if (input.isKeyDown(Input.KEY_LEFT)) {
                     dir = 180+45;
-                } else if(input.isKeyDown(Input.KEY_RIGHT)) {
+                } else if (input.isKeyDown(Input.KEY_RIGHT)) {
                     dir = 360-45;
                 } else {
                     dir = 270;
                 }
             } else if (input.isKeyDown(Input.KEY_DOWN)) {
-                dir = 90;
-            } else if (Player.dir == 180){
+                if (input.isKeyDown(Input.KEY_LEFT)) {
+                    dir = 180-45+10;
+                } else if (input.isKeyDown(Input.KEY_RIGHT)) {
+                    dir = 0+45-10;
+                } else {
+                    dir = 90;
+                }
+            } else if (Player.dir == 180) {
                 dir = 180+10;
             } else {
                 dir = 360-10;
@@ -100,8 +105,7 @@ abstract public class CombatSystem {
             RangedItem ranged = Inventory.getRangedItem();
             AmmoItem ammo = Inventory.getAmmoItem();
             Projectile.createProjectile(x, y, speed, dir, ranged, ammo);
-            Inventory.ammoSlot.amount --;
-            System.out.println(Inventory.ammoSlot.amount);
+            Inventory.getFirstSlot(ammo).itemStack.amount--;
         }
     }
     
