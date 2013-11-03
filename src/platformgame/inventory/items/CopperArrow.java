@@ -9,7 +9,7 @@ public class CopperArrow extends AmmoItem {
     @Override
     public void init() throws SlickException {
         icon = new Image("data/graphics/items/ammoItems/copperArrow.gif");
-        sprite = icon;
+        sprite = new Image("data/graphics/items/ammoItems/copperArrow.gif");
         attack = 5;
     }
     
@@ -20,6 +20,8 @@ public class CopperArrow extends AmmoItem {
     
     @Override
     public void renderSprite(int x, int y, int dir) {
-        
+        sprite.setRotation(dir);
+        sprite.draw(x, y);
+        sprite.setRotation(0);
     }
 }

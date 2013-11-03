@@ -1,5 +1,6 @@
 package platformgame.inventory;
 
+import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
@@ -14,19 +15,28 @@ abstract public class Inventory {
     
     public static void init() throws SlickException {
         guiImage = new Image("data/graphics/GUI/inventory.gif");
+        
         createInventorySlots();
         createEquipmentSlots();
         
-        invSlots[0][0].itemStack = new ItemStack(new IronSword(), 1);
+        invSlots[0][0].itemStack = new ItemStack(new IronSword(), 5);
         invSlots[1][0].itemStack = new ItemStack(new IronHelmet(), 1);
         invSlots[2][0].itemStack = new ItemStack(new IronBoots(), 1);
         invSlots[3][0].itemStack = new ItemStack(new CopperHelmet(), 1);
-        invSlots[4][0].itemStack = new ItemStack(new CopperArrow(), 5);
+        invSlots[4][0].itemStack = new ItemStack(new CopperArrow(), 250);
         invSlots[5][0].itemStack = new ItemStack(new IronBow(), 1);
     }
     
     public static void update() {
-        updateSlots();
+        for (InventorySlot[] slotArray : invSlots) {
+            for (InventorySlot slot : slotArray) {
+                slot.update();
+            }
+        }
+        
+        for (EquipmentSlot slot : equipSlots) {
+            slot.update();
+        }
     }
     
     private static void createInventorySlots() throws SlickException {
@@ -70,18 +80,9 @@ abstract public class Inventory {
                 if (mouseX >= slot.x && mouseX <= slot.x+48
                         && mouseY >= slot.y && mouseY <= slot.y+48) {
                     if (leftPressed) {
-                        ItemStack tempStack = slot.itemStack;
-                        slot.itemStack = mouseSlot;
-                        mouseSlot = tempStack;
+                        slot.onLeftClick();
                     } else if (rightPressed) {
-                        for (EquipmentSlot equipmentSlot : equipSlots) {
-                            if (equipmentSlot.canEquipItem(slot.itemStack)
-                                    && slot.itemStack != null) {
-                                ItemStack tempStack = equipmentSlot.itemStack;
-                                equipmentSlot.itemStack = slot.itemStack;
-                                slot.itemStack = tempStack;
-                            }
-                        }
+                        slot.onRightClick();
                     }
                 }
             }
@@ -91,57 +92,29 @@ abstract public class Inventory {
             if (mouseX >= slot.x && mouseX <=slot.x+48
                     && mouseY >= slot.y && mouseY <= slot.y+48) {
                 if (leftPressed) {
-                    if (slot.canEquipItem(mouseSlot)) {
-                        ItemStack tempStack = slot.itemStack;
-                        slot.itemStack = mouseSlot;
-                        mouseSlot = tempStack;
-                    }
+                    slot.onLeftClick();
                 } else if (rightPressed) {
-                    if (slot.itemStack != null) {
-                        InventorySlot inventorySlot = getFirstSlot(null);
-                        if (inventorySlot != null) {
-                            inventorySlot.itemStack = slot.itemStack;
-                            slot.itemStack = null;
-                        }
-                    }
+                    slot.onRightClick();
                 }
             }
         }
     }
     
-    public static void render(Input input) {
+    public static void render(Input input, Graphics g) {
         guiImage.draw();
         
         for (InventorySlot[] slotArray : invSlots) {
             for (InventorySlot slot : slotArray) {
-                slot.render();
+                slot.render(g);
             }
         }
         
         for (EquipmentSlot slot : equipSlots) {
-            slot.render();
+            slot.render(g);
         }
         
         if (mouseSlot != null) {
-            mouseSlot.item.renderIcon(input.getMouseX(), input.getMouseY());
-        }
-    }
-    
-    static void renderSlot(ItemStack invSlot, int x, int y) {
-        if (invSlot != null) {
-            invSlot.item.renderIcon(x, y);
-        }
-    }
-    
-    private static void updateSlots() {
-        for (InventorySlot[] slotArray : invSlots) {
-            for (InventorySlot slot : slotArray) {
-                slot.update();
-            }
-        }
-        
-        for (EquipmentSlot slot : equipSlots) {
-            slot.update();
+            mouseSlot.render(input.getMouseX(), input.getMouseY(), g);
         }
     }
     
@@ -199,7 +172,6 @@ abstract public class Inventory {
                 }
             }
         }
-        
         return null;
     }
     

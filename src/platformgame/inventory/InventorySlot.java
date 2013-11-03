@@ -1,5 +1,7 @@
 package platformgame.inventory;
 
+import org.newdawn.slick.Graphics;
+
 public class InventorySlot {
     public int x;
     public int y;
@@ -19,9 +21,25 @@ public class InventorySlot {
         }
     }
     
-    public void render() {
+    public void onLeftClick() {
+        ItemStack tempStack = itemStack;
+        itemStack = Inventory.mouseSlot;
+        Inventory.mouseSlot = tempStack;
+    }
+    
+    public void onRightClick(){
+        for (EquipmentSlot equipmentSlot : Inventory.equipSlots) {
+            if (equipmentSlot.canEquipItem(itemStack) && itemStack != null) {
+                ItemStack tempStack = equipmentSlot.itemStack;
+                equipmentSlot.itemStack = itemStack;
+                itemStack = tempStack;
+            }
+        }
+    }
+    
+    public void render(Graphics g) {
         if (itemStack != null) {
-            itemStack.render(x, y);
+            itemStack.render(x, y, g);
         }
     }
 }

@@ -44,11 +44,11 @@ abstract public class Camera {
     }
     
     static void wakeObjects() {
-        for (int i = 0; i < Enemy.zombieMAX; i ++) {
-            if (Enemy.zombie[i] != null && ! Enemy.zombie[i].awake) {
-                if (x <= Enemy.zombie[i].x+32 && x+cameraWidth >= Enemy.zombie[i].x
-                        && y <= Enemy.zombie[i].y+64 && y+cameraHeight >= Enemy.zombie[i].y) {
-                    Enemy.zombie[i].awake = true;
+        for (Zombie zombie : Enemy.zombie) {
+            if (zombie != null && !zombie.awake) {
+                if (x <= zombie.x+32 && x+cameraWidth >= zombie.x
+                        && y <= zombie.y+64 && y+cameraHeight >= zombie.y) {
+                    zombie.awake = true;
                 }
             }
         }

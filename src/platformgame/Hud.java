@@ -54,7 +54,7 @@ abstract public class Hud {
         }
         
         if (Game.inventory) {
-            Inventory.render(input);
+            Inventory.render(input, g);
         }
     }
     

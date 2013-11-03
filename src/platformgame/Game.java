@@ -49,13 +49,13 @@ public class Game extends BasicGame {
             Projectile.update();
         }
         
-        if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+        /*if (input.isKeyPressed(Input.KEY_ESCAPE)) {
             gc.exit();
-        }
+        }*/
         if (input.isKeyPressed(Input.KEY_P)) {
             paused = !paused;
         }
-        if (input.isKeyPressed(Input.KEY_I)) {
+        if (input.isKeyPressed(Input.KEY_ESCAPE)) {
             if (inventory) {
                 inventory = false;
                 paused = false;

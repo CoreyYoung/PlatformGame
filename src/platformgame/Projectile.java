@@ -15,9 +15,11 @@ public class Projectile {
     public double speed;
     public double dir;
     public int damage;
-    public Image sprite;
+    //public Image sprite;
     public int width;
+    public int length;
     Rectangle hitBox;
+    AmmoItem ammo;
     public static List<Projectile> projectileList = new ArrayList<>();
     
     public static void update() {        
@@ -81,12 +83,11 @@ public class Projectile {
     }
     
     private void updateHitBox() {
-        hitBox = new Rectangle((float) x+sprite.getWidth()/2-width, (float) y-(width/2), width, width);
+        hitBox = new Rectangle((float) x+length/2-width, (float) y-(width/2), width, width);
     }
     
     public void render(int camX, int camY, Graphics g) {
-        sprite.setRotation((int) dir);
-        sprite.draw((int) (x-width/2)+camX, (int) (y-width/2)+camY);
+        ammo.renderSprite((int) (x-width/2)+camX, (int) (y-width/2)+camY, (int) dir);
         g.drawRect(hitBox.getMinX()+camX, hitBox.getMinY()+camY, hitBox.getWidth(), hitBox.getHeight());
     }
     
@@ -98,9 +99,11 @@ public class Projectile {
         projectile.y = y;
         projectile.speed = speed;
         projectile.dir = dir;
-        projectile.sprite = ammo.sprite;
+        //projectile.sprite = ammo.sprite;
         projectile.damage = (ranged.attack+ammo.attack)/2;
-        projectile.width = projectile.sprite.getHeight();
+        projectile.width = ammo.sprite.getHeight();
+        projectile.length = ammo.sprite.getWidth();
+        projectile.ammo = ammo;
         
         projectile.updateHitBox();
     }
