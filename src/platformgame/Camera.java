@@ -40,6 +40,9 @@ abstract public class Camera {
         x = inRange((int)Player.x-(cameraWidth/2), 0, World.levelWidth-cameraWidth);
         y = inRange((int)Player.y-(cameraHeight/2), 0, World.levelHeight-cameraHeight);
         //elasticCamera(input);
+        //int shake = 8;
+        //x += (Math.random()*shake)-(shake/2);
+        //y += (Math.random()*shake)-(shake/2);
         
     }
     

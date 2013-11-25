@@ -14,7 +14,7 @@ abstract public class Inventory {
     public static EquipmentSlot[] equipSlots = new EquipmentSlot[8];
     
     public static void init() throws SlickException {
-        guiImage = new Image("data/graphics/GUI/inventory.gif");
+        guiImage = new Image("data/graphics/GUI/inventory.png");
         
         createInventorySlots();
         createEquipmentSlots();
@@ -118,6 +118,21 @@ abstract public class Inventory {
         }
     }
     
+    public static void addItemStack(ItemStack stack) throws SlickException {
+        InventorySlot slot = getFirstSlot(stack.item);
+
+        if (slot != null) {
+            slot.itemStack.amount += stack.amount;
+        } else {
+            slot = getFirstSlot(null);
+            if (slot != null) {
+                slot.itemStack = new ItemStack(stack.item, stack.amount);
+            } else {
+                //Inventory is full!
+            }
+        }
+    }
+    
     public static int getDefense() {
         int defense = 0;
         EquipmentSlot helmetSlot = equipSlots[EquipmentSlot.HELMET_SLOT];
@@ -182,8 +197,10 @@ abstract public class Inventory {
                     if (item == null) {
                         return slot;
                     }
-                } else if (slot.itemStack.item == item) {
-                    return slot;
+                } else if (item != null) {
+                    if (slot.itemStack.item.getClass() == item.getClass()) {
+                        return slot;
+                    }
                 }
             }
         }

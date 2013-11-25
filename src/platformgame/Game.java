@@ -28,7 +28,6 @@ public class Game extends BasicGame {
 
     @Override
     public void init(GameContainer gc) throws SlickException {
-        //testMap = new TiledMap("data/testMap.tmx");
         Hud.init();
         World.init("data/levels/hub.tmx");
         Player.init();
@@ -49,19 +48,14 @@ public class Game extends BasicGame {
             Projectile.update();
         }
         
-        /*if (input.isKeyPressed(Input.KEY_ESCAPE)) {
-            gc.exit();
-        }*/
         if (input.isKeyPressed(Input.KEY_P)) {
             paused = !paused;
         }
-        if (input.isKeyPressed(Input.KEY_ESCAPE)) {
-            if (inventory) {
-                inventory = false;
-                paused = false;
-            } else {
-                inventory = true;
-                paused = true;
+        
+        if (!paused || inventory) {
+            if (input.isKeyPressed(Input.KEY_ESCAPE)) {
+                inventory = !inventory;
+                paused = inventory;
             }
         }
         input.clearKeyPressedRecord();

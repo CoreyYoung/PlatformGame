@@ -16,7 +16,7 @@ abstract public class Player {
     static final int xspeedMAX = 3;
     static final int JUMPSPEED = -8;
     static final float ACCELERATION = 0.1f;
-    static final float FRICTION = 0.05f;
+    static final float FRICTION = 0.07f;
     static float xspeed = 0;
     static float yspeed = 0;
     static Animation sprStand;
@@ -48,7 +48,6 @@ abstract public class Player {
         }
     }
     static void render(int camX, int camY, Graphics g) {
-        
         Animation sprite;
         if (invincible) {
             sprite = sprHurt;
@@ -79,7 +78,7 @@ abstract public class Player {
         }
     }
     
-    static void movement(Input input) {
+    private static void movement(Input input) {
         if (input.isKeyDown(Input.KEY_LEFT)) {
             if (input.isKeyPressed(Input.KEY_LEFT) || ! input.isKeyDown(Input.KEY_RIGHT)) {
                 dir = 180;
@@ -105,17 +104,17 @@ abstract public class Player {
                 xspeed = Math.max(xspeed-FRICTION, 0);
             }
         }
+        
         if (input.isKeyPressed(Input.KEY_Z)) {
-            boolean onGround = false;
-            if (World.tileAtPosition((int)(x/32), (int)((y+64+1)/32))
-                    && !World.tileAtPosition((int)(x/32), (int)((y+32+1)/32))) {
-                onGround = true;
-            }
-            if (World.tileAtPosition((int)((x+32-1)/32), (int)((y+64+1)/32))
-                    && !World.tileAtPosition((int)((x+32-1)/32), (int)((y+32+1)/32))) {
-                onGround = true;
-            }
-            if (onGround) {
+            if ((World.isBlockAtPoint((int)(x/32), (int)((y+64+1)/32))
+                    && !World.isBlockAtPoint((int)(x/32), (int)((y+32+1)/32)))
+                    
+            || (World.isBlockAtPoint((int)((x+32-1)/32), (int)((y+64+1)/32))
+                    && !World.isBlockAtPoint((int)((x+32-1)/32), (int)((y+32+1)/32)))
+                    
+            || (World.getTileAtPoint((int) (x+31)/32, (int) (y+64)/32) == 2
+                    || World.getTileAtPoint((int) x/32, (int) (y+64)/32) == 3)) {
+                
                 yspeed = JUMPSPEED;
             }
         } else if (!input.isKeyDown(Input.KEY_Z)) {
@@ -130,7 +129,8 @@ abstract public class Player {
         
         collisions();
     }
-    static void collisions() {
+    
+    private static void collisions() {
         if (!invincible) {
             for (Zombie zombie : Enemy.zombie) {
                 if (zombie != null) {
@@ -147,46 +147,104 @@ abstract public class Player {
                 }
             }
         }
+        
+        if (onSlope(World.LEFT_SLOPE)) {
+            performLeftSlopeCollision();
+        } else if (onSlope(World.RIGHT_SLOPE)) {
+            performRightSlopeCollision();
+        } else {
+            performBlockCollisions();
+        }
+    }
+    
+    private static boolean onSlope(int tileTypeNum) {
+        final int x1 = (int) x+31;
+        final int x2 = (int) x+1;
+        
+        return (World.getTileAtPoint((int) x1/32, (int) (y+63)/32) == tileTypeNum
+                || World.getTileAtPoint((int) x2/32, (int) (y+63)/32) == tileTypeNum);
+    }
+    
+    private static void performLeftSlopeCollision() {
+        int tempX = (int) x+1;
+        int moveY = (int) Math.floor((y-1)/32)*32 + (int) (tempX-Math.floor(tempX/32)*32);
+        performSlopeCollisions(World.LEFT_SLOPE, -1, tempX, moveY);
+    }
+    
+    private static void performRightSlopeCollision() {
+        int tempX = (int) x+31;
+        int moveY = (int) Math.floor((y-1)/32)*32 + (int) (32-(tempX-Math.floor(tempX/32)*32));
+        performSlopeCollisions(World.RIGHT_SLOPE, 1, tempX, moveY);
+    }
+    
+    private static void performSlopeCollisions(int tileTypeNum, int dir, int tempX, int moveY) {
+        int slopeTop = (int) Math.floor((y-1)/32)*32;
+        x += xspeed;
+        
+        if (World.getTileAtPoint((int) (tempX+xspeed)/32, (int) (y+63)/32) == tileTypeNum
+                || Math.signum(xspeed) != dir) {
+            if (y > moveY) {
+                y = moveY;
+            }
+        } else {
+            y = slopeTop;
+        }
+
+        if (y+yspeed <= moveY) {
+            y += yspeed;
+        } else {
+            yspeed = 0;
+            y = moveY;
+        }
+        
+        if (World.isBlockAtPoint((int) (x+32)/32, (int) y/32)) {
+            x = (int) (x/32)*32;
+        } else if (World.isBlockAtPoint((int) (x)/32, (int) y/32)) {
+            x = (int) ((x+32)/32)*32;
+        }
+    }
+    
+    private static void performBlockCollisions() {
         if (xspeed < 0) {
-            if (!World.tileAtPosition((int)Math.floor((x-3)/32), (int)Math.floor(y/32))
-                    && !World.tileAtPosition((int)Math.floor((x-3)/32), (int)Math.floor((y+32)/32))
-                    && !World.tileAtPosition((int)Math.floor((x-3)/32), (int)Math.floor((y+63)/32))) {
+            if (!World.isBlockAtPoint((int)Math.floor((x-3)/32), (int)Math.floor(y/32))
+                    && !World.isBlockAtPoint((int)Math.floor((x-3)/32), (int)Math.floor((y+32)/32))
+                    && !World.isBlockAtPoint((int)Math.floor((x-3)/32), (int)Math.floor((y+63)/32))) {
                 x += xspeed;
             } else {
                 xspeed = 0;
                 int pos = (int)Math.floor(x/32);
-                if (!World.tileAtPosition(pos, (int)Math.floor(y/32))
-                        && !World.tileAtPosition(pos, (int)Math.floor((y+32)/32))
-                        && !World.tileAtPosition(pos, (int)Math.floor((y+63)/32))) {
+                if (!World.isBlockAtPoint(pos, (int)Math.floor(y/32))
+                        && !World.isBlockAtPoint(pos, (int)Math.floor((y+32)/32))
+                        && !World.isBlockAtPoint(pos, (int)Math.floor((y+63)/32))) {
                     x = pos*32;
                 } else {
                     x = Math.round(x);
                 }
             }
         }
-        
+
         if (xspeed > 0) {
-            if (!World.tileAtPosition((int)Math.floor((x+3+32)/32), (int)Math.floor(y/32))
-                    && !World.tileAtPosition((int)Math.floor((x+3+32)/32), (int)Math.floor((y+32)/32))
-                    && !World.tileAtPosition((int)Math.floor((x+3+32)/32), (int)Math.floor((y+63)/32))) {
+            if (!World.isBlockAtPoint((int)Math.floor((x+3+32)/32), (int)Math.floor(y/32))
+                    && !World.isBlockAtPoint((int)Math.floor((x+3+32)/32), (int)Math.floor((y+32)/32))
+                    && !World.isBlockAtPoint((int)Math.floor((x+3+32)/32), (int)Math.floor((y+63)/32))) {
                 x += xspeed;
             } else {
                 xspeed = 0;
                 int pos = (int)Math.ceil(x/32);
-                if (!World.tileAtPosition(pos, (int)Math.floor(y/32))
-                        && !World.tileAtPosition(pos, (int)Math.floor((y+32)/32))
-                        && !World.tileAtPosition(pos, (int)Math.floor((y+63)/32))) {
+                if (!World.isBlockAtPoint(pos, (int)Math.floor(y/32))
+                        && !World.isBlockAtPoint(pos, (int)Math.floor((y+32)/32))
+                        && !World.isBlockAtPoint(pos, (int)Math.floor((y+63)/32))) {
                     x = pos*32;
                 } else {
                     x = Math.round(x);
                 }
             }
         }
-        
-        if (!World.tileAtPosition((int)Math.floor(x/32), (int)Math.floor((y+64+yspeed)/32))
-                && !World.tileAtPosition((int)Math.floor((x+32-1)/32), (int)Math.floor((y+64+yspeed)/32))
-                && !World.tileAtPosition((int)Math.floor(x/32), (int)Math.floor((y+yspeed)/32))
-                && !World.tileAtPosition((int)Math.floor((x+32-1)/32), (int)Math.floor((y+yspeed)/32))) {
+
+        if (!World.isBlockAtPoint((int)Math.floor(x/32), (int)Math.floor((y+64+yspeed)/32))
+                && !World.isBlockAtPoint((int)Math.floor((x+32-1)/32), (int)Math.floor((y+64+yspeed)/32))
+                && !World.isBlockAtPoint((int)Math.floor(x/32), (int)Math.floor((y+yspeed)/32))
+                && !World.isBlockAtPoint((int)Math.floor((x+32-1)/32), (int)Math.floor((y+yspeed)/32))) {
             y += yspeed;
         } else {
             yspeed = 0;
@@ -194,7 +252,7 @@ abstract public class Player {
         }
     }
     
-    static void interact(Input input) throws SlickException {
+    private static void interact(Input input) throws SlickException {
         if (input.isKeyPressed(Input.KEY_DOWN)) {
             for (Door door : World.door) {
                 if (door != null) {
@@ -215,10 +273,20 @@ abstract public class Player {
                     }
                 }
             }
+            
+            for (Chest chest : Chest.chestList) {
+                if (chest != null) {
+                    if (x+32 >= chest.x+16 && x <= chest.x+16
+                            && y+64 >= chest.y && y <= chest.y+32) {
+                        useChest(chest);
+                        break;
+                    }
+                }
+            }
         }
     }
     
-    static void openDoor(String path) throws SlickException {
+    private static void openDoor(String path) throws SlickException {
         String levelDeparting = World.levelName;
         World.init(path);
         
@@ -236,7 +304,11 @@ abstract public class Player {
         }
     }
     
-    static void readSign(Sign sign) {
+    private static void readSign(Sign sign) {
         Hud.addMessage(sign.message);
+    }
+    
+    private static void useChest(Chest chest) throws SlickException {
+        chest.useChest();
     }
 }

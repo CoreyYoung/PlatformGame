@@ -64,8 +64,8 @@ public class Zombie {
             jump();
         }
         
-        if (!World.tileAtPosition((int)Math.floor(x/32), (int)Math.floor((y+64)/32))
-                && !World.tileAtPosition((int)Math.floor((x+31)/32), (int)Math.floor((y+64)/32))) {
+        if (!World.isBlockAtPoint((int)Math.floor(x/32), (int)Math.floor((y+64)/32))
+                && !World.isBlockAtPoint((int)Math.floor((x+31)/32), (int)Math.floor((y+64)/32))) {
             yspeed = Math.min(yspeed+World.GRAVITY, World.yspeedMAX);
         }
     }
@@ -89,9 +89,9 @@ public class Zombie {
                     xspeed = 0;
                 }
             }
-            if (!World.tileAtPosition(checkX, (int)(y/32))
-                    && !World.tileAtPosition(checkX, (int)((y+32)/32))
-                    && !World.tileAtPosition(checkX, (int)((y+63)/32))) {
+            if (!World.isBlockAtPoint(checkX, (int)(y/32))
+                    && !World.isBlockAtPoint(checkX, (int)((y+32)/32))
+                    && !World.isBlockAtPoint(checkX, (int)((y+63)/32))) {
                 x += xspeed;
             }
             else {
@@ -102,8 +102,8 @@ public class Zombie {
         }
         
         if (yspeed < 0) { 
-            if (!World.tileAtPosition((int)(x/32), (int)((y+yspeed)/32))
-                    && !World.tileAtPosition((int)((x+31)/32), (int)((y+yspeed)/32))) {
+            if (!World.isBlockAtPoint((int)(x/32), (int)((y+yspeed)/32))
+                    && !World.isBlockAtPoint((int)((x+31)/32), (int)((y+yspeed)/32))) {
                 y += yspeed;
             }
             else {
@@ -112,8 +112,8 @@ public class Zombie {
             }
         }
         else if (yspeed > 0) {
-            if (!World.tileAtPosition((int)(x/32), (int)((y+63+yspeed)/32))
-                    && !World.tileAtPosition((int)((x+31)/32), (int)((y+63+yspeed)/32))) {
+            if (!World.isBlockAtPoint((int)(x/32), (int)((y+63+yspeed)/32))
+                    && !World.isBlockAtPoint((int)((x+31)/32), (int)((y+63+yspeed)/32))) {
                 y += yspeed;
             }
             else {
@@ -124,8 +124,8 @@ public class Zombie {
     }
     
     void jump() {
-        if (World.tileAtPosition((int)(x/32), (int)((y+64)/32))
-                || World.tileAtPosition((int)((x+31)/32), (int)((y+64)/32))) {
+        if (World.isBlockAtPoint((int)(x/32), (int)((y+64)/32))
+               || World.isBlockAtPoint((int)((x+31)/32), (int)((y+64)/32))) {
             yspeed = JUMPSPEED;
         }
     }

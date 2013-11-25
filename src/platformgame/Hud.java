@@ -13,7 +13,7 @@ abstract public class Hud {
     static int stringIndex = 0;
     
     static void init() throws SlickException {
-        textBox = new Image("data/graphics/textBox.gif");
+        textBox = new Image("data/graphics/GUI/MessageBox.png");
     }
     
     static void update(Input input) {
@@ -21,21 +21,32 @@ abstract public class Hud {
             Inventory.useInventory(input);
         }
         if (message[0] != null) {
+            boolean escapePressed = input.isKeyPressed(Input.KEY_ESCAPE);
+            boolean zKeyPressed = input.isKeyPressed(Input.KEY_Z);
+            boolean xKeyPressed = input.isKeyPressed(Input.KEY_X);
+            boolean zKeyDown = input.isKeyDown(Input.KEY_Z);
+            boolean xKeyDown = input.isKeyDown(Input.KEY_X);
             Game.paused = true;
             
-            if (input.isKeyDown(Input.KEY_Z) || input.isKeyDown(Input.KEY_X)) {
+            if (zKeyDown || xKeyDown) {
                 for (int i = 0; i < 2; i ++) {
                     if (stringIndex < message[0].length()-1) {
                         stringIndex ++;
                    }
+                }
+            } else if (escapePressed) {
+                if (stringIndex != message[0].length()-1) {
+                    stringIndex = message[0].length()-1;
+                    escapePressed = false;
                 }
             } else {
                 if (stringIndex < message[0].length()-1) {
                     stringIndex ++;
                 }
             }
+            
             if (stringIndex >= message[0].length()-1
-                    && (input.isKeyPressed(Input.KEY_Z) || input.isKeyPressed(Input.KEY_X))) {
+                    && (zKeyPressed || xKeyPressed || escapePressed)) {
                 removeMessage();
                 Game.paused = false;
             }
@@ -49,7 +60,7 @@ abstract public class Hud {
                         +System.lineSeparator()+"Stability: "+Inventory.getStability(), 10, 32);
         
         if (message[0] != null) {
-            textBox.draw(0, 480-128);
+            textBox.draw(0, 0);
             drawMessage(g);
         }
         
@@ -59,7 +70,7 @@ abstract public class Hud {
     }
     
     static void drawMessage(Graphics g) {
-        g.drawString(formatString(message[0].substring(0, stringIndex)), 10, 480-128);
+        g.drawString(formatString(message[0].substring(0, stringIndex)), 32, 372);
     }
     
     static void addMessage(String string) {

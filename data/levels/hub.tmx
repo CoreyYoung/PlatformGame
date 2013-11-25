@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="80" height="15" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="block" tilewidth="32" tileheight="32">
-  <image source="block.gif" width="32" height="32"/>
+  <image source="block.gif" width="96" height="32"/>
  </tileset>
  <layer name="Tiles" width="80" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+3YsQ3AMAwEMWn/pb1DrogTkMD3wpXamVlL4xn9Gv0a/Rr9Gv0a/Rr9Gv0a/Rr9Gv2aL/S7+b63/xZ/2AEk8amKwBIAAA==
+   H4sIAAAAAAAAA+3YsQrAIAwA0Vj//5+dulVFT6joHWR0yJuCKSKSg8bm0o+lH0s/ln4s/Vj6sfRjrfZ74q77cuV+NTv9+rXs9PuuZ3aD4btbHnw3akf8drb/+9/ihCneYvyAwBIAAA==
   </data>
  </layer>
  <objectgroup name="Objects" width="80" height="15">
@@ -14,14 +14,20 @@
     <property name="message" value="123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 "/>
    </properties>
   </object>
-  <object name="Door" type="Door" x="192" y="384" width="32" height="64">
+  <object name="Door" type="Door" x="160" y="384" width="32" height="64">
    <properties>
     <property name="path" value="data/levels/level1.tmx"/>
    </properties>
   </object>
-  <object name="Door" type="Door" x="288" y="384" width="32" height="64">
+  <object name="Door" type="Door" x="224" y="384" width="32" height="64">
    <properties>
     <property name="path" value="data/levels/hill.tmx"/>
+   </properties>
+  </object>
+  <object name="Chest" type="Chest" x="288" y="416" width="32" height="32">
+   <properties>
+    <property name="amount" value="3"/>
+    <property name="item" value="IronHelmet"/>
    </properties>
   </object>
  </objectgroup>
