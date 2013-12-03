@@ -1,69 +1,28 @@
 package platformgame;
 
 import org.newdawn.slick.AppGameContainer;
-import org.newdawn.slick.BasicGame;
 import org.newdawn.slick.GameContainer;
-import org.newdawn.slick.Graphics;
-import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import platformgame.inventory.Inventory;
+import org.newdawn.slick.state.StateBasedGame;
 
 
-public class Game extends BasicGame {
-    static int width = 640;
-    static int height = 480;
+public class Game extends StateBasedGame {
+    private static final boolean fullscreen = false;
+    private static final boolean showFPS = true;
+    private static final boolean vSync = true;
+    private static final String title = "Sandbox Platform Action? Game";
+    private static final int fpslimit = 60;
     
-    static boolean fullscreen = false;
-    static boolean showFPS = true;
-    static String title = "Sandbox Platform Action? Game";
-    static int fpslimit = 60;
-    static boolean vSync = true;
-    static boolean paused = false;
-    static boolean inventory = false;
-    Input input;
+    public static final int STATE_TITLE_SCREEN = 0;
+    public static final int STATE_PLAYING = 1;
+    public static final int width = 640;
+    public static final int height = 480;
+    
+    public static boolean paused = false;
+    public static boolean inventory = false;
     
     public Game(String title) {
         super(title);
-    }
-
-    @Override
-    public void init(GameContainer gc) throws SlickException {
-        Hud.init();
-        World.init("data/levels/hub.tmx");
-        Player.init();
-        Inventory.init();
-    }
-
-    @Override
-    public void update(GameContainer gc, int delta) throws SlickException {
-        input = gc.getInput();
-        Hud.update(input);
-        
-        if (!paused) {
-            CombatSystem.update(input);
-            Player.update(input);
-            Inventory.update();
-            Camera.update(input);
-            Enemy.update();
-            Projectile.update();
-        }
-        
-        if (input.isKeyPressed(Input.KEY_P)) {
-            paused = !paused;
-        }
-        
-        if (!paused || inventory) {
-            if (input.isKeyPressed(Input.KEY_ESCAPE)) {
-                inventory = !inventory;
-                paused = inventory;
-            }
-        }
-        input.clearKeyPressedRecord();
-    }
-
-    @Override
-    public void render(GameContainer gc, Graphics g) throws SlickException {
-        Camera.render(g, input);
     }
     
     public static void main(String[] args) throws SlickException {
@@ -74,5 +33,11 @@ public class Game extends BasicGame {
         app.setVSync(vSync);
         app.setShowFPS(showFPS);
         app.start();
+    }
+
+    @Override
+    public void initStatesList(GameContainer container) throws SlickException {
+        this.addState(new StateTitleScreen(STATE_TITLE_SCREEN));
+        this.addState(new StatePlaying(STATE_PLAYING));
     }
 }

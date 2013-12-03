@@ -1,5 +1,6 @@
 package platformgame;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
@@ -7,33 +8,40 @@ import platformgame.inventory.Item;
 import platformgame.inventory.ItemStack;
 
 abstract public class World {
-    static TiledMap level;
-    static int levelWidth;
-    static int levelHeight;
-    static int blockSize = 32;
-    static final int doorMAX = 10;
-    static Door[] door = new Door[doorMAX];
-    static final int signMAX = 10;
-    static Sign[] sign = new Sign[signMAX];
-    static int[][] tileMap;
-    static final float GRAVITY = 0.3f;
-    static final int yspeedMAX = 10;
-    static String levelName;
+    private static final int blockSize = 32;
+    private static final int doorMAX = 10;
+    private static final int signMAX = 10;
     
+    private static int[][] tileMap;
+    private static int levelWidth;
+    private static int levelHeight;
+    
+    public static TiledMap level;
+    public static String levelName;
+    
+    public static Door[] door = new Door[doorMAX];
+    public static Sign[] sign = new Sign[signMAX];
+    
+    public static final float GRAVITY = 0.3f;
+    public static final int yspeedMAX = 10;
     public static final int LEFT_SLOPE = 3;
     public static final int RIGHT_SLOPE = 2;
     
-    static void init(String path) throws SlickException {
+    public static ArrayList<String> openedChestList = new ArrayList<>();
+    
+    public static void init(String path) throws SlickException {
         clearWorld();
         loadLevel(path);
         Enemy.init();
         Sign.init();
         Door.init();
         Chest.init();
+        FloppyDisk.init();
     }
     
-    static void render(int camX, int camY) {
+    public static void render(int camX, int camY) {
         Chest.render(camX, camY);
+        FloppyDisk.render(camX, camY);
         
         if (level != null) {
             level.render(camX, camY, 0, 0, 640,480);
@@ -52,7 +60,7 @@ abstract public class World {
         }
     }
     
-    static void loadLevel(String path) throws SlickException {
+    public static void loadLevel(String path) throws SlickException {
         levelName = path;
         level = new TiledMap(path);
         tileMap = new int[level.getWidth()] [level.getHeight()];
@@ -68,17 +76,18 @@ abstract public class World {
         createDoors();
         createSigns();
         createChests();
+        createFloppyDisks();
     }
     
-    static boolean isBlockAtPoint(int x, int y) {
+    public static boolean isBlockAtPoint(int x, int y) {
         return (tileMap[x][y] == 1);
     }
     
-    static int getTileAtPoint(int x, int y) {
+    public static int getTileAtPoint(int x, int y) {
         return tileMap[x][y];
     }
     
-    static void createDoors() {
+    private static void createDoors() {
         int num = 0;
         for (int i = 0; i < level.getObjectCount(0); i ++) {
             if (level.getObjectType(0, i).equals("Door")) {
@@ -93,7 +102,7 @@ abstract public class World {
         }
     }
     
-    static void createSigns() {
+    private static void createSigns() {
         int num = 0;
         for (int i = 0; i < level.getObjectCount(0); i ++) {
             if (level.getObjectType(0, i).equals("Sign")) {
@@ -108,7 +117,7 @@ abstract public class World {
         }
     }
     
-    static void createChests() {
+    private static void createChests() {
         for (int i = 0; i < level.getObjectCount(0); i ++) {
             if (level.getObjectType(0, i).equals("Chest")) {
                 int x = level.getObjectX(0, i);
@@ -140,27 +149,38 @@ abstract public class World {
         }
     }
     
-    static void clearWorld() {
+    private static void createFloppyDisks() {
+        for (int i = 0; i < level.getObjectCount(0); i ++) {
+            if (level.getObjectType(0, i).equals("FloppyDisk")) {
+                int x = level.getObjectX(0, i);
+                int y = level.getObjectY(0, i);
+                FloppyDisk.floppyDiskList.add(new FloppyDisk(x, y));
+            }
+        }
+    }
+    
+    private static void clearWorld() {
         Enemy.clearEnemies();
         clearDoors();
         clearSigns();
         clearChests();
+        clearFloppyDisks();
         clearTileMap();
     }
     
-    static void clearDoors() {
+    private static void clearDoors() {
         for (int i = 0; i < doorMAX; i ++) {
             door[i] = null;
         }
     }
     
-    static void clearSigns() {
+    private static void clearSigns() {
         for (int i = 0; i < signMAX; i ++) {
             sign[i] = null;
         }
     }
     
-    static void clearChests() {
+    private static void clearChests() {
         Iterator iterator = Chest.chestList.iterator();
         while (iterator.hasNext()) {
             iterator.next();
@@ -168,11 +188,35 @@ abstract public class World {
         }
     }
     
-    static void clearTileMap() {
+    private static void clearFloppyDisks() {
+        Iterator iterator = FloppyDisk.floppyDiskList.iterator();
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
+        }
+    }
+    
+    private static void clearTileMap() {
         tileMap = null;
     }
     
     public static boolean isPointInLevel(int x, int y) {
         return (x >= 0 && x <= levelWidth && y >= 0 && y <= levelHeight);
+    }
+    
+    public static boolean isChestOpened(Chest chest) {
+        return openedChestList.contains(levelName + chest.x + chest.y);
+    }
+    
+    public static void setChestOpened(Chest chest) {
+        openedChestList.add(levelName + chest.x + chest.y);
+    }
+    
+    public static int getWidth() {
+        return levelWidth;
+    }
+    
+    public static int getHeight() {
+        return levelHeight;
     }
 }

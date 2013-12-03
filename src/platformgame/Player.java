@@ -8,33 +8,34 @@ import org.newdawn.slick.SpriteSheet;
 import platformgame.inventory.*;
 
 abstract public class Player {
-    static int invincibilityTimerMAX = 60;
-    static int invincibilityTimer = 0;
-    static boolean invincible = false;
-    static float x = 32;
-    static float y = 384;
-    static final int xspeedMAX = 3;
-    static final int JUMPSPEED = -8;
-    static final float ACCELERATION = 0.1f;
-    static final float FRICTION = 0.07f;
-    static float xspeed = 0;
-    static float yspeed = 0;
-    static Animation sprStand;
-    static Animation sprWalk;
-    static Animation sprHurt;
-    static int dir = 0;
-    static final int healthMAX = 10;
-    static int health = healthMAX;
-    static SpriteSheet spriteSheet;
+    private static final int xspeedMAX = 3;
+    private static final int JUMPSPEED = -8;
+    private static final float ACCELERATION = 0.1f;
+    private static final float FRICTION = 0.07f;
+    private static float yspeed = 0;
+    private static Animation sprStand;
+    private static Animation sprWalk;
+    private static Animation sprHurt;
+    private static SpriteSheet spriteSheet;
     
-    static void init() throws SlickException {
+    public static final int invincibilityTimerMAX = 60;
+    public static int invincibilityTimer = 0;
+    public static boolean invincible = false;
+    public static final int healthMAX = 10;
+    public static int health = healthMAX;
+    public static int dir = 0;
+    public static float x = 32;
+    public static float y = 384;
+    public static float xspeed = 0;
+    
+    public static void init() throws SlickException {
         spriteSheet = new SpriteSheet("data/graphics/player.gif", 32, 64);
         sprStand = new Animation(spriteSheet, 0, 0, 0, 0, false, 1000*1, true);
         sprWalk = new Animation(spriteSheet, 0, 0, 3, 0, true, (int)(1000*0.25), true);
         sprHurt = new Animation(spriteSheet, 0, 1, 3, 1, true, (int)(1000*0.1), true);
     }
 
-    static void update(Input input) throws SlickException {
+    public static void update(Input input) throws SlickException {
         movement(input);
         interact(input); //checks context sensitive 'interact' button (talk, pickup item, use door etc.)
         
@@ -47,7 +48,8 @@ abstract public class Player {
             //Player is dead!
         }
     }
-    static void render(int camX, int camY, Graphics g) {
+    
+    public static void render(int camX, int camY, Graphics g) {
         Animation sprite;
         if (invincible) {
             sprite = sprHurt;
@@ -79,8 +81,8 @@ abstract public class Player {
     }
     
     private static void movement(Input input) {
-        if (input.isKeyDown(Input.KEY_LEFT)) {
-            if (input.isKeyPressed(Input.KEY_LEFT) || ! input.isKeyDown(Input.KEY_RIGHT)) {
+        if (input.isKeyDown(Input.KEY_A)) {
+            if (input.isKeyPressed(Input.KEY_A) || ! input.isKeyDown(Input.KEY_D)) {
                 dir = 180;
             }
             if (xspeed > -xspeedMAX) {
@@ -92,8 +94,8 @@ abstract public class Player {
             }
         }
         
-        if (input.isKeyDown(Input.KEY_RIGHT)) {
-            if (input.isKeyPressed(Input.KEY_RIGHT) || ! input.isKeyDown(Input.KEY_LEFT)) {
+        if (input.isKeyDown(Input.KEY_D)) {
+            if (input.isKeyPressed(Input.KEY_D) || ! input.isKeyDown(Input.KEY_A)) {
                 dir = 0;
             }
             if (xspeed < xspeedMAX) {
@@ -105,7 +107,7 @@ abstract public class Player {
             }
         }
         
-        if (input.isKeyPressed(Input.KEY_Z)) {
+        if (input.isKeyPressed(Input.KEY_SPACE)) {
             if ((World.isBlockAtPoint((int)(x/32), (int)((y+64+1)/32))
                     && !World.isBlockAtPoint((int)(x/32), (int)((y+32+1)/32)))
                     
@@ -117,7 +119,7 @@ abstract public class Player {
                 
                 yspeed = JUMPSPEED;
             }
-        } else if (!input.isKeyDown(Input.KEY_Z)) {
+        } else if (!input.isKeyDown(Input.KEY_SPACE)) {
             if (yspeed < 0) {
                 yspeed *= 0.75;
             }
@@ -131,22 +133,7 @@ abstract public class Player {
     }
     
     private static void collisions() {
-        if (!invincible) {
-            for (Zombie zombie : Enemy.zombie) {
-                if (zombie != null) {
-                    if (x < zombie.x+32 && x+32 > zombie.x
-                            && y < zombie.y+64 && y+64 > zombie.y) {
-                        xspeed = Math.signum(x-zombie.x)
-                                    *CombatSystem.calculateKnockback(Inventory.getStability(), Zombie.knockback);
-                        zombie.x -= zombie.xspeed;
-                        zombie.xspeed = 0;
-                        health -= CombatSystem.calculateDamage(Zombie.damage, Inventory.getDefense());
-                        invincibilityTimer = invincibilityTimerMAX;
-                        invincible = true;
-                    }
-                }
-            }
-        }
+        
         
         if (onSlope(World.LEFT_SLOPE)) {
             performLeftSlopeCollision();
@@ -253,7 +240,7 @@ abstract public class Player {
     }
     
     private static void interact(Input input) throws SlickException {
-        if (input.isKeyPressed(Input.KEY_DOWN)) {
+        if (input.isKeyPressed(Input.KEY_S)) {
             for (Door door : World.door) {
                 if (door != null) {
                     if (x+32 >= door.x+16 && x < door.x+16
@@ -279,6 +266,16 @@ abstract public class Player {
                     if (x+32 >= chest.x+16 && x <= chest.x+16
                             && y+64 >= chest.y && y <= chest.y+32) {
                         useChest(chest);
+                        break;
+                    }
+                }
+            }
+            
+            for (FloppyDisk floppyDisk : FloppyDisk.floppyDiskList) {
+                if (floppyDisk != null) {
+                    if (x+32 >= floppyDisk.x+16 && x <= floppyDisk.x+16
+                            && y+64 >= floppyDisk.y && y <= floppyDisk.y+32) {
+                        floppyDisk.useFloppyDisk();
                         break;
                     }
                 }

@@ -10,7 +10,7 @@ abstract public class Inventory {
     static Image guiImage;
     
     public static ItemStack mouseSlot;
-    static InventorySlot[][] invSlots = new InventorySlot[9][4];
+    public static InventorySlot[][] invSlots = new InventorySlot[9][4];
     public static EquipmentSlot[] equipSlots = new EquipmentSlot[8];
     
     public static void init() throws SlickException {
@@ -44,8 +44,7 @@ abstract public class Inventory {
         int yOffset = 128+16;
         for (int i = 0; i < invSlots.length; i++) {
             for (int ii = 0; ii < invSlots[i].length; ii++) {
-                ItemStack stack = new ItemStack(new CopperHelmet(), 1);
-                invSlots[i][ii] = new InventorySlot(i*48+xOffset, ii*48+yOffset, stack);
+                invSlots[i][ii] = new InventorySlot(i*48+xOffset, ii*48+yOffset);
             }
         }
     }

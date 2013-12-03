@@ -10,6 +10,7 @@ public class IronBow extends RangedItem{
     public void init() throws SlickException {
         icon = new Image("data/graphics/items/rangedItems/ironBow.gif");
         attack = 5;
+        speed = 30;
     }
     
     @Override

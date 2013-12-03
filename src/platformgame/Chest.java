@@ -10,7 +10,6 @@ import platformgame.inventory.ItemStack;
 public class Chest {
     int x;
     int y;
-    boolean opened = false;
     static Image sprite;
     static List<Chest> chestList = new ArrayList<>();
     ItemStack itemStack;
@@ -39,7 +38,7 @@ public class Chest {
     }
     
     public void useChest() throws SlickException {
-        if (! opened) {
+        if (! World.isChestOpened(this)) {
             String itemName = itemStack.item.getClass().toString().substring(35);
 
             if (itemStack.amount > 1) {
@@ -54,7 +53,7 @@ public class Chest {
                 Hud.addMessage("You found a " + itemName + "! ");
             }
             Inventory.addItemStack(itemStack);
-            opened = true;
+            World.setChestOpened(this);
         } else {
             Hud.addMessage("You didn't find anything. ");
         }

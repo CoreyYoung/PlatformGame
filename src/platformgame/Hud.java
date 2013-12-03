@@ -7,28 +7,26 @@ import org.newdawn.slick.SlickException;
 import platformgame.inventory.Inventory;
 
 abstract public class Hud {
-    static final int messageMAX = 10;
-    static String[] message = new String[messageMAX];
-    static Image textBox;
-    static int stringIndex = 0;
+    private static final int messageMAX = 10;
+    private static final String[] message = new String[messageMAX];
+    private static Image textBox;
+    private static int stringIndex = 0;
     
-    static void init() throws SlickException {
+    public static void init() throws SlickException {
         textBox = new Image("data/graphics/GUI/MessageBox.png");
     }
     
-    static void update(Input input) {
+    public static void update(Input input) {
         if (Game.inventory) {
             Inventory.useInventory(input);
         }
         if (message[0] != null) {
             boolean escapePressed = input.isKeyPressed(Input.KEY_ESCAPE);
-            boolean zKeyPressed = input.isKeyPressed(Input.KEY_Z);
-            boolean xKeyPressed = input.isKeyPressed(Input.KEY_X);
-            boolean zKeyDown = input.isKeyDown(Input.KEY_Z);
-            boolean xKeyDown = input.isKeyDown(Input.KEY_X);
+            boolean spacePressed = input.isKeyPressed(Input.KEY_SPACE);
+            boolean spaceDown = input.isKeyDown(Input.KEY_SPACE);
             Game.paused = true;
             
-            if (zKeyDown || xKeyDown) {
+            if (spaceDown) {
                 for (int i = 0; i < 2; i ++) {
                     if (stringIndex < message[0].length()-1) {
                         stringIndex ++;
@@ -46,14 +44,14 @@ abstract public class Hud {
             }
             
             if (stringIndex >= message[0].length()-1
-                    && (zKeyPressed || xKeyPressed || escapePressed)) {
+                    && (spacePressed || escapePressed)) {
                 removeMessage();
                 Game.paused = false;
             }
         }
     }
     
-    static void render(Graphics g, Input input) {
+    public static void render(Graphics g, Input input) {
         g.drawString("Health: "+Player.health
                         +System.lineSeparator()+"Defense: "+Inventory.getDefense()
                         +System.lineSeparator()+"Attack: "+Inventory.getAttack()
@@ -69,11 +67,11 @@ abstract public class Hud {
         }
     }
     
-    static void drawMessage(Graphics g) {
+    private static void drawMessage(Graphics g) {
         g.drawString(formatString(message[0].substring(0, stringIndex)), 32, 372);
     }
     
-    static void addMessage(String string) {
+    public static void addMessage(String string) {
         for (int i = 0; i < messageMAX; i ++) {
             if (message[i] == null) {
                 message[i] = string;
@@ -82,7 +80,7 @@ abstract public class Hud {
         }
     }
     
-    static void removeMessage() {
+    private static void removeMessage() {
         stringIndex = 0;
         for (int i = 0; i < messageMAX-1; i ++) {
             if (message[i+1] != null) {
@@ -95,7 +93,7 @@ abstract public class Hud {
         message[messageMAX-1] = null;
     }
     
-    static String formatString(String str) {
+    private static String formatString(String str) {
         int spaceIndex = 0;
         int lineStart = 0;
         char[] result = new char[str.length()];

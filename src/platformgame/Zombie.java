@@ -4,35 +4,39 @@ import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 
 public class Zombie {
-    boolean awake = false;
-    int id;
-    float x;
-    float y;
-    static final int healthMAX = 10;
+    private static final int healthMAX = 10;
+    private static final int speedMAX = 3;
+    private static final int JUMPSPEED = -8;
+    private static final float ACCELERATION = 0.1f;
+    
+    private final int id;
+    private float yspeed = 0;
+    private static Image sprite;
+    
     public static final int defense = 2;
     public static final int stability = 0;
-    int health = healthMAX;
-    static final int damage = 5;
-    static final int knockback = 3;
-    static final int speedMAX = 3;
-    static final int JUMPSPEED = -8;
-    float xspeed = 0;
-    float yspeed = 0;
-    static float ACCELERATION = 0.1f;
-    static Image sprite;
+    public static final int damage = 5;
+    public static final int knockback = 3;
     
-    Zombie(int x, int y, int id, boolean awake) {
+    public float x;
+    public float y;
+    public float xspeed = 0;
+    public boolean awake = false;
+    public int health = healthMAX;
+    
+    
+    public Zombie(int x, int y, int id, boolean awake) {
         this.x = x;
         this.y = y;
         this.id = id;
         this.awake = awake;
     }
     
-    static void init() throws SlickException {
+    public static void init() throws SlickException {
         sprite = new Image("data/graphics/zombieSprite.gif");
     }
     
-    void update() {
+    public void update() {
         movement();
         collisions();
         
@@ -41,7 +45,7 @@ public class Zombie {
         }
     }
     
-    void render(int camX, int camY) {
+    public void render(int camX, int camY) {
         if (x <= Player.x) {
             sprite.draw(x + camX, y + camY);
         } else {
@@ -49,7 +53,7 @@ public class Zombie {
         }
     }
     
-    void movement() {
+    private void movement() {
         if (Player.x < x) {
             xspeed = Math.max(xspeed-ACCELERATION,-speedMAX);
         }
@@ -70,7 +74,7 @@ public class Zombie {
         }
     }
 
-    void collisions() {        
+    private void collisions() {        
         if (xspeed != 0) {
             int destX = 0;
             int checkX = 0;
@@ -123,14 +127,14 @@ public class Zombie {
         }
     }
     
-    void jump() {
+    private void jump() {
         if (World.isBlockAtPoint((int)(x/32), (int)((y+64)/32))
                || World.isBlockAtPoint((int)((x+31)/32), (int)((y+64)/32))) {
             yspeed = JUMPSPEED;
         }
     }
     
-    Zombie zombieAtPosition(int x, int y) {
+    private Zombie zombieAtPosition(int x, int y) {
         for (Zombie zombie : Enemy.zombie) {
             if (zombie != null && id != zombie.id) {
                 if (zombie.x <= x+32 && zombie.x+32 >= x

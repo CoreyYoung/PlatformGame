@@ -8,15 +8,16 @@ import platformgame.inventory.AmmoItem;
 import platformgame.inventory.RangedItem;
 
 public class Projectile {
-    public double x;
-    public double y;
-    public double speed;
-    public double dir;
+    private double x;
+    private double y;
+    private double speed;
+    private double dir;
+    private int width;
+    private int length;
+    
     public int damage;
-    public int width;
-    public int length;
-    HitBox hitBox;
-    AmmoItem ammo;
+    public HitBox hitBox;
+    public AmmoItem ammo;
     public static List<Projectile> projectileList = new ArrayList<>();
     
     public static void update() {

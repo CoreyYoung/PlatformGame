@@ -7,6 +7,15 @@ public class InventorySlot {
     public int y;
     public ItemStack itemStack;
     
+    InventorySlot() {
+    //Do nothing
+    }
+    
+    public InventorySlot(int x, int y) {
+        this.x = x;
+        this.y = y;
+    }
+    
     public InventorySlot(int x, int y, ItemStack itemStack) {
         this.x = x;
         this.y = y;

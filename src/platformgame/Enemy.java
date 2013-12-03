@@ -3,15 +3,16 @@ package platformgame;
 import org.newdawn.slick.SlickException;
 
 abstract public class Enemy {    
-    static public final int zombieMAX = 10;
-    static public Zombie[] zombie = new Zombie[zombieMAX];
+    private static final int zombieMAX = 10;
     
-    static void init() throws SlickException {
+    public static Zombie[] zombie = new Zombie[zombieMAX];
+    
+    public static void init() throws SlickException {
         Zombie.init();
         spawnZombies();
     }
     
-    static void update() {
+    public static void update() {
         for (int i = 0; i < zombieMAX; i ++) {
             if (zombie[i] != null && zombie[i].awake) {
                 zombie[i].update();
@@ -19,7 +20,7 @@ abstract public class Enemy {
         }
     }
     
-    static void render(int camX, int camY) {
+    public static void render(int camX, int camY) {
         for (int i = 0; i < zombieMAX; i ++) {
             if (zombie[i] != null && zombie[i].awake) {
                 zombie[i].render(camX, camY);
@@ -27,7 +28,11 @@ abstract public class Enemy {
         }
     }
     
-    static void spawnZombies() {
+    public static void clearEnemies() {
+        clearZombies();
+    }
+    
+    private static void spawnZombies() {
         int x;
         int y;
         for (int i = 0; i < World.level.getObjectCount(0) ; i ++) {
@@ -44,7 +49,7 @@ abstract public class Enemy {
         }
     }
     
-    static void createZombie(int x, int y, int id) {
+    private static void createZombie(int x, int y, int id) {
         for (int i = 0; i < zombieMAX; i ++) {
             if (zombie[i] == null) {
                 zombie[i] = new Zombie(x, y, id, false);
@@ -53,11 +58,7 @@ abstract public class Enemy {
         }
     }
     
-    static void clearEnemies() {
-        clearZombies();
-    }
-    
-    static void clearZombies() {
+    private static void clearZombies() {
         for (int i = 0; i < zombieMAX; i ++) {
             zombie[i] = null;
         }

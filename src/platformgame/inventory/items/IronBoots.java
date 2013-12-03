@@ -10,7 +10,7 @@ public class IronBoots extends BootsItem {
     @Override
     public void init() throws SlickException {
         icon = new Image("data/graphics/items/bootsItems/ironBoots.gif");
-        stability = 2;
+        stability = 1;
     }
     
     @Override

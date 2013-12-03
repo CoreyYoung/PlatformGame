@@ -7,13 +7,21 @@ import platformgame.inventory.AmmoItem;
 import platformgame.inventory.Inventory;
 import platformgame.inventory.RangedItem;
 
+
 abstract public class CombatSystem {
+    private static int attackTimer = 0;
+    
     public static void update(Input input) {
-        if (input.isKeyPressed(Input.KEY_X)) {
-            useMelee();
-        }
-        if (input.isKeyPressed(Input.KEY_C)) {
-            useRanged(input);
+        if (attackTimer <= 0) {
+            if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+                useMelee();
+            }
+            
+            if (input.isMouseButtonDown(Input.MOUSE_RIGHT_BUTTON)) {
+                useRanged(input);
+            }
+        } else {
+            attackTimer --;
         }
         
         performCollisions();
@@ -21,7 +29,7 @@ abstract public class CombatSystem {
     
     public static void render(Input input, int camX, int camY) {
         if (input != null) {
-            if (input.isKeyDown(Input.KEY_X)) {
+            if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
                 if (Inventory.getMeleeItem() != null) {
                     Inventory.getMeleeItem().renderSprite((int) Player.x+camX, (int) Player.y+camY, Player.dir);
                 }
@@ -29,15 +37,15 @@ abstract public class CombatSystem {
         }
     }
     
-    public static int calculateDamage(int attack, int defense) {
+    private static int calculateDamage(int attack, int defense) {
         return Math.max(attack-defense, 1);
     }
     
-    public static int calculateKnockback(int stability, int knockback) {
+    private static int calculateKnockback(int stability, int knockback) {
         return Math.max(knockback-stability, 0);
     }
     
-    public static void useMelee() {
+    private static void useMelee() {
         //create collision box
         int boxWidth = 32;
         int boxHeight = 16;
@@ -74,42 +82,42 @@ abstract public class CombatSystem {
         }
     }
     
-    public static void useRanged(Input input) {
-        if (Inventory.getRangedItem() != null && Inventory.getAmmoItem() != null) {
-            int dir;
-            if (input.isKeyDown(Input.KEY_UP)) {
-                if (input.isKeyDown(Input.KEY_LEFT)) {
-                    dir = 180+45;
-                } else if (input.isKeyDown(Input.KEY_RIGHT)) {
-                    dir = 360-45;
-                } else {
-                    dir = 270;
-                }
-            } else if (input.isKeyDown(Input.KEY_DOWN)) {
-                if (input.isKeyDown(Input.KEY_LEFT)) {
-                    dir = 180-45+10;
-                } else if (input.isKeyDown(Input.KEY_RIGHT)) {
-                    dir = 0+45-10;
-                } else {
-                    dir = 90;
-                }
-            } else if (Player.dir == 180) {
-                dir = 180+10;
-            } else {
-                dir = 360-10;
-            }
+    private static void useRanged(Input input) {
+        if (Inventory.getRangedItem() != null && Inventory.getAmmoItem() != null) {            
+            int mouseX = input.getMouseX()+Camera.x;
+            int mouseY = input.getMouseY()+Camera.y;
             
             int x = (int) Player.x;
             int y = (int) Player.y+16;
             int speed = 16;
+            int dir = (int) Math.toDegrees(Math.atan2(-(mouseX-x), mouseY-y))+90;
             RangedItem ranged = Inventory.getRangedItem();
             AmmoItem ammo = Inventory.getAmmoItem();
             Projectile.createProjectile(x, y, speed, dir, ranged, ammo);
             Inventory.getFirstSlot(ammo).itemStack.amount--;
+            
+            attackTimer = ranged.speed;
         }
     }
     
-    static void performCollisions() {
+    private static void performCollisions() {
+        if (! Player.invincible) {
+            for (Zombie zombie : Enemy.zombie) {
+                if (zombie != null) {
+                    if (Player.x < zombie.x+32 && Player.x+32 > zombie.x
+                            && Player.y < zombie.y+64 && Player.y+64 > zombie.y) {
+                        Player.xspeed = Math.signum(Player.x-zombie.x)
+                                    *CombatSystem.calculateKnockback(Inventory.getStability(), Zombie.knockback);
+                        zombie.x -= zombie.xspeed;
+                        zombie.xspeed = 0;
+                        Player.health -= CombatSystem.calculateDamage(Zombie.damage, Inventory.getDefense());
+                        Player.invincibilityTimer = Player.invincibilityTimerMAX;
+                        Player.invincible = true;
+                    }
+                }
+            }
+        }
+        
         for (Zombie zombie : Enemy.zombie) {
             if (zombie != null) {
                 Iterator iterator = Projectile.projectileList.iterator();

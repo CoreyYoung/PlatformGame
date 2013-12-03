@@ -2,7 +2,7 @@ package platformgame.inventory;
 
 import org.newdawn.slick.Graphics;
 
-public class EquipmentSlot {
+public class EquipmentSlot extends InventorySlot {
     public int x;
     public int y;
     public ItemStack itemStack;
@@ -61,7 +61,7 @@ public class EquipmentSlot {
             return true;
         }
         
-        return ((itemType == RING_SLOT && itemStack.item instanceof HandItem)
+        return ((itemType == RING_SLOT && itemStack.item instanceof RingItem)
                 || (itemType == HELMET_SLOT && itemStack.item instanceof HelmetItem)
                 || (itemType == SHEILD_SLOT && itemStack.item instanceof SheildItem)
                 || (itemType == CHESTPLATE_SLOT && itemStack.item instanceof ChestPlateItem)

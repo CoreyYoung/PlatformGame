@@ -4,14 +4,14 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 
 abstract public class Camera {
-    static int cameraWidth = Game.width;
-    static int cameraHeight = Game.height;
-    static int x = 0;
-    static int y = 0;
-    static int xOffset = 0;
-    static int yOffset = 0;
-    static final int yOffsetTimerMAX = 30;
-    static int yOffsetTimer = yOffsetTimerMAX;
+    private static final int cameraWidth = Game.width;
+    private static final int cameraHeight = Game.height;
+    public static int x = 0;
+    public static int y = 0;
+    private static int xOffset = 0;
+    private static int yOffset = 0;
+    private static final int yOffsetTimerMAX = 30;
+    private static int yOffsetTimer = yOffsetTimerMAX;
     
     static void update(Input input) {
         movement(input);
@@ -19,10 +19,8 @@ abstract public class Camera {
     }
     
     static void render(Graphics g, Input input) {
-        //render background
         World.render(-x, -y);
         
-        //render foreground
         Enemy.render(-x, -y);
         Player.render(-x, -y, g);
         
@@ -32,21 +30,20 @@ abstract public class Camera {
             projectile.render(-x, -y, g);
         }
         
-        //render HUD
         Hud.render(g, input);
     }
     
-    static void movement(Input input) {
-        x = inRange((int)Player.x-(cameraWidth/2), 0, World.levelWidth-cameraWidth);
-        y = inRange((int)Player.y-(cameraHeight/2), 0, World.levelHeight-cameraHeight);
-        //elasticCamera(input);
+    private static void movement(Input input) {
+        //x = inRange((int)Player.x-(cameraWidth/2), 0, World.levelWidth-cameraWidth);
+        //y = inRange((int)Player.y-(cameraHeight/2), 0, World.levelHeight-cameraHeight);
+        elasticCamera(input);
         //int shake = 8;
         //x += (Math.random()*shake)-(shake/2);
         //y += (Math.random()*shake)-(shake/2);
         
     }
     
-    static void wakeObjects() {
+    private static void wakeObjects() {
         for (Zombie zombie : Enemy.zombie) {
             if (zombie != null && !zombie.awake) {
                 if (x <= zombie.x+32 && x+cameraWidth >= zombie.x
@@ -57,20 +54,20 @@ abstract public class Camera {
         }
     }
     
-    static int inRange(int val, int min, int max) {
+    private static int inRange(int val, int min, int max) {
         val = Math.min(val, max);
         val = Math.max(val, min);
         return val;
     }
     
-    static void elasticCamera(Input input) {
+    private static void elasticCamera(Input input) {
         x = (int)((Player.x+16)-(cameraWidth/2))+xOffset;
         y = (int)((Player.y+32)-(cameraHeight/2))+yOffset;
         
-        x = inRange(x, 0, World.levelWidth-cameraWidth);
-        y = inRange(y, 0, World.levelHeight-cameraHeight);
+        x = inRange(x, 0, World.getWidth()-cameraWidth);
+        y = inRange(y, 0, World.getHeight()-cameraHeight);
         
-        if (input.isKeyDown(Input.KEY_UP)) {
+        if (input.isKeyDown(Input.KEY_W)) {
             yOffsetTimer --;
             if (yOffsetTimer <= 0) {
                 yOffset -= 2;
@@ -80,7 +77,7 @@ abstract public class Camera {
             yOffset = Math.min(yOffset+4, 0);
         }
         
-        if (input.isKeyDown(Input.KEY_DOWN)) {
+        if (input.isKeyDown(Input.KEY_S)) {
             yOffsetTimer --;
             if (yOffsetTimer <= 0) {
                 yOffset += 2;
