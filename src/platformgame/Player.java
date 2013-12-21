@@ -5,7 +5,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
-import platformgame.inventory.*;
 
 abstract public class Player {
     private static final int xspeedMAX = 3;
@@ -44,9 +43,6 @@ abstract public class Player {
         } else {
             invincibilityTimer --;
         }
-        if (health <= 0) {
-            //Player is dead!
-        }
     }
     
     public static void render(int camX, int camY, Graphics g) {
@@ -65,18 +61,6 @@ abstract public class Player {
             sprite.draw((int)x+32+camX, y+camY, -32, 64);
         } else {
             sprite.draw((int)x+camX, y+camY);
-        }
-        
-        int width = 32;
-        int height = 16;
-        if (Inventory.equipSlots[EquipmentSlot.MELEE_SLOT].itemStack != null) {
-            width = Inventory.getMeleeItem().width;
-            height = Inventory.getMeleeItem().height;
-        }
-        if (dir == 180) {
-            g.drawRect(x-width+camX, y+32-(height/2)+camY, width, height);
-        } else {
-            g.drawRect(x+32+width+camX, y+32-(height/2)+camY, -width, height);
         }
     }
     

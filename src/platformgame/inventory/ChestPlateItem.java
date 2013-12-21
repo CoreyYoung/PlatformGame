@@ -1,5 +1,5 @@
 package platformgame.inventory;
 
-abstract public class ChestPlateItem implements Item {
+abstract public class ChestPlateItem extends Item {
     public int defense;
 }

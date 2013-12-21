@@ -4,7 +4,6 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
-import platformgame.inventory.items.*;
 
 abstract public class Inventory {
     static Image guiImage;
@@ -18,13 +17,6 @@ abstract public class Inventory {
         
         createInventorySlots();
         createEquipmentSlots();
-        
-        invSlots[0][0].itemStack = new ItemStack(new IronSword(), 5);
-        invSlots[1][0].itemStack = new ItemStack(new IronHelmet(), 1);
-        invSlots[2][0].itemStack = new ItemStack(new IronBoots(), 1);
-        invSlots[3][0].itemStack = new ItemStack(new CopperHelmet(), 1);
-        invSlots[4][0].itemStack = new ItemStack(new CopperArrow(), 250);
-        invSlots[5][0].itemStack = new ItemStack(new IronBow(), 1);
     }
     
     public static void update() {
@@ -67,7 +59,7 @@ abstract public class Inventory {
         }
     }
     
-    public static void useInventory(Input input) {
+    public static void useInventory(Input input) throws SlickException {
         int mouseX = input.getMouseX();
         int mouseY = input.getMouseY();
         
@@ -104,12 +96,12 @@ abstract public class Inventory {
         
         for (InventorySlot[] slotArray : invSlots) {
             for (InventorySlot slot : slotArray) {
-                slot.render(g);
+                slot.render(g, input);
             }
         }
         
         for (EquipmentSlot slot : equipSlots) {
-            slot.render(g);
+            slot.render(g, input);
         }
         
         if (mouseSlot != null) {
@@ -197,7 +189,7 @@ abstract public class Inventory {
                         return slot;
                     }
                 } else if (item != null) {
-                    if (slot.itemStack.item.getClass() == item.getClass()) {
+                    if (slot.itemStack.item.name.equals(item.name)) {
                         return slot;
                     }
                 }

@@ -15,6 +15,8 @@ public class Game extends StateBasedGame {
     
     public static final int STATE_TITLE_SCREEN = 0;
     public static final int STATE_PLAYING = 1;
+    public static final int STATE_DEATH_SCREEN = 2;
+            
     public static final int width = 640;
     public static final int height = 480;
     
@@ -39,5 +41,6 @@ public class Game extends StateBasedGame {
     public void initStatesList(GameContainer container) throws SlickException {
         this.addState(new StateTitleScreen(STATE_TITLE_SCREEN));
         this.addState(new StatePlaying(STATE_PLAYING));
+        this.addState(new StateDeathScreen(STATE_DEATH_SCREEN));
     }
 }

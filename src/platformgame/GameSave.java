@@ -5,12 +5,20 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import platformgame.inventory.AmmoItem;
+import platformgame.inventory.BootsItem;
 import platformgame.inventory.EquipmentSlot;
+import platformgame.inventory.HelmetItem;
 import platformgame.inventory.Inventory;
 import platformgame.inventory.InventorySlot;
 import platformgame.inventory.Item;
 import platformgame.inventory.ItemStack;
+import platformgame.inventory.MeleeItem;
+import platformgame.inventory.RangedItem;
 
 public class GameSave {
     private static final String fileName = "data/save.txt";
@@ -26,6 +34,13 @@ public class GameSave {
                 loadEquipmentSlotsData(bufferedReader);
                 
                 loadChestData(bufferedReader);
+                
+                //TESTING! REMOVE AFTERWARDS!!!!!
+                //Item item = loadItem("data/items/IronBoots.txt");
+                //ItemStack itemStack = new ItemStack(item, 1);
+                //Inventory.addItemStack(itemStack);
+                
+                bufferedReader.close();
             }
         }
         catch (FileNotFoundException e) {
@@ -60,22 +75,18 @@ public class GameSave {
     }
     
     private static ItemStack loadItemStack(BufferedReader bufferedReader) throws IOException, SlickException {
-        ItemStack itemStack = null;
         String itemName = bufferedReader.readLine();
-        if (! itemName.isEmpty()) {
-            try {
-                Class tempClass = Class.forName(itemName);
-                int amount = Integer.parseInt(bufferedReader.readLine());
-                Item item = (Item) tempClass.newInstance();
-                itemStack =  new ItemStack(item, amount); 
-            } catch (InstantiationException | IllegalAccessException | ClassNotFoundException ex) {
-                System.err.println(ex);
+        
+        if ((! itemName.isEmpty())) {
+            int amount = Integer.parseInt(bufferedReader.readLine());
+            
+            if (! itemName.equals("Error: No path found.")) {
+                Item item = loadItem(itemName);
+                return new ItemStack(item, amount); 
             }
-        } else {
-            itemStack = null;
         }
         
-        return itemStack;
+        return null;
     }
     
     private static void loadChestData(BufferedReader bufferedReader) throws IOException {
@@ -99,6 +110,8 @@ public class GameSave {
                 saveEquipmentSlotsData(bufferedWriter);
                 
                 saveChestData(bufferedWriter);
+                
+                bufferedWriter.close();
             }
         }
         catch (IOException e) {
@@ -121,25 +134,25 @@ public class GameSave {
     private static void saveInventorySlotsData(BufferedWriter bufferedWriter) throws IOException {
         for (InventorySlot[] slotArray : Inventory.invSlots) {
             for (InventorySlot slot : slotArray) {
-                if (slot.itemStack != null) {
-                    bufferedWriter.write(slot.itemStack.item.getClass().getCanonicalName());
-                    bufferedWriter.newLine();
-                    bufferedWriter.write(Integer.toString(slot.itemStack.amount));
-                }
-                bufferedWriter.newLine();
+                saveItemStack(bufferedWriter, slot.itemStack);
             }
         }
     }
     
     private static void saveEquipmentSlotsData(BufferedWriter bufferedWriter) throws IOException {
         for (EquipmentSlot slot : Inventory.equipSlots) {
-            if (slot.itemStack != null) {
-                bufferedWriter.write(slot.itemStack.item.getClass().getCanonicalName());
-                bufferedWriter.newLine();
-                bufferedWriter.write(Integer.toString(slot.itemStack.amount));
-            }
-            bufferedWriter.newLine();
+            saveItemStack(bufferedWriter, slot.itemStack);
         }
+    }
+    
+    private static void saveItemStack(BufferedWriter bufferedWriter, ItemStack itemStack) throws IOException {
+        if (itemStack != null) {
+            bufferedWriter.write(itemStack.item.path);
+            bufferedWriter.newLine();
+            bufferedWriter.write(Integer.toString(itemStack.amount));
+        }
+        
+        bufferedWriter.newLine();
     }
     
     private static void saveChestData(BufferedWriter bufferedWriter) throws IOException {
@@ -150,5 +163,86 @@ public class GameSave {
             bufferedWriter.write(chestString);
             bufferedWriter.newLine();
         }
+    }
+    
+    public static Item loadItem(String path) throws SlickException {
+        Item item = null;
+        
+        try {
+            FileReader fileReader = new FileReader(path);
+            BufferedReader bufferedReader = new BufferedReader(fileReader);
+            
+            try {
+                String itemName = bufferedReader.readLine();
+                String itemType = bufferedReader.readLine();
+                
+                Image icon = new Image(bufferedReader.readLine());
+                Image sprite = new Image(bufferedReader.readLine());
+                
+                switch (itemType) {
+                    case "AmmoItem": {
+                        int attack = Integer.parseInt(bufferedReader.readLine());
+                        
+                        AmmoItem ammoItem = new AmmoItem();
+                        ammoItem.init(itemName, path, sprite, icon, attack);
+                        
+                        item = ammoItem;
+                        break;
+                    }
+                        
+                    case "BootsItem": {
+                        int defense = Integer.parseInt(bufferedReader.readLine());
+                        int stability = Integer.parseInt(bufferedReader.readLine());
+                        
+                        BootsItem bootsItem = new BootsItem();
+                        bootsItem.init(itemName, path, sprite, icon, defense, stability);
+                        
+                        item = bootsItem;
+                        break;
+                    }
+                    
+                    case "HelmetItem": {
+                        int defense = Integer.parseInt(bufferedReader.readLine());
+                        
+                        HelmetItem helmetItem = new HelmetItem();
+                        helmetItem.init(itemName, path, sprite, icon, defense);
+                        
+                        item = helmetItem;
+                        break;
+                    }
+                    
+                    case "MeleeItem": {
+                        int attack = Integer.parseInt(bufferedReader.readLine());
+                        int knockback = Integer.parseInt(bufferedReader.readLine());
+                        int speed = Integer.parseInt(bufferedReader.readLine());
+                        
+                        MeleeItem meleeItem = new MeleeItem();
+                        meleeItem.init(path, path, sprite, icon, attack, knockback, speed);
+                        
+                        item = meleeItem;
+                        break;
+                    }
+                        
+                    case "RangedItem": {
+                        int attack = Integer.parseInt(bufferedReader.readLine());
+                        int speed = Integer.parseInt(bufferedReader.readLine());
+                        
+                        RangedItem rangedItem = new RangedItem();
+                        rangedItem.init(itemName, path, sprite, icon, attack, speed);
+                        
+                        item = rangedItem;
+                        break;
+                    }
+                }
+                
+            } catch (IOException ex) {
+                Logger.getLogger(GameSave.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(GameSave.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return item;
     }
 }

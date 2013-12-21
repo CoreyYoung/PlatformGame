@@ -27,7 +27,7 @@
   <object name="Chest" type="Chest" x="288" y="416" width="32" height="32">
    <properties>
     <property name="amount" value="3"/>
-    <property name="item" value="IronHelmet"/>
+    <property name="item" value="data/items/IronHelmet.txt"/>
    </properties>
   </object>
   <object name="FloppyDisk" type="FloppyDisk" x="352" y="416" width="32" height="32"/>

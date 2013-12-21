@@ -1,26 +1,13 @@
-344
+352
 384
 data/levels/hub.tmx
-platformgame.inventory.items.IronHelmet
-12
+data/items/CopperArrow.txt
+226
 
-
-
-
-
-
-
-
-
-
-
-
-platformgame.inventory.items.CopperHelmet
+data/items/CopperHelmet.txt
 1
 
 
-platformgame.inventory.items.CopperArrow
-384
 
 
 
@@ -41,16 +28,27 @@ platformgame.inventory.items.CopperArrow
 
 
 
-platformgame.inventory.items.IronHelmet
+
+
+
+
+
+
+
+
+
+
+
+
+data/items/IronHelmet.txt
 1
 
 
-platformgame.inventory.items.IronBow
+data/items/IronBow.txt
 1
 
-platformgame.inventory.items.IronSword
-5
-platformgame.inventory.items.IronBoots
+data/items/IronSword.txt
 1
+data/items/IronBoots.txt
 1
-data/levels/hub.tmx288416
+0

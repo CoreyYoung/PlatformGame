@@ -39,7 +39,7 @@ public class Chest {
     
     public void useChest() throws SlickException {
         if (! World.isChestOpened(this)) {
-            String itemName = itemStack.item.getClass().toString().substring(35);
+            String itemName = itemStack.item.name;
 
             if (itemStack.amount > 1) {
                 Hud.addMessage("You found " + itemStack.amount + " " + itemName + "s! ");

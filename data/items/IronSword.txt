@@ -1,0 +1,7 @@
+Iron Sword
+MeleeItem
+data/graphics/items/meleeItems/ironSwordIcon.gif
+data/graphics/items/meleeItems/ironSword.gif
+5
+3
+30

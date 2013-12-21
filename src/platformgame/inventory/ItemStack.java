@@ -11,7 +11,7 @@ public class ItemStack {
     public ItemStack (Item item, int amount) throws SlickException {
         this.item = item;
         this.amount = amount;
-        this.item.init();
+        //this.item.init();
     }
     
     void render(int x, int y, Graphics g) {

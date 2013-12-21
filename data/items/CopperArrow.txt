@@ -1,0 +1,5 @@
+Copper Arrow
+AmmoItem
+data/graphics/items/ammoItems/copperArrow.gif
+data/graphics/items/ammoItems/copperArrow.gif
+5

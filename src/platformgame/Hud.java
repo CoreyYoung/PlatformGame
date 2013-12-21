@@ -16,7 +16,7 @@ abstract public class Hud {
         textBox = new Image("data/graphics/GUI/MessageBox.png");
     }
     
-    public static void update(Input input) {
+    public static void update(Input input) throws SlickException {
         if (Game.inventory) {
             Inventory.useInventory(input);
         }

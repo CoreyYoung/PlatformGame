@@ -54,6 +54,9 @@ public class StatePlaying extends BasicGameState {
         Hud.update(input);
         
         if (! Game.paused) {
+            if (Player.health <= 0) {
+                game.enterState(Game.STATE_DEATH_SCREEN);
+            }
             CombatSystem.update(input);
             Player.update(input);
             Inventory.update();

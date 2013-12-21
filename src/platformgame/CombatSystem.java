@@ -5,11 +5,12 @@ import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 import platformgame.inventory.AmmoItem;
 import platformgame.inventory.Inventory;
+import platformgame.inventory.Item;
 import platformgame.inventory.RangedItem;
-
 
 abstract public class CombatSystem {
     private static int attackTimer = 0;
+    private static Item attackItem;
     
     public static void update(Input input) {
         if (attackTimer <= 0) {
@@ -28,11 +29,9 @@ abstract public class CombatSystem {
     }
     
     public static void render(Input input, int camX, int camY) {
-        if (input != null) {
-            if (input.isMouseButtonDown(Input.MOUSE_LEFT_BUTTON)) {
-                if (Inventory.getMeleeItem() != null) {
-                    Inventory.getMeleeItem().renderSprite((int) Player.x+camX, (int) Player.y+camY, Player.dir);
-                }
+        if (attackTimer > 0) {
+            if (attackItem != null) {
+                attackItem.renderSprite((int) Player.x + camX, (int) Player.y + camY, Player.dir);
             }
         }
     }
@@ -46,6 +45,8 @@ abstract public class CombatSystem {
     }
     
     private static void useMelee() {
+        attackItem = Inventory.getMeleeItem();
+        attackTimer = 30;
         //create collision box
         int boxWidth = 32;
         int boxHeight = 16;
@@ -73,9 +74,9 @@ abstract public class CombatSystem {
                 if (zombie.x < x1 && zombie.x+32 > x2 && zombie.y < y1 && zombie.y+64 > y2) {
                     zombie.health -= calculateDamage(Inventory.getAttack(), Zombie.defense);
                     if (Player.x < zombie.x) {
-                        zombie.xspeed += calculateKnockback(Zombie.stability, knockback);
+                        zombie.xspeed = calculateKnockback(Zombie.stability, knockback);
                     } else {
-                        zombie.xspeed -= calculateKnockback(Zombie.stability, knockback);
+                        zombie.xspeed = -calculateKnockback(Zombie.stability, knockback);
                     }
                 }
             }
@@ -83,7 +84,7 @@ abstract public class CombatSystem {
     }
     
     private static void useRanged(Input input) {
-        if (Inventory.getRangedItem() != null && Inventory.getAmmoItem() != null) {            
+        if (Inventory.getRangedItem() != null && Inventory.getAmmoItem() != null) {
             int mouseX = input.getMouseX()+Camera.x;
             int mouseY = input.getMouseY()+Camera.y;
             
@@ -97,6 +98,7 @@ abstract public class CombatSystem {
             Inventory.getFirstSlot(ammo).itemStack.amount--;
             
             attackTimer = ranged.speed;
+            attackItem = ranged;
         }
     }
     

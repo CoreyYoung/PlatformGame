@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
-import platformgame.inventory.Item;
 import platformgame.inventory.ItemStack;
 
 abstract public class World {
@@ -134,11 +133,8 @@ abstract public class World {
                 }
                 
                 try {
-                    Class tempClass = Class.forName("platformgame.inventory.items." + itemName);
-                    Item item = (Item) tempClass.newInstance();
-                    itemStack = new ItemStack(item, amount);
-                } catch (ClassNotFoundException|InstantiationException
-                        |IllegalAccessException|SlickException e) {
+                    itemStack = new ItemStack(GameSave.loadItem(itemName), amount);
+                } catch (SlickException e) {
                     System.err.println("Error: Chest property 'item' is incorrect!");
                 }
                 
