@@ -1,0 +1,6 @@
+Name: Copper Arrow
+Type: AmmoItem
+Sprite: data/graphics/items/ammoItems/copperArrow.gif
+Icon: data/graphics/items/ammoItems/copperArrow.gif
+Damage: 5
+Knockback: 3.1

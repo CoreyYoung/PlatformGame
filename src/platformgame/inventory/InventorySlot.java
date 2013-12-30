@@ -11,7 +11,7 @@ public class InventorySlot {
     public ItemStack itemStack;
     
     InventorySlot() {
-    //Do nothing
+        //Do nothing
     }
     
     public InventorySlot(int x, int y) {

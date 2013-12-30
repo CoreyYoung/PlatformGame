@@ -1,0 +1,6 @@
+Name: Iron Bow
+Type: RangedItem
+Sprite: data/graphics/items/rangedItems/ironBowSprite.gif
+Icon: data/graphics/items/rangedItems/ironBow.gif
+Attack: 5
+Speed: 30

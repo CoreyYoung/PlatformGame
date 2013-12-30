@@ -1,0 +1,5 @@
+Name: Iron Leggings
+Type: LeggingsItem
+Sprite: data/graphics/items/leggingsItems/IronLeggings.gif
+Icon: data/graphics/items/leggingsItems/IronLeggings.gif
+Defense: 10

@@ -126,11 +126,37 @@ abstract public class Inventory {
     
     public static int getDefense() {
         int defense = 0;
+        
+        EquipmentSlot bootsSlot = equipSlots[EquipmentSlot.BOOTS_SLOT];
+        if (bootsSlot.itemStack != null) {
+            BootsItem bootsItem = (BootsItem) bootsSlot.itemStack.item;
+            defense += bootsItem.defense;
+        }
+        
+        EquipmentSlot breastplateSlot = equipSlots[EquipmentSlot.BREASTPLATE_SLOT];
+        if (breastplateSlot.itemStack != null) {
+            BreastplateItem breastplateItem = (BreastplateItem) breastplateSlot.itemStack.item;
+            defense += breastplateItem.defense;
+        }
+        
         EquipmentSlot helmetSlot = equipSlots[EquipmentSlot.HELMET_SLOT];
         if (helmetSlot.itemStack != null) {
-            HelmetItem tempItem = (HelmetItem) helmetSlot.itemStack.item;
-            defense += tempItem.defense;
+            HelmetItem helmetItem = (HelmetItem) helmetSlot.itemStack.item;
+            defense += helmetItem.defense;
         }
+        
+        EquipmentSlot leggingsSlot = equipSlots[EquipmentSlot.LEGGINGS_SLOT];
+        if (leggingsSlot.itemStack != null) {
+            LeggingsItem leggingsItem = (LeggingsItem) leggingsSlot.itemStack.item;
+            defense += leggingsItem.defense;
+        }
+        
+        EquipmentSlot sheildSlot = equipSlots[EquipmentSlot.SHEILD_SLOT];
+        if (sheildSlot.itemStack != null) {
+            SheildItem sheildItem = (SheildItem) sheildSlot.itemStack.item;
+            defense += sheildItem.defense;
+        }
+        
         return defense;
     }
     
@@ -140,15 +166,17 @@ abstract public class Inventory {
             MeleeItem tempItem = (MeleeItem) meleeSlot.itemStack.item;
             return tempItem.attack;
         }
+        
         return 1;
     }
     
     public static int getStability() {
-        EquipmentSlot bootsSlot = equipSlots[EquipmentSlot.BOOTS_SLOT];
-        if (bootsSlot.itemStack != null) {
-            BootsItem tempItem = (BootsItem) bootsSlot.itemStack.item;
-            return tempItem.stability;
+        EquipmentSlot sheildSlot = equipSlots[EquipmentSlot.SHEILD_SLOT];
+        if (sheildSlot.itemStack != null) {
+            SheildItem sheildItem = (SheildItem) sheildSlot.itemStack.item;
+            return sheildItem.stability;
         }
+        
         return 0;
     }
     
@@ -157,6 +185,7 @@ abstract public class Inventory {
         if (meleeSlot.itemStack != null) {
             return (MeleeItem) meleeSlot.itemStack.item;
         }
+        
         return null;
     }
     
@@ -165,6 +194,7 @@ abstract public class Inventory {
         if (rangedSlot.itemStack != null) {
             return (RangedItem) rangedSlot.itemStack.item;
         }
+        
         return null;
     }
     
@@ -178,6 +208,7 @@ abstract public class Inventory {
                 }
             }
         }
+        
         return null;
     }
     
@@ -195,6 +226,7 @@ abstract public class Inventory {
                 }
             }
         }
+        
         return null;
     }
 }

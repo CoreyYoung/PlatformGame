@@ -1,0 +1,5 @@
+Name: Copper Helmet
+Type: HelmetItem
+Sprite: data/graphics/items/helmetItems/copperHelmet.gif
+Icon: data/graphics/items/helmetItems/copperHelmet.gif
+Defense: 5

@@ -1,66 +1,73 @@
 package platformgame;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import org.newdawn.slick.SlickException;
 
-abstract public class Enemy {    
-    private static final int zombieMAX = 10;
-    
-    public static Zombie[] zombie = new Zombie[zombieMAX];
-    
+abstract public class Enemy {
+    public static ArrayList<ZombieAI> zombieList = new ArrayList<>();
+
     public static void init() throws SlickException {
-        Zombie.init();
         spawnZombies();
     }
-    
+
     public static void update() {
-        for (int i = 0; i < zombieMAX; i ++) {
-            if (zombie[i] != null && zombie[i].awake) {
-                zombie[i].update();
+        Iterator iterator = zombieList.iterator();
+        while (iterator.hasNext()) {
+            ZombieAI zombie = (ZombieAI) iterator.next();
+            if (zombie.health <= 0) {
+                iterator.remove();
             }
         }
-    }
-    
-    public static void render(int camX, int camY) {
-        for (int i = 0; i < zombieMAX; i ++) {
-            if (zombie[i] != null && zombie[i].awake) {
-                zombie[i].render(camX, camY);
-            }
-        }
-    }
-    
-    public static void clearEnemies() {
-        clearZombies();
-    }
-    
-    private static void spawnZombies() {
-        int x;
-        int y;
-        for (int i = 0; i < World.level.getObjectCount(0) ; i ++) {
-            if (World.level.getObjectType(0, i).equals("Zombie")) {
-                for (int ii = 0; ii < zombieMAX; ii ++) {
-                    if (zombie[ii] == null) {
-                        x = World.level.getObjectX(0, i);
-                        y = World.level.getObjectY(0, i);
-                        createZombie(x, y, ii);
-                        break;
-                    }
+        
+        for (ZombieAI zombie : zombieList) {
+            if (zombie != null) {
+                if (zombie.awake) {
+                    zombie.update();
                 }
             }
         }
     }
-    
-    private static void createZombie(int x, int y, int id) {
-        for (int i = 0; i < zombieMAX; i ++) {
-            if (zombie[i] == null) {
-                zombie[i] = new Zombie(x, y, id, false);
-                break;
+
+    public static void render(int camX, int camY) {
+        for (ZombieAI zombie : zombieList) {
+            if (zombie != null) {
+                if (zombie.awake) {
+                    zombie.render(camX, camY);
+                }
             }
         }
     }
-    
+
+    public static void clearEnemies() {
+        clearZombies();
+    }
+
+    private static void spawnZombies() throws SlickException {
+        int x;
+        int y;
+        for (int i = 0; i < World.level.getObjectCount(0); i++) {
+            if (World.level.getObjectType(0, i).equals("Zombie")) {
+                x = World.level.getObjectX(0, i);
+                y = World.level.getObjectY(0, i);
+                createZombie(x, y);
+            }
+        }
+    }
+
+    private static void createZombie(int x, int y) throws SlickException {
+        ZombieAI zombie = DataIO.loadEnemy("data/enemies/Zombie.txt");
+        zombie.x = x;
+        zombie.y = y;
+        zombieList.add(zombie);
+    }
+
     private static void clearZombies() {
-        for (int i = 0; i < zombieMAX; i ++) {
-            zombie[i] = null;
+        Iterator iterator = zombieList.iterator();
+        
+        while (iterator.hasNext()) {
+            iterator.next();
+            iterator.remove();
         }
     }
 }

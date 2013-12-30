@@ -4,13 +4,15 @@ import org.newdawn.slick.Image;
 
 public class AmmoItem extends Item {
     public int attack;
+    public float knockback;
     
-    public void init(String name, String path, Image sprite, Image icon, int attack) {
+    public AmmoItem(String name, String path, Image sprite, Image icon, int attack, float knockback) {
         this.name = name;
         this.path = path;
         this.sprite = sprite;
         this.icon = icon;
         this.attack = attack;
+        this.knockback = knockback;
     }
     
     @Override

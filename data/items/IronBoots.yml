@@ -1,0 +1,5 @@
+Name: Iron Boots
+Type: BootsItem
+Sprite: data/graphics/items/bootsItems/ironBoots.gif
+Icon: data/graphics/items/bootsItems/ironBoots.gif
+Defense: 2

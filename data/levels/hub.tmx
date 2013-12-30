@@ -5,13 +5,13 @@
  </tileset>
  <layer name="Tiles" width="80" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+3YsQrAIAwA0Vj//5+dulVFT6joHWR0yJuCKSKSg8bm0o+lH0s/ln4s/Vj6sfRjrfZ74q77cuV+NTv9+rXs9PuuZ3aD4btbHnw3akf8drb/+9/ihCneYvyAwBIAAA==
+   H4sIAAAAAAAAA+3YsQ3AMAwEMRnef+dUWcAsDCRH4FsVV2rNzGq0nKmfqZ+pn6mfqZ+pn6mfqZ+pn6mfqZ95+2288Ve3/xZf2AO1tuciwBIAAA==
   </data>
  </layer>
  <objectgroup name="Objects" width="80" height="15">
   <object name="Sign" type="Sign" x="96" y="416" width="32" height="32">
    <properties>
-    <property name="message" value="123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 "/>
+    <property name="message" value="123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789 123456789"/>
    </properties>
   </object>
   <object name="Door" type="Door" x="160" y="384" width="32" height="64">
@@ -27,9 +27,10 @@
   <object name="Chest" type="Chest" x="288" y="416" width="32" height="32">
    <properties>
     <property name="amount" value="3"/>
-    <property name="item" value="data/items/IronHelmet.txt"/>
+    <property name="item" value="data/items/IronHelmet.yml"/>
    </properties>
   </object>
   <object name="FloppyDisk" type="FloppyDisk" x="352" y="416" width="32" height="32"/>
+  <object name="Zombie" type="Zombie" x="640" y="384" width="32" height="64"/>
  </objectgroup>
 </map>

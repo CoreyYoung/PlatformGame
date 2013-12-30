@@ -1,10 +1,19 @@
-352
+349
 384
 data/levels/hub.tmx
-data/items/CopperArrow.txt
-226
+data/items/CopperArrow.yml
+137
 
-data/items/CopperHelmet.txt
+data/items/CopperHelmet.yml
+1
+
+data/items/IronBreastplate.yml
+1
+
+data/items/IronLeggings.yml
+1
+
+data/items/IronSheild.yml
 1
 
 
@@ -34,21 +43,15 @@ data/items/CopperHelmet.txt
 
 
 
-
-
-
-
-
-
-data/items/IronHelmet.txt
+data/items/IronHelmet.yml
 1
 
 
-data/items/IronBow.txt
+data/items/IronBow.yml
 1
 
-data/items/IronSword.txt
+data/items/IronSword.yml
 1
-data/items/IronBoots.txt
+data/items/IronBoots.yml
 1
 0

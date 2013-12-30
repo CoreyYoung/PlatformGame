@@ -7,7 +7,7 @@ public class EquipmentSlot extends InventorySlot {
     public static final int RING_SLOT = 0;
     public static final int HELMET_SLOT = 1;
     public static final int SHEILD_SLOT = 2;
-    public static final int CHESTPLATE_SLOT = 3;
+    public static final int BREASTPLATE_SLOT = 3;
     public static final int RANGED_SLOT = 4;
     public static final int LEGGINGS_SLOT = 5;
     public static final int MELEE_SLOT = 6;
@@ -20,6 +20,15 @@ public class EquipmentSlot extends InventorySlot {
         this.itemType = itemType;
     }
 
+    @Override
+    public void onLeftClick() {
+        if (canEquipItem(Inventory.mouseSlot)) {
+            ItemStack tempStack = Inventory.mouseSlot;
+            Inventory.mouseSlot = itemStack;
+            itemStack = tempStack;
+        }
+    }
+    
     @Override
     public void onRightClick() {
         if (itemStack != null) {
@@ -39,7 +48,7 @@ public class EquipmentSlot extends InventorySlot {
         return ((itemType == RING_SLOT && itemStack.item instanceof RingItem)
                 || (itemType == HELMET_SLOT && itemStack.item instanceof HelmetItem)
                 || (itemType == SHEILD_SLOT && itemStack.item instanceof SheildItem)
-                || (itemType == CHESTPLATE_SLOT && itemStack.item instanceof ChestPlateItem)
+                || (itemType == BREASTPLATE_SLOT && itemStack.item instanceof BreastplateItem)
                 || (itemType == RANGED_SLOT && itemStack.item instanceof RangedItem)
                 || (itemType == LEGGINGS_SLOT && itemStack.item instanceof LeggingsItem)
                 || (itemType == MELEE_SLOT && itemStack.item instanceof MeleeItem)
@@ -54,7 +63,7 @@ public class EquipmentSlot extends InventorySlot {
         return (itemStack.item instanceof RingItem
                 || itemStack.item instanceof HelmetItem
                 || itemStack.item instanceof SheildItem
-                || itemStack.item instanceof ChestPlateItem
+                || itemStack.item instanceof BreastplateItem
                 || itemStack.item instanceof RangedItem
                 || itemStack.item instanceof LeggingsItem
                 || itemStack.item instanceof MeleeItem

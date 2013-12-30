@@ -6,7 +6,7 @@ public class RangedItem extends Item {
     public int attack;
     public int speed;
     
-    public void init(String name, String path, Image sprite, Image icon, int attack, int speed) {
+    public RangedItem(String name, String path, Image sprite, Image icon, int attack, int speed) {
         this.name = name;
         this.path = path;
         this.sprite = sprite;

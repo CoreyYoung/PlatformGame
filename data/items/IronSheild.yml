@@ -1,0 +1,6 @@
+Name: Iron Sheild
+Type: SheildItem
+Sprite: data/graphics/items/sheildItems/IronSheild.gif
+Icon: data/graphics/items/sheildItems/IronSheild.gif
+Defense: 5
+Stability: 2

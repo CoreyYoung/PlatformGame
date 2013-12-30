@@ -1,0 +1,5 @@
+Name: Iron Breastplate
+Type: BreastplateItem
+Sprite: data/graphics/items/breastplateItems/IronBreastplate.gif
+Icon: data/graphics/items/breastplateItems/IronBreastplate.gif
+Defense: 10
