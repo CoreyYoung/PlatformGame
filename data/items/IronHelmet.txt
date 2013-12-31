@@ -1,5 +1,0 @@
-Iron Helmet
-HelmetItem
-data/graphics/items/helmetItems/ironHelmet.gif
-data/graphics/items/helmetItems/ironHelmet.gif
-10

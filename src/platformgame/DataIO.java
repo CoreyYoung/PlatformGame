@@ -1,9 +1,12 @@
 package platformgame;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.io.BufferedWriter;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.Image;
@@ -13,60 +16,50 @@ import platformgame.inventory.*;
 
 public class DataIO {
 
-    private static final String fileName = "data/save.txt";
+    private static final String fileName = "data/save.yml";
 
     public static void loadGame() throws SlickException {
-        try {
-            FileReader fileReader = new FileReader(fileName);
-            try (BufferedReader bufferedReader = new BufferedReader(fileReader)) {
-                loadPlayerData(bufferedReader);
-                loadWorldData(bufferedReader);
-
-                loadInventorySlotsData(bufferedReader);
-                loadEquipmentSlotsData(bufferedReader);
-
-                loadChestData(bufferedReader);
-
-                bufferedReader.close();
-            }
-        } catch (FileNotFoundException e) {
-            System.err.println(e);
-        } catch (IOException e) {
-            System.err.println(e);
-        }
+        HashMap<String, Object> fileMap = loadHashMap(fileName);
+        
+        loadPlayerData(fileMap);
+        loadWorldData(fileMap);
+        loadChestData(fileMap);
+        loadInventorySlotsData(fileMap);
+        loadEquipmentSlotsData(fileMap);
     }
 
-    private static void loadPlayerData(BufferedReader bufferedReader) throws IOException {
-        Player.x = readInt(bufferedReader);
-        Player.y = readInt(bufferedReader);
+    private static void loadPlayerData(HashMap<String, Object> fileMap) {
+        Player.x = (int) fileMap.get("PlayerX");
+        Player.y = (int) fileMap.get("PlayerY");
         Player.health = Player.healthMAX;
     }
 
-    private static void loadWorldData(BufferedReader bufferedReader) throws IOException, SlickException {
-        World.init(bufferedReader.readLine());
+    private static void loadWorldData(HashMap<String, Object> fileMap) throws SlickException {
+        World.init((String) fileMap.get("Level"));
     }
 
-    private static void loadInventorySlotsData(BufferedReader bufferedReader) throws IOException, SlickException {
-        for (InventorySlot[] slotArray : Inventory.invSlots) {
-            for (InventorySlot slot : slotArray) {
-                slot.itemStack = loadItemStack(bufferedReader);
+    private static void loadInventorySlotsData(HashMap<String, Object> fileMap) throws SlickException {
+        for (int i = 0; i < Inventory.invSlots.length; i ++) {
+            for (int ii = 0; ii < Inventory.invSlots[i].length; ii++) {
+                Inventory.invSlots[i][ii].itemStack = loadItemStack(fileMap,
+                        "InventorySlot[" + i + "][" + ii + "]");
             }
         }
     }
 
-    private static void loadEquipmentSlotsData(BufferedReader bufferedReader) throws IOException, SlickException {
-        for (EquipmentSlot slot : Inventory.equipSlots) {
-            slot.itemStack = loadItemStack(bufferedReader);
+    private static void loadEquipmentSlotsData(HashMap<String, Object> fileMap) throws SlickException {
+        for (int i = 0; i < Inventory.equipSlots.length; i ++) {
+            Inventory.equipSlots[i].itemStack = loadItemStack(fileMap, "EquipmentSlot[" + i + "]");
         }
     }
 
-    private static ItemStack loadItemStack(BufferedReader bufferedReader) throws IOException, SlickException {
-        String itemName = bufferedReader.readLine();
+    private static ItemStack loadItemStack(HashMap<String, Object> fileMap, String ID) throws SlickException {
+        String itemName = (String) fileMap.get(ID + ".Item");
 
-        if ((!itemName.isEmpty())) {
-            int amount = readInt(bufferedReader);
+        if (! itemName.equals("none")) {
+            int amount = (int) fileMap.get(ID + ".Amount");
 
-            if (!itemName.equals("Error: No path found.")) {
+            if (! itemName.equals("Error: No path found.")) {
                 Item item = loadItem(itemName);
                 return new ItemStack(item, amount);
             }
@@ -75,11 +68,11 @@ public class DataIO {
         return null;
     }
 
-    private static void loadChestData(BufferedReader bufferedReader) throws IOException {
-        int chestNum = readInt(bufferedReader);
+    private static void loadChestData(HashMap<String, Object> fileMap) {
+        int chestNum = (int) fileMap.get("NumberOpenedChests");
         for (int i = 0; i < chestNum; i++) {
-            String chestID = bufferedReader.readLine();
-            if (!World.openedChestList.contains(chestID)) {
+            String chestID = (String) fileMap.get("OpenedChestID[" + i + "]");
+            if (! World.openedChestList.contains(chestID)) {
                 World.openedChestList.add(chestID);
             }
         }
@@ -88,14 +81,19 @@ public class DataIO {
     public static void saveGame() {
         try {
             FileWriter fileWriter = new FileWriter(fileName);
+            
             try (BufferedWriter bufferedWriter = new BufferedWriter(fileWriter)) {
                 savePlayerData(bufferedWriter);
+                bufferedWriter.newLine();
+                
                 saveWorldData(bufferedWriter);
+                bufferedWriter.newLine();
+                
+                saveChestData(bufferedWriter);
+                bufferedWriter.newLine();
 
                 saveInventorySlotsData(bufferedWriter);
                 saveEquipmentSlotsData(bufferedWriter);
-
-                saveChestData(bufferedWriter);
 
                 bufferedWriter.close();
             }
@@ -105,169 +103,172 @@ public class DataIO {
     }
 
     private static void savePlayerData(BufferedWriter bufferedWriter) throws IOException {
-        bufferedWriter.write(Integer.toString((int) Player.x));
+        bufferedWriter.write("PlayerX: " + Integer.toString((int) Player.x));
         bufferedWriter.newLine();
-        bufferedWriter.write(Integer.toString((int) Player.y));
+        bufferedWriter.write("PlayerY: " + Integer.toString((int) Player.y));
         bufferedWriter.newLine();
     }
 
     private static void saveWorldData(BufferedWriter bufferedWriter) throws IOException {
-        bufferedWriter.write(World.levelName);
+        bufferedWriter.write("Level: " + World.levelName);
         bufferedWriter.newLine();
+    }
+    
+    private static void saveChestData(BufferedWriter bufferedWriter) throws IOException {
+        bufferedWriter.write("NumberOpenedChests: " + Integer.toString(World.openedChestList.size()));
+        bufferedWriter.newLine();
+        
+        Object[] IDs = World.openedChestList.toArray();
+        
+        for (int i = 0; i < IDs.length; i ++) {
+            bufferedWriter.write("OpenedChestID[" + i + "]: " + IDs[i]);
+            bufferedWriter.newLine();
+        }
     }
 
     private static void saveInventorySlotsData(BufferedWriter bufferedWriter) throws IOException {
-        for (InventorySlot[] slotArray : Inventory.invSlots) {
-            for (InventorySlot slot : slotArray) {
-                saveItemStack(bufferedWriter, slot.itemStack);
+        for (int i = 0; i < Inventory.invSlots.length; i ++) {
+            for (int ii = 0; ii < Inventory.invSlots[i].length; ii ++) {
+                saveItemStack(bufferedWriter, Inventory.invSlots[i][ii].itemStack, "InventorySlot[" + i + "][" + ii + "]");
             }
+            
+            bufferedWriter.newLine();
         }
     }
 
     private static void saveEquipmentSlotsData(BufferedWriter bufferedWriter) throws IOException {
-        for (EquipmentSlot slot : Inventory.equipSlots) {
-            saveItemStack(bufferedWriter, slot.itemStack);
-        }
+        for (int i = 0; i < Inventory.equipSlots.length; i ++) {
+                saveItemStack(bufferedWriter, Inventory.equipSlots[i].itemStack, "EquipmentSlot[" + i + "]");
+            }
     }
 
-    private static void saveItemStack(BufferedWriter bufferedWriter, ItemStack itemStack) throws IOException {
+    private static void saveItemStack(BufferedWriter bufferedWriter, ItemStack itemStack, String ID) throws IOException {
         if (itemStack != null) {
-            bufferedWriter.write(itemStack.item.path);
+            bufferedWriter.write(ID + ".Item: " + itemStack.item.path);
             bufferedWriter.newLine();
-            bufferedWriter.write(Integer.toString(itemStack.amount));
-        }
-
-        bufferedWriter.newLine();
-    }
-
-    private static void saveChestData(BufferedWriter bufferedWriter) throws IOException {
-        bufferedWriter.write(Integer.toString(World.openedChestList.size()));
-        bufferedWriter.newLine();
-
-        for (String chestString : World.openedChestList) {
-            bufferedWriter.write(chestString);
+            bufferedWriter.write(ID + ".Amount: " + itemStack.amount);
+            bufferedWriter.newLine();
+        } else {
+            bufferedWriter.write(ID + ".Item: " + "none");
             bufferedWriter.newLine();
         }
     }
 
     public static Item loadItem(String path) throws SlickException {
-        try {
-            FileReader fileReader = new FileReader(path);
-            Yaml yaml = new Yaml();
-            
-            HashMap<String, Object> fileMap = (HashMap<String, Object>) yaml.load(fileReader);
+        HashMap<String, Object> fileMap = loadHashMap(path);
 
-            String name = (String) fileMap.get("Name");
-            String type = (String) fileMap.get("Type");
-            
-            Image sprite = new Image((String) fileMap.get("Sprite"));
-            Image icon = new Image((String) fileMap.get("Icon"));
+        String name = (String) fileMap.get("Name");
+        String type = (String) fileMap.get("Type");
 
-            switch (type) {
-                case "AmmoItem": {
-                    int damage = (int) fileMap.get("Damage");
-                    float knockback = (float) ((double) fileMap.get("Knockback"));
-                    
-                    return new AmmoItem(name, path, sprite, icon, damage, knockback);
-                }
+        Image sprite = new Image((String) fileMap.get("Sprite"));
+        Image icon = new Image((String) fileMap.get("Icon"));
 
-                case "BootsItem": {
-                    int defense = (int) fileMap.get("Defense");
+        switch (type) {
+            case "AmmoItem": {
+                int damage = (int) fileMap.get("Damage");
+                float knockback = (float) ((double) fileMap.get("Knockback"));
 
-                    return new BootsItem(name, path, sprite, icon, defense);
-                }
-
-                case "BreastplateItem": {
-                    int defense = (int) fileMap.get("Defense");
-
-                    return new BreastplateItem(name, path, sprite, icon, defense);
-                }
-
-                case "HelmetItem": {
-                    int defense = (int) fileMap.get("Defense");
-
-                    return new HelmetItem(name, path, sprite, icon, defense);
-                }
-
-                case "LeggingsItem": {
-                    int defense = (int) fileMap.get("Defense");
-
-                    return new LeggingsItem(name, path, sprite, icon, defense);
-                }
-
-                case "MeleeItem": {
-                    int attack = (int) fileMap.get("Attack");
-                    float knockback = (float) ((double) fileMap.get("Knockback"));
-                    int speed = (int) fileMap.get("Speed");
-
-                    return new MeleeItem(name, path, sprite, icon, attack, knockback, speed);
-                }
-
-                case "RangedItem": {
-                    int attack = (int) fileMap.get("Attack");
-                    int speed = (int) fileMap.get("Speed");
-
-                    return new RangedItem(name, path, sprite, icon, attack, speed);
-                }
-
-                case "SheildItem": {
-                    int defense = (int) fileMap.get("Defense");
-                    int stability = (int) fileMap.get("Stability");
-
-                    return new SheildItem(name, path, sprite, icon, defense, stability);
-                }
-
-                default: {
-                    System.err.println("Error: Item file contains invalid item type.");
-                }
+                return new AmmoItem(name, path, sprite, icon, damage, knockback);
             }
 
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DataIO.class.getName()).log(Level.SEVERE, null, ex);
+            case "BootsItem": {
+                int defense = (int) fileMap.get("Defense");
+
+                return new BootsItem(name, path, sprite, icon, defense);
+            }
+
+            case "BreastplateItem": {
+                int defense = (int) fileMap.get("Defense");
+
+                return new BreastplateItem(name, path, sprite, icon, defense);
+            }
+
+            case "HelmetItem": {
+                int defense = (int) fileMap.get("Defense");
+
+                return new HelmetItem(name, path, sprite, icon, defense);
+            }
+
+            case "LeggingsItem": {
+                int defense = (int) fileMap.get("Defense");
+
+                return new LeggingsItem(name, path, sprite, icon, defense);
+            }
+
+            case "MeleeItem": {
+                int attack = (int) fileMap.get("Attack");
+                float knockback = (float) ((double) fileMap.get("Knockback"));
+                int speed = (int) fileMap.get("Speed");
+
+                return new MeleeItem(name, path, sprite, icon, attack, knockback, speed);
+            }
+
+            case "RangedItem": {
+                int attack = (int) fileMap.get("Attack");
+                int speed = (int) fileMap.get("Speed");
+
+                return new RangedItem(name, path, sprite, icon, attack, speed);
+            }
+
+            case "SheildItem": {
+                int defense = (int) fileMap.get("Defense");
+                int stability = (int) fileMap.get("Stability");
+
+                return new SheildItem(name, path, sprite, icon, defense, stability);
+            }
+
+            default: {
+                System.err.println("Error: Item file contains invalid item type.");
+            }
         }
 
         return null;
     }
     
     public static ZombieAI loadEnemy(String path) throws SlickException {
-        try {
-            FileReader fileReader = new FileReader(path);
-            BufferedReader bufferedReader = new BufferedReader(fileReader);
-            
-            String type = bufferedReader.readLine();
-            Image sprite = new Image(bufferedReader.readLine());
-            
-            
-            switch (type) {
-                case "ZombieAI": {
-                    int healthMAX = readInt(bufferedReader);
-                    int speedMAX = readInt(bufferedReader);
-                    int JUMP_SPEED = readInt(bufferedReader);
-                    float ACCELERATION = readFloat(bufferedReader);
-                    int defense = readInt(bufferedReader);
-                    int stability = readInt(bufferedReader);
-                    int damage = readInt(bufferedReader);
-                    int knockback = readInt(bufferedReader);
-                    
-                    return new ZombieAI(sprite, 0, 0, false, healthMAX, speedMAX,
-                            JUMP_SPEED, ACCELERATION, defense, stability, damage, knockback);
-                }
+        HashMap<String, Object> fileMap = loadHashMap(path);
+
+        String type = (String) fileMap.get("Type");
+        Image sprite = new Image((String) fileMap.get("Sprite"));
+
+        switch (type) {
+            case "ZombieAI": {
+                int healthMAX = (int) fileMap.get("HealthMAX");
+                int speedMAX = (int) fileMap.get("SpeedMAX");
+                int JUMP_SPEED = (int) fileMap.get("JUMP_SPEED");
+                float ACCELERATION = (float) ((double) fileMap.get("ACCELERATION"));
+                int defense = (int) fileMap.get("Defense");
+                int stability = (int) fileMap.get("Stability");
+                int damage = (int) fileMap.get("Damage");
+                int knockback = (int) fileMap.get("Knockback");
+
+                return new ZombieAI(sprite, 0, 0, false, healthMAX, speedMAX,
+                        JUMP_SPEED, ACCELERATION, defense, stability, damage, knockback);
             }
             
-        } catch (FileNotFoundException ex) {
-            Logger.getLogger(DataIO.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(DataIO.class.getName()).log(Level.SEVERE, null, ex);
         }
         
         return null;
     }
-
-    private static int readInt(BufferedReader bufferedReader) throws IOException {
-        return Integer.parseInt(bufferedReader.readLine());
-    }
     
-    private static float readFloat(BufferedReader bufferedReader) throws IOException {
-        return Float.parseFloat(bufferedReader.readLine());
+    private static HashMap<String, Object> loadHashMap(String path) {
+        HashMap<String, Object> fileMap = null;
+        
+        try {
+            FileReader fileReader = new FileReader(path);
+            Yaml yaml = new Yaml();
+            fileMap = (HashMap<String, Object>) yaml.load(fileReader);
+            
+            try {
+                fileReader.close();
+            } catch (IOException ex) {
+                Logger.getLogger(DataIO.class.getName()).log(Level.SEVERE, null, ex);
+            }
+            
+        } catch (FileNotFoundException ex) {
+            Logger.getLogger(DataIO.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return fileMap;
     }
 }

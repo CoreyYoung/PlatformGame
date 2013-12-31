@@ -1,0 +1,64 @@
+PlayerX: 342
+PlayerY: 384
+
+Level: data/levels/hub.tmx
+
+NumberOpenedChests: 1
+OpenedChestID[0]: data/levels/hub.tmx288416
+
+InventorySlot[0][0].Item: data/items/CopperArrow.yml
+InventorySlot[0][0].Amount: 218
+InventorySlot[0][1].Item: none
+InventorySlot[0][2].Item: none
+InventorySlot[0][3].Item: none
+
+InventorySlot[1][0].Item: none
+InventorySlot[1][1].Item: none
+InventorySlot[1][2].Item: none
+InventorySlot[1][3].Item: none
+
+InventorySlot[2][0].Item: none
+InventorySlot[2][1].Item: none
+InventorySlot[2][2].Item: none
+InventorySlot[2][3].Item: none
+
+InventorySlot[3][0].Item: none
+InventorySlot[3][1].Item: none
+InventorySlot[3][2].Item: none
+InventorySlot[3][3].Item: none
+
+InventorySlot[4][0].Item: none
+InventorySlot[4][1].Item: none
+InventorySlot[4][2].Item: none
+InventorySlot[4][3].Item: none
+
+InventorySlot[5][0].Item: none
+InventorySlot[5][1].Item: none
+InventorySlot[5][2].Item: none
+InventorySlot[5][3].Item: none
+
+InventorySlot[6][0].Item: none
+InventorySlot[6][1].Item: none
+InventorySlot[6][2].Item: none
+InventorySlot[6][3].Item: none
+
+InventorySlot[7][0].Item: none
+InventorySlot[7][1].Item: none
+InventorySlot[7][2].Item: none
+InventorySlot[7][3].Item: none
+
+InventorySlot[8][0].Item: none
+InventorySlot[8][1].Item: none
+InventorySlot[8][2].Item: none
+InventorySlot[8][3].Item: none
+
+EquipmentSlot[0].Item: none
+EquipmentSlot[1].Item: data/items/IronHelmet.yml
+EquipmentSlot[1].Amount: 3
+EquipmentSlot[2].Item: none
+EquipmentSlot[3].Item: none
+EquipmentSlot[4].Item: data/items/IronBow.yml
+EquipmentSlot[4].Amount: 1
+EquipmentSlot[5].Item: none
+EquipmentSlot[6].Item: none
+EquipmentSlot[7].Item: none

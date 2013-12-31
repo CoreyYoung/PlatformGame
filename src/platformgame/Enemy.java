@@ -56,7 +56,7 @@ abstract public class Enemy {
     }
 
     private static void createZombie(int x, int y) throws SlickException {
-        ZombieAI zombie = DataIO.loadEnemy("data/enemies/Zombie.txt");
+        ZombieAI zombie = DataIO.loadEnemy("data/enemies/Zombie.yml");
         zombie.x = x;
         zombie.y = y;
         zombieList.add(zombie);

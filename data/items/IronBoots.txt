@@ -1,6 +1,0 @@
-Iron Boots
-BootsItem
-data/graphics/items/bootsItems/ironBoots.gif
-data/graphics/items/bootsItems/ironBoots.gif
-2
-1

@@ -1,5 +1,0 @@
-Copper Helmet
-HelmetItem
-data/graphics/items/helmetItems/copperHelmet.gif
-data/graphics/items/helmetItems/copperHelmet.gif
-5

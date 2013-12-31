@@ -1,6 +1,0 @@
-Iron Bow
-RangedItem
-data/graphics/items/rangedItems/ironBow.gif
-data/graphics/items/rangedItems/ironBowSprite.gif
-5
-30
