@@ -22,7 +22,7 @@ public class Chest {
     }
 
     public static void init() throws SlickException {
-        sprite = new Image("data/graphics/chest.gif");
+        sprite = new Image("data/graphics/world objects/Chest.gif");
     }
 
     public static void render(int camX, int camY) {

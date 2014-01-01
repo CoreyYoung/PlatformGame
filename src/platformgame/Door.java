@@ -18,7 +18,7 @@ public class Door {
     }
 
     public static void init() throws SlickException {
-        sprite = new Image("data/graphics/door.gif");
+        sprite = new Image("data/graphics/world objects/Door.gif");
     }
 
     public void render(int camX, int camY) {

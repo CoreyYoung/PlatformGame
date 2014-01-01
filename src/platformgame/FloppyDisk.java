@@ -19,7 +19,7 @@ public class FloppyDisk {
     }
 
     public static void init() throws SlickException {
-        image = new Image("data/graphics/FloppyDisk.png");
+        image = new Image("data/graphics/world objects/FloppyDisk.png");
     }
 
     public static void render(int camX, int camY) {

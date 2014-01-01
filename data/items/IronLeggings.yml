@@ -1,5 +1,5 @@
 Name: Iron Leggings
 Type: LeggingsItem
-Sprite: data/graphics/items/leggingsItems/IronLeggings.gif
-Icon: data/graphics/items/leggingsItems/IronLeggings.gif
+Sprite: data/graphics/items/sprites/IronLeggings.gif
+Icon: data/graphics/items/icons/IronLeggings.gif
 Defense: 10

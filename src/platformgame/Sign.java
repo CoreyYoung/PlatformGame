@@ -18,7 +18,7 @@ public class Sign {
     }
 
     public static void init() throws SlickException {
-        sprite = new Image("data/graphics/sign.gif");
+        sprite = new Image("data/graphics/world objects/Sign.gif");
     }
 
     public void render(int camX, int camY) {

@@ -3,13 +3,13 @@ This is a hobby project that I work on in my spare time.
 
 TODO
 Planned:
-Make data files consistant (naming convention, filetypes)
+Make data filetypes consistant
 Make current enemy type generic, change Enemy class to generic enemy parent object
 Make enemy type loaded be defined in TiledMap, not Enemy class
 Add new enemy AI types
 	Walking/Ranged
 	Flying/Chasing/Melee
-	Flying/Ranged
+	Flying/RangeIrond
 Make mobs drop items
 Improve knockback (any direction)
 Improve weapon collisions
@@ -17,7 +17,10 @@ Improve collision system (make more modular/generic)
 Add SFX
 Add music
 Improve graphics
-Add GFX
+	Atmospheric effects
+		Weather (wind (swaying grass, leaves), rain)
+	Lighting System
+		Normal maps, light beams
 Name game
 
 Brainstorming:
@@ -26,6 +29,8 @@ Environmental hazards (traps, spikes)
 Weather effects (rain, snow, wind, hot, cold)
 Day/Night system
 Magic ring abilities:
+	Flying
+	Double jump
 	Invisibility
 	Health restoration
 	+ max speed

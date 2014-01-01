@@ -6,7 +6,6 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import org.newdawn.slick.Image;
@@ -16,7 +15,7 @@ import platformgame.inventory.*;
 
 public class DataIO {
 
-    private static final String fileName = "data/save.yml";
+    private static final String fileName = "data/Save.yml";
 
     public static void loadGame() throws SlickException {
         HashMap<String, Object> fileMap = loadHashMap(fileName);

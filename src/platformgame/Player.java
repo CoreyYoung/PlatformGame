@@ -36,7 +36,7 @@ abstract public class Player {
         invincibilityTimer = 0;
         invincible = false;
         
-        spriteSheet = new SpriteSheet("data/graphics/player.gif", 32, 64);
+        spriteSheet = new SpriteSheet("data/graphics/Player.gif", 32, 64);
         sprStand = new Animation(spriteSheet, 0, 0, 0, 0, false, 1000 * 1, true);
         sprWalk = new Animation(spriteSheet, 0, 0, 3, 0, true, (int) (1000 * 0.25), true);
         sprHurt = new Animation(spriteSheet, 0, 1, 3, 1, true, (int) (1000 * 0.1), true);

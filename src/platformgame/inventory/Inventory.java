@@ -13,7 +13,7 @@ abstract public class Inventory {
     public static EquipmentSlot[] equipSlots = new EquipmentSlot[8];
     
     public static void init() throws SlickException {
-        guiImage = new Image("data/graphics/GUI/inventory.png");
+        guiImage = new Image("data/graphics/gui/Inventory.png");
         
         createInventorySlots();
         createEquipmentSlots();

@@ -26,11 +26,11 @@ public class StateDeathScreen extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        deathScreen = new Image("data/graphics/DeathScreen.png");
-        playGame = new Button(320 - 128, 32 * 5, "data/graphics/GUI/Menus/NormalButtonPlayGame.png",
-                "data/graphics/GUI/Menus/HoverButtonPlayGame.png");
-        exitGame = new Button(320 - 128, 32 * 8, "data/graphics/GUI/Menus/NormalButtonExitGame.png",
-                "data/graphics/GUI/Menus/HoverButtonExitGame.png");
+        deathScreen = new Image("data/graphics/gui/DeathScreen.png");
+        playGame = new Button(320 - 128, 32 * 5, "data/graphics/gui/NormalButtonPlayGame.png",
+                "data/graphics/gui/HoverButtonPlayGame.png");
+        exitGame = new Button(320 - 128, 32 * 8, "data/graphics/gui/NormalButtonExitGame.png",
+                "data/graphics/gui/HoverButtonExitGame.png");
     }
 
     @Override

@@ -1,5 +1,5 @@
 Name: Iron Boots
 Type: BootsItem
-Sprite: data/graphics/items/bootsItems/ironBoots.gif
-Icon: data/graphics/items/bootsItems/ironBoots.gif
+Sprite: data/graphics/items/sprites/IronBoots.gif
+Icon: data/graphics/items/icons/IronBoots.gif
 Defense: 2

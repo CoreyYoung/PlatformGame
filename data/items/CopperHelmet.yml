@@ -1,5 +1,5 @@
 Name: Copper Helmet
 Type: HelmetItem
-Sprite: data/graphics/items/helmetItems/copperHelmet.gif
-Icon: data/graphics/items/helmetItems/copperHelmet.gif
+Sprite: data/graphics/items/sprites/CopperHelmet.gif
+Icon: data/graphics/items/icons/CopperHelmet.gif
 Defense: 5

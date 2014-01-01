@@ -1,5 +1,5 @@
 Name: Iron Helmet
 Type: HelmetItem
-Sprite: data/graphics/items/helmetItems/ironHelmet.gif
-Icon: data/graphics/items/helmetItems/ironHelmet.gif
+Sprite: data/graphics/items/sprites/IronHelmet.gif
+Icon: data/graphics/items/icons/IronHelmet.gif
 Defense: 10

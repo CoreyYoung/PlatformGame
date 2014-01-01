@@ -14,7 +14,7 @@ abstract public class Hud {
     private static int stringIndex = 0;
 
     public static void init() throws SlickException {
-        textBox = new Image("data/graphics/GUI/MessageBox.png");
+        textBox = new Image("data/graphics/gui/MessageBox.png");
     }
 
     public static void update(Input input) throws SlickException {

@@ -1,6 +1,6 @@
 Name: Iron Sheild
 Type: SheildItem
-Sprite: data/graphics/items/sheildItems/IronSheild.gif
-Icon: data/graphics/items/sheildItems/IronSheild.gif
+Sprite: data/graphics/items/sprites/IronSheild.gif
+Icon: data/graphics/items/icons/IronSheild.gif
 Defense: 5
 Stability: 2

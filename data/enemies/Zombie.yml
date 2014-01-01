@@ -1,5 +1,5 @@
 Type: ZombieAI
-Sprite: data/graphics/zombieSprite.gif
+Sprite: data/graphics/enemies/Zombie.gif
 HealthMAX: 10
 SpeedMAX: 3
 JUMP_SPEED: -8

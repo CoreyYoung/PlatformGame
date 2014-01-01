@@ -30,10 +30,10 @@ public class StatePlaying extends BasicGameState {
 
     @Override
     public void init(GameContainer container, StateBasedGame game) throws SlickException {
-        exit = new Button(640 - (128 + 16), 480 - (48 + 16), "data/graphics/GUI/NormalButtonExit.png",
-                "/data/graphics/GUI/HoverButtonExit.png");
+        exit = new Button(640 - (128 + 16), 480 - (48 + 16), "data/graphics/gui/NormalButtonExit.png",
+                "/data/graphics/gui/HoverButtonExit.png");
         Hud.init();
-        World.init("data/levels/hub.tmx");
+        World.init("data/levels/Hub.tmx");
         Player.init();
         Inventory.init();
 

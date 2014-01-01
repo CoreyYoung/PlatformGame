@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="40" height="30" tilewidth="32" tileheight="32">
- <tileset firstgid="1" name="Untitled" tilewidth="32" tileheight="32">
-  <image source="block.gif" width="96" height="32"/>
+ <tileset firstgid="1" name="Block" tilewidth="32" tileheight="32">
+  <image source="Block.gif" width="96" height="32"/>
  </tileset>
  <layer name="Tiles" width="40" height="30">
   <data encoding="base64" compression="gzip">
@@ -18,7 +18,7 @@
   <object name="Zombie" type="Zombie" x="1088" y="320" width="32" height="64"/>
   <object name="Door" type="Door" x="64" y="768" width="32" height="64">
    <properties>
-    <property name="path" value="data/levels/hub.tmx"/>
+    <property name="path" value="data/levels/Hub.tmx"/>
    </properties>
   </object>
   <object name="Zombie" type="Zombie" x="576" y="864" width="32" height="64"/>

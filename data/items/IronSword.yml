@@ -1,7 +1,7 @@
 Name: Iron Sword
 Type: MeleeItem
-Sprite: data/graphics/items/meleeItems/ironSword.gif
-Icon: data/graphics/items/meleeItems/ironSwordIcon.gif
+Sprite: data/graphics/items/sprites/IronSword.gif
+Icon: data/graphics/items/icons/IronSword.gif
 Attack: 5
 Knockback: !!float 3
 Speed: 30
