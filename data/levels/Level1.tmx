@@ -5,7 +5,7 @@
  </tileset>
  <layer name="Tiles" width="40" height="30">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+VWWw7AIAjT7f533q8xBCgPYRuJP5OVIhacY4z5gtXRvszvRA0obCqmNbaVP5p7Vf1XfrfSLyoXDebuw3FE40fgUHWWOEbws56x5cx3P0pbiD7+1p8zc+P4XcxeFgeuF1PcsuKuPlqM/VsH66QPqZdo5ocWW+KhNbTXeHqS5d/K2iLzzYqffX853XfQTkV8y32Pjl2Bh7wRvRbRJxB8rwa7mmemRNr6VkIXxfES9k9x8+TQhVv2egBSp0QswBIAAA==
+   H4sIAAAAAAAAC+VWWw7AIAjT7f533q8xBCgPYRuJP5OVIhacY4z5gtXRvszvRA0obCqmNbaVP5p7Vf1XfrfSLyoXDebuw3FE40fgUHWWOEbws56x5cx3P0pbiD7+1p8zc+P4XcxeFgeuF1PcsuKuPlqM/VsH66QPqZdo5ocWW+KhNbTXeHqS5d/K2iLzzYqffX853XfQTkV8y32Pjl2Bh7wRvRbRJxB8rwa7mmemRNr6VkIXxfES9k9x8+TQhVv2egBSp0QswBIAAA==
   </data>
  </layer>
  <objectgroup name="Objects" width="40" height="30">

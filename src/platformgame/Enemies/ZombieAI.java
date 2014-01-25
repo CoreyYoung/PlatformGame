@@ -174,10 +174,11 @@ public class ZombieAI extends Enemy {
         }
         
         int pos = 0;
+        int gridPadding = (int) (Math.ceil((double) height / 32) * 32) - height;
         if (yspeed < 0) {
-            pos = (int) Math.floor(y / 32) * 32;
+            pos = (int) Math.floor(y / 32) * 32 + 1;
         } else if (yspeed > 0) {
-            pos = (int) Math.floor(y / 32) * 32 + (int) (Math.ceil((double) height / 32) * 32) - height;
+            pos = (int) Math.floor((y + 32 - (gridPadding + 1)) / 32) * 32;
         }
         
         if (!World.isBlockAtPoint((int) Math.floor(x / 32), (int) Math.floor((y + height + yspeed) / 32))
@@ -187,6 +188,9 @@ public class ZombieAI extends Enemy {
             y += yspeed;
         } else {
             if (yspeed != 0) {
+                if (yspeed < 0) {
+                    System.out.println("Y: " + y);
+                }
                 y = pos;
             }
             yspeed = 0;
@@ -194,7 +198,6 @@ public class ZombieAI extends Enemy {
     }
     
     public void jump() {
-        System.out.println("Jumping!");
         if (World.isBlockAtPoint((int) (x / 32), (int) ((y + height) / 32))
                 || World.isBlockAtPoint((int) ((x + width - 1) / 32), (int) ((y + height) / 32))) {
             yspeed = JUMP_SPEED;
