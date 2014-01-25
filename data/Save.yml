@@ -1,11 +1,12 @@
-PlayerX: 347
+PlayerX: 351
 PlayerY: 384
 
 Level: data/levels/Hub.tmx
+
 NumberOpenedChests: 0
 
 InventorySlot[0][0].Item: data/items/CopperArrow.yml
-InventorySlot[0][0].Amount: 217
+InventorySlot[0][0].Amount: 500
 InventorySlot[0][1].Item: none
 InventorySlot[0][2].Item: none
 InventorySlot[0][3].Item: none
@@ -52,12 +53,9 @@ InventorySlot[8][3].Item: none
 
 EquipmentSlot[0].Item: none
 EquipmentSlot[1].Item: data/items/IronHelmet.yml
-EquipmentSlot[1].Amount: 3
-EquipmentSlot[2].Item: none
-EquipmentSlot[3].Item: none
+EquipmentSlot[2].Item: data/items/IronSheild.yml
+EquipmentSlot[3].Item: data/items/IronBreastplate.yml
 EquipmentSlot[4].Item: data/items/IronBow.yml
-EquipmentSlot[4].Amount: 1
-EquipmentSlot[5].Item: none
+EquipmentSlot[5].Item: data/items/IronLeggings.yml
 EquipmentSlot[6].Item: data/items/IronSword.yml
-EquipmentSlot[6].Amount: 1
-EquipmentSlot[7].Item: none
+EquipmentSlot[7].Item: data/items/IronBoots.yml

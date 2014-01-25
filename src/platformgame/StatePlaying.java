@@ -1,5 +1,6 @@
 package platformgame;
 
+import platformgame.Enemies.EnemyHandler;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
@@ -62,7 +63,7 @@ public class StatePlaying extends BasicGameState {
             Player.update(input);
             Inventory.update();
             Camera.update(input);
-            Enemy.update();
+            EnemyHandler.update();
             Projectile.update();
         } else {
             if (exit.isPressed(input)) {

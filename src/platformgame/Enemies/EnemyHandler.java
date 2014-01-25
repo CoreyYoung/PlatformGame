@@ -1,14 +1,17 @@
-package platformgame;
+package platformgame.Enemies;
 
+import platformgame.Enemies.ZombieAI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.newdawn.slick.SlickException;
+import platformgame.DataIO;
+import platformgame.World;
 
-abstract public class Enemy {
+abstract public class EnemyHandler {
     public static ArrayList<ZombieAI> zombieList = new ArrayList<>();
 
     public static void init() throws SlickException {
-        spawnZombies();
+        spawnEnemies();
     }
 
     public static void update() {
@@ -40,34 +43,31 @@ abstract public class Enemy {
     }
 
     public static void clearEnemies() {
-        clearZombies();
-    }
-
-    private static void spawnZombies() throws SlickException {
-        int x;
-        int y;
-        for (int i = 0; i < World.level.getObjectCount(0); i++) {
-            if (World.level.getObjectType(0, i).equals("Zombie")) {
-                x = World.level.getObjectX(0, i);
-                y = World.level.getObjectY(0, i);
-                createZombie(x, y);
-            }
-        }
-    }
-
-    private static void createZombie(int x, int y) throws SlickException {
-        ZombieAI zombie = DataIO.loadEnemy("data/enemies/Zombie.yml");
-        zombie.x = x;
-        zombie.y = y;
-        zombieList.add(zombie);
-    }
-
-    private static void clearZombies() {
         Iterator iterator = zombieList.iterator();
         
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
         }
+    }
+
+    private static void spawnEnemies() throws SlickException {
+        int x;
+        int y;
+        for (int i = 0; i < World.level.getObjectCount(0); i++) {
+            if (World.level.getObjectType(0, i).equals("Enemy")) {
+                String path = World.level.getObjectProperty(0, i, "Type", null);
+                x = World.level.getObjectX(0, i);
+                y = World.level.getObjectY(0, i);
+                createEnemy(x, y, path);
+            }
+        }
+    }
+
+    private static void createEnemy(int x, int y, String path) throws SlickException {
+        ZombieAI zombie = DataIO.loadEnemy(path);
+        zombie.x = x;
+        zombie.y = y;
+        zombieList.add(zombie);
     }
 }

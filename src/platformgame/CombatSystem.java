@@ -1,5 +1,7 @@
 package platformgame;
 
+import platformgame.Enemies.EnemyHandler;
+import platformgame.Enemies.ZombieAI;
 import java.util.Iterator;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
@@ -74,7 +76,7 @@ abstract public class CombatSystem {
         y2 = (int) (Player.y + 32 - (boxHeight / 2));
 
         //perform collisions
-        for (ZombieAI zombie : Enemy.zombieList) {
+        for (ZombieAI zombie : EnemyHandler.zombieList) {
             if (zombie != null) {
                 if (zombie.x < x1 && zombie.x + 32 > x2 && zombie.y < y1 && zombie.y + 64 > y2) {
                     zombie.health -= calculateDamage(Inventory.getAttack(), zombie.defense);
@@ -109,7 +111,7 @@ abstract public class CombatSystem {
 
     private static void performCollisions() {
         if (!Player.invincible) {
-            for (ZombieAI zombie : Enemy.zombieList) {
+            for (ZombieAI zombie : EnemyHandler.zombieList) {
                 if (zombie != null) {
                     if (Player.x < zombie.x + 32 && Player.x + 32 > zombie.x
                             && Player.y < zombie.y + 64 && Player.y + 64 > zombie.y) {
@@ -125,7 +127,7 @@ abstract public class CombatSystem {
             }
         }
 
-        for (ZombieAI zombie : Enemy.zombieList) {
+        for (ZombieAI zombie : EnemyHandler.zombieList) {
             if (zombie != null) {
                 Iterator iterator = Projectile.projectileList.iterator();
                 while (iterator.hasNext()) {

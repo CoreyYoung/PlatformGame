@@ -9,7 +9,7 @@ Make enemy type loaded be defined in TiledMap, not Enemy class
 Add new enemy AI types
 	Walking/Ranged
 	Flying/Chasing/Melee
-	Flying/RangeIrond
+	Flying/Ranged
 Make mobs drop items
 Improve knockback (any direction)
 Improve weapon collisions

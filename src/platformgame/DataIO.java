@@ -1,5 +1,6 @@
 package platformgame;
 
+import platformgame.Enemies.ZombieAI;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -54,9 +55,12 @@ public class DataIO {
 
     private static ItemStack loadItemStack(HashMap<String, Object> fileMap, String ID) throws SlickException {
         String itemName = (String) fileMap.get(ID + ".Item");
+        int amount = 1;
 
         if (! itemName.equals("none")) {
-            int amount = (int) fileMap.get(ID + ".Amount");
+            if (fileMap.containsKey(ID + ".Amount")) {
+                amount = (int) fileMap.get(ID + ".Amount");
+            }
 
             if (! itemName.equals("Error: No path found.")) {
                 Item item = loadItem(itemName);
@@ -145,8 +149,10 @@ public class DataIO {
         if (itemStack != null) {
             bufferedWriter.write(ID + ".Item: " + itemStack.item.path);
             bufferedWriter.newLine();
-            bufferedWriter.write(ID + ".Amount: " + itemStack.amount);
-            bufferedWriter.newLine();
+            if (itemStack.amount > 1) {
+                bufferedWriter.write(ID + ".Amount: " + itemStack.amount);
+                bufferedWriter.newLine();
+            }
         } else {
             bufferedWriter.write(ID + ".Item: " + "none");
             bufferedWriter.newLine();

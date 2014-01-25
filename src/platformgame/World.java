@@ -1,5 +1,6 @@
 package platformgame;
 
+import platformgame.Enemies.EnemyHandler;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.newdawn.slick.SlickException;
@@ -32,7 +33,7 @@ abstract public class World {
     public static void init(String path) throws SlickException {
         clearWorld();
         loadLevel(path);
-        Enemy.init();
+        EnemyHandler.init();
         Sign.init();
         Door.init();
         Chest.init();
@@ -81,6 +82,27 @@ abstract public class World {
 
     public static boolean isBlockAtPoint(int x, int y) {
         return (tileMap[x][y] == 1);
+    }
+    
+    public static boolean isBlockInLine(int x1, int x2, int y1, int y2) {
+        if (x1 == x2) {
+            for (int i = y1; i <= y2; i ++) {
+                if (tileMap[x1][i] == 1) {
+                    return true;
+                }
+            }
+        } else if (y1 == y2) {
+            for (int i = x1; i <= x2; i ++) {
+                if (tileMap[i][y1] == 1) {
+                    return true;
+                }
+            }
+        } else {
+            System.err.println("World.isBlockInLine received invalid parameters.");
+            return false;
+        }
+        
+        return false;
     }
 
     public static int getTileAtPoint(int x, int y) {
@@ -157,7 +179,7 @@ abstract public class World {
     }
 
     private static void clearWorld() {
-        Enemy.clearEnemies();
+        EnemyHandler.clearEnemies();
         clearDoors();
         clearSigns();
         clearChests();
