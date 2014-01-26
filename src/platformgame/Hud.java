@@ -97,19 +97,22 @@ abstract public class Hud {
     private static String formatString(String str) {
         int spaceIndex = 0;
         int lineStart = 0;
-        char[] result = new char[str.length()];
+        
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == ' ') {
                 spaceIndex = i;
             }
-
+            
             if (i - lineStart == 65) {
-                result[spaceIndex] = System.lineSeparator().charAt(0);
+                String first = str.substring(0, spaceIndex);
+                String seperator = System.lineSeparator();
+                String last = str.substring(spaceIndex + 1, str.length() - 1);
+                
+                str = first.concat(seperator).concat(last);
+                
                 lineStart = spaceIndex + 1;
             }
-
-            result[i] = str.charAt(i);
         }
-        return String.valueOf(result);
+        return String.valueOf(str);
     }
 }
