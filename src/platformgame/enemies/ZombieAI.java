@@ -1,4 +1,4 @@
-package platformgame.Enemies;
+package platformgame.enemies;
 
 import org.newdawn.slick.Image;
 import platformgame.Player;
@@ -6,10 +6,10 @@ import platformgame.World;
 
 public class ZombieAI extends Enemy {
     private final int JUMP_SPEED;
-    private final int width, height;
+
     
-        public ZombieAI(Image sprite, int x, int y, boolean awake, int healthMAX, int speedMAX,
-                int JUMP_SPEED, float ACCELERATION, int defense, int stability, int damage, int knockback) {
+    public ZombieAI(Image sprite, int x, int y, boolean awake, int healthMAX, int speedMAX,
+            int JUMP_SPEED, float ACCELERATION, int defense, int stability, int damage, int knockback) {
         this.sprite = sprite;
         this.x = x;
         this.y = y;
@@ -28,6 +28,7 @@ public class ZombieAI extends Enemy {
         height = sprite.getHeight();
     }
 
+    @Override
     public void render(int camX, int camY) {
         if (x <= Player.x) {
             sprite.draw(x + camX, y + camY);
@@ -36,6 +37,7 @@ public class ZombieAI extends Enemy {
         }
     }
     
+    @Override
     public void update() {
         movement();
         collisions();
@@ -66,9 +68,9 @@ public class ZombieAI extends Enemy {
             tempX = (int) (x+xspeed+width);
         }
         
-        ZombieAI zombie = zombieAtPosition((int) (tempX), (int) (y + yspeed));
-        if (zombie != null) {
-            if (Math.signum(zombie.x - x) == Math.signum(xspeed)) {
+        Enemy enemy = enemyAtPosition((int) (tempX), (int) (y + yspeed));
+        if (enemy != null) {
+            if (Math.signum(enemy.x - x) == Math.signum(xspeed)) {
                 xspeed = 0;
             }
         }
@@ -204,12 +206,12 @@ public class ZombieAI extends Enemy {
         }
     }
     
-    public ZombieAI zombieAtPosition(int x, int y) {
-        for (ZombieAI zombie : EnemyHandler.zombieList) {
-            if (zombie != this && zombie != null) {
-                if (zombie.x <= x + width && zombie.x + width >= x
-                        && zombie.y <= y + height && zombie.y + 32 >= y) {
-                    return zombie;
+    public Enemy enemyAtPosition(int x, int y) {
+        for (Enemy enemy : EnemyHandler.enemyList) {
+            if (enemy != this && enemy != null) {
+                if (enemy.x <= x + width && enemy.x + width >= x
+                        && enemy.y <= y + height && enemy.y + 32 >= y) {
+                    return enemy;
                 }
             }
         }

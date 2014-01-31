@@ -5,14 +5,15 @@ import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.SpriteSheet;
+import platformgame.inventory.Inventory;
+import platformgame.inventory.RingItem;
 
 abstract public class Player {
 
-    private static final int xspeedMAX = 3;
+    private static final int MAX_XSPEED = 3;
     private static final int JUMPSPEED = -8;
     private static final float ACCELERATION = 0.1f;
     private static final float FRICTION = 0.07f;
-    private static float yspeed = 0;
     private static Animation sprStand;
     private static Animation sprWalk;
     private static Animation sprHurt;
@@ -26,6 +27,7 @@ abstract public class Player {
     public static int dir = 0;
     public static float x = 32;
     public static float y = 384;
+    public static float yspeed = 0;
     public static float xspeed = 0;
 
     public static void init() throws SlickException {
@@ -73,13 +75,20 @@ abstract public class Player {
     }
 
     private static void movement(Input input) {
+        int tempMAX_XSPEED = MAX_XSPEED;
+        if (Inventory.getRingItem()!= null) {
+            if (Inventory.getRingItem().effect == RingItem.SPEED) {
+                tempMAX_XSPEED = 5;
+            }
+        }
+        
         if (input.isKeyDown(Input.KEY_A)) {
             if (input.isKeyPressed(Input.KEY_A) || !input.isKeyDown(Input.KEY_D)) {
                 dir = 180;
             }
-            if (xspeed > -xspeedMAX) {
-                xspeed -= ACCELERATION;
-            }
+            
+            xspeed = Math.max(xspeed - ACCELERATION, -tempMAX_XSPEED);
+            
         } else {
             if (xspeed < 0) {
                 xspeed = Math.min(xspeed + FRICTION, 0);
@@ -90,9 +99,9 @@ abstract public class Player {
             if (input.isKeyPressed(Input.KEY_D) || !input.isKeyDown(Input.KEY_A)) {
                 dir = 0;
             }
-            if (xspeed < xspeedMAX) {
-                xspeed += ACCELERATION;
-            }
+            
+            xspeed = Math.min(xspeed + ACCELERATION, tempMAX_XSPEED);
+            
         } else {
             if (xspeed > 0) {
                 xspeed = Math.max(xspeed - FRICTION, 0);
@@ -182,9 +191,7 @@ abstract public class Player {
 
     private static void performBlockCollisions() {
         if (xspeed < 0) {
-            if (!World.isBlockAtPoint((int) Math.floor((x - 3) / 32), (int) Math.floor(y / 32))
-                    && !World.isBlockAtPoint((int) Math.floor((x - 3) / 32), (int) Math.floor((y + 32) / 32))
-                    && !World.isBlockAtPoint((int) Math.floor((x - 3) / 32), (int) Math.floor((y + 63) / 32))) {
+            if (! World.isBlockInLine((int) Math.floor((x - 3) / 32), (int) Math.floor((x - 3) / 32), (int) Math.floor(y / 32), (int) Math.floor((y + 63) / 32))) {
                 x += xspeed;
             } else {
                 xspeed = 0;

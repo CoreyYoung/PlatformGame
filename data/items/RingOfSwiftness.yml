@@ -1,0 +1,5 @@
+Name: Ring of Swiftness
+Type: RingItem
+Sprite: data/graphics/items/sprites/IronSheild.gif
+Icon: data/graphics/items/icons/IronSheild.gif
+Effect: SPEED

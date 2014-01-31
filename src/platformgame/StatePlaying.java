@@ -1,6 +1,6 @@
 package platformgame;
 
-import platformgame.Enemies.EnemyHandler;
+import platformgame.enemies.EnemyHandler;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;

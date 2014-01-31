@@ -198,6 +198,15 @@ abstract public class Inventory {
         return null;
     }
     
+    public static RingItem getRingItem() {
+        EquipmentSlot ringSlot = equipSlots[EquipmentSlot.RING_SLOT];
+        if (ringSlot.itemStack != null) {
+            return (RingItem) ringSlot.itemStack.item;
+        }
+        
+        return null;
+    }
+    
     public static AmmoItem getAmmoItem() {
         for (InventorySlot[] slotArray : invSlots) {
             for (InventorySlot slot : slotArray) {

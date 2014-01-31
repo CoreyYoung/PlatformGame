@@ -3,9 +3,9 @@ package platformgame;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.geom.Rectangle;
 
-public class HitBox extends Rectangle {
+public class CollisionBox extends Rectangle {
 
-    private HitBox(float x, float y, float width, float height) {
+    private CollisionBox(float x, float y, float width, float height) {
         super(x, y, width, height);
     }
 
@@ -18,8 +18,8 @@ public class HitBox extends Rectangle {
         g.drawRect(x + camX, y + camY, width, height);
     }
 
-    public static HitBox createHitbox(int x, int y, int width, int height) {
-        HitBox hitBox = new HitBox(x, y, width, height);
+    public static CollisionBox createHitbox(int x, int y, int width, int height) {
+        CollisionBox hitBox = new CollisionBox(x, y, width, height);
         return hitBox;
     }
 

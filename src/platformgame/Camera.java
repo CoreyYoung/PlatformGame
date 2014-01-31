@@ -1,9 +1,9 @@
 package platformgame;
 
-import platformgame.Enemies.EnemyHandler;
-import platformgame.Enemies.ZombieAI;
+import platformgame.enemies.EnemyHandler;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
+import platformgame.enemies.Enemy;
 
 abstract public class Camera {
 
@@ -47,11 +47,11 @@ abstract public class Camera {
     }
 
     private static void wakeObjects() {
-        for (ZombieAI zombie : EnemyHandler.zombieList) {
-            if (zombie != null && !zombie.awake) {
-                if (x <= zombie.x + 32 && x + cameraWidth >= zombie.x
-                        && y <= zombie.y + 64 && y + cameraHeight >= zombie.y) {
-                    zombie.awake = true;
+        for (Enemy enemy : EnemyHandler.enemyList) {
+            if (enemy != null && !enemy.awake) {
+                if (x <= enemy.x + 32 && x + cameraWidth >= enemy.x
+                        && y <= enemy.y + 64 && y + cameraHeight >= enemy.y) {
+                    enemy.awake = true;
                 }
             }
         }

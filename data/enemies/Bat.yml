@@ -1,0 +1,9 @@
+Type: FlyingAI
+Sprite: data/graphics/enemies/Bat.gif
+MAX_HEALTH: 10
+MAX_SPEED: 3
+ACCELERATION: 0.1
+Defense: 2
+Stability: 0
+Damage: 5
+Knockback: 3

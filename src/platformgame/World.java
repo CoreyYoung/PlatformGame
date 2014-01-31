@@ -1,8 +1,9 @@
 package platformgame;
 
-import platformgame.Enemies.EnemyHandler;
+import platformgame.enemies.EnemyHandler;
 import java.util.ArrayList;
 import java.util.Iterator;
+import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
 import platformgame.inventory.ItemStack;
@@ -18,6 +19,7 @@ abstract public class World {
     private static int levelHeight;
 
     public static TiledMap level;
+    public static Image background;
     public static String levelName;
 
     public static Door[] door = new Door[doorMAX];
@@ -41,6 +43,10 @@ abstract public class World {
     }
 
     public static void render(int camX, int camY) {
+        if (background != null) {
+            background.draw();
+        }
+        
         Chest.render(camX, camY);
         FloppyDisk.render(camX, camY);
 
@@ -64,6 +70,7 @@ abstract public class World {
     public static void loadLevel(String path) throws SlickException {
         levelName = path;
         level = new TiledMap(path);
+        
         tileMap = new int[level.getWidth()][level.getHeight()];
         levelWidth = level.getWidth() * blockSize;
         levelHeight = level.getHeight() * blockSize;
@@ -73,7 +80,8 @@ abstract public class World {
                 tileMap[i][ii] = (level.getTileId(i, ii, 0));
             }
         }
-
+        
+        createBackground();
         createDoors();
         createSigns();
         createChests();
@@ -108,7 +116,16 @@ abstract public class World {
     public static int getTileAtPoint(int x, int y) {
         return tileMap[x][y];
     }
-
+    
+    private static void createBackground() throws SlickException {
+        String backgroundPath = level.getMapProperty("Background", "");
+        if (! backgroundPath.equals("")) {
+            background = new Image(backgroundPath);
+        } else {
+            background = null;
+        }
+    }
+    
     private static void createDoors() {
         int num = 0;
         for (int i = 0; i < level.getObjectCount(0); i++) {

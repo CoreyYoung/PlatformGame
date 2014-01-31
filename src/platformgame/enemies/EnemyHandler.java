@@ -1,6 +1,6 @@
-package platformgame.Enemies;
+package platformgame.enemies;
 
-import platformgame.Enemies.ZombieAI;
+import platformgame.enemies.ZombieAI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.newdawn.slick.SlickException;
@@ -8,42 +8,42 @@ import platformgame.DataIO;
 import platformgame.World;
 
 abstract public class EnemyHandler {
-    public static ArrayList<ZombieAI> zombieList = new ArrayList<>();
+    public static ArrayList<Enemy> enemyList = new ArrayList<>();
 
     public static void init() throws SlickException {
         spawnEnemies();
     }
 
     public static void update() {
-        Iterator iterator = zombieList.iterator();
+        Iterator iterator = enemyList.iterator();
         while (iterator.hasNext()) {
-            ZombieAI zombie = (ZombieAI) iterator.next();
-            if (zombie.health <= 0) {
+            Enemy enemy = (Enemy) iterator.next();
+            if (enemy.health <= 0) {
                 iterator.remove();
             }
         }
         
-        for (ZombieAI zombie : zombieList) {
-            if (zombie != null) {
-                if (zombie.awake) {
-                    zombie.update();
+        for (Enemy enemy : enemyList) {
+            if (enemy != null) {
+                if (enemy.awake) {
+                    enemy.update();
                 }
             }
         }
     }
 
     public static void render(int camX, int camY) {
-        for (ZombieAI zombie : zombieList) {
-            if (zombie != null) {
-                if (zombie.awake) {
-                    zombie.render(camX, camY);
+        for (Enemy enemy : enemyList) {
+            if (enemy != null) {
+                if (enemy.awake) {
+                    enemy.render(camX, camY);
                 }
             }
         }
     }
 
     public static void clearEnemies() {
-        Iterator iterator = zombieList.iterator();
+        Iterator iterator = enemyList.iterator();
         
         while (iterator.hasNext()) {
             iterator.next();
@@ -65,9 +65,9 @@ abstract public class EnemyHandler {
     }
 
     private static void createEnemy(int x, int y, String path) throws SlickException {
-        ZombieAI zombie = DataIO.loadEnemy(path);
-        zombie.x = x;
-        zombie.y = y;
-        zombieList.add(zombie);
+        Enemy enemy = DataIO.loadEnemy(path);
+        enemy.x = x;
+        enemy.y = y;
+        enemyList.add(enemy);
     }
 }

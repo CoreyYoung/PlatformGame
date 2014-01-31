@@ -1,11 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="80" height="15" tilewidth="32" tileheight="32">
+ <properties>
+  <property name="Background" value="data/graphics/Background.gif"/>
+ </properties>
  <tileset firstgid="1" name="Block" tilewidth="32" tileheight="32">
   <image source="Block.gif" width="96" height="32"/>
  </tileset>
  <layer name="Tiles" width="80" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAA+3YsQ3AMAwEMRnef+dUWcAsDCRH4FsVV2rNzGq0nKmfqZ+pn6mfqZ+pn6mfqZ+pn6mfqZ95+2288Ve3/xZf2AO1tuciwBIAAA==
+   H4sIAAAAAAAAC+3YsQ3AMAwEMRnef+dUWcAsDCRH4FsVV2rNzGq0nKmfqZ+pn6mfqZ+pn6mfqZ+pn6mfqZ95+2288Ve3/xZf2AO1tuciwBIAAA==
   </data>
  </layer>
  <objectgroup name="Objects" width="80" height="15">
@@ -31,9 +34,9 @@
    </properties>
   </object>
   <object name="FloppyDisk" type="FloppyDisk" x="352" y="416" width="32" height="32"/>
-  <object name="Zombie" type="Enemy" x="640" y="384" width="32" height="64">
+  <object name="Bat" type="Enemy" x="512" y="320" width="32" height="32">
    <properties>
-    <property name="Type" value="data/enemies/Zombie.yml"/>
+    <property name="Type" value="data/enemies/Bat.yml"/>
    </properties>
   </object>
  </objectgroup>

@@ -1,4 +1,4 @@
-package platformgame.Enemies;
+package platformgame.enemies;
 
 import org.newdawn.slick.Image;
 
@@ -13,6 +13,8 @@ public abstract class Enemy {
     public int stability;
     public int damage;
     public int knockback;
+    public int width;
+    public int height;
 
     public float x;
     public float y;
@@ -21,4 +23,12 @@ public abstract class Enemy {
     
     public boolean awake;
     public int health;
+    
+    public void update() {
+        
+    }
+    
+    public void render(int camX, int camY) {
+        
+    }
 }

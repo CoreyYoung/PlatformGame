@@ -9,16 +9,16 @@ import platformgame.inventory.RangedItem;
 
 public class Projectile {
 
-    private double x;
-    private double y;
+    public double x;
+    public double y;
     private double speed;
-    private double dir;
+    public double dir;
     private int width;
     private int length;
 
     public int damage;
     public float knockback;
-    public HitBox hitBox;
+    public CollisionBox hitBox;
     public AmmoItem ammo;
     public static List<Projectile> projectileList = new ArrayList<>();
 
@@ -92,7 +92,7 @@ public class Projectile {
         projectile.length = ammo.sprite.getWidth();
         projectile.ammo = ammo;
 
-        projectile.hitBox = HitBox.createHitbox((int) x + projectile.length / 2 - projectile.width,
+        projectile.hitBox = CollisionBox.createHitbox((int) x + projectile.length / 2 - projectile.width,
                 (int) y - projectile.width / 2, projectile.width, projectile.width);
     }
 }

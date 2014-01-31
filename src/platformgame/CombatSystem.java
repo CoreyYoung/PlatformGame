@@ -1,10 +1,11 @@
 package platformgame;
 
-import platformgame.Enemies.EnemyHandler;
-import platformgame.Enemies.ZombieAI;
+import platformgame.enemies.EnemyHandler;
 import java.util.Iterator;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
+import platformgame.enemies.Enemy;
+import platformgame.enemies.FlyingAI;
 import platformgame.inventory.AmmoItem;
 import platformgame.inventory.Inventory;
 import platformgame.inventory.Item;
@@ -76,14 +77,14 @@ abstract public class CombatSystem {
         y2 = (int) (Player.y + 32 - (boxHeight / 2));
 
         //perform collisions
-        for (ZombieAI zombie : EnemyHandler.zombieList) {
-            if (zombie != null) {
-                if (zombie.x < x1 && zombie.x + 32 > x2 && zombie.y < y1 && zombie.y + 64 > y2) {
-                    zombie.health -= calculateDamage(Inventory.getAttack(), zombie.defense);
-                    if (Player.x < zombie.x) {
-                        zombie.xspeed = calculateKnockback(zombie.stability, knockback);
+        for (Enemy enemy : EnemyHandler.enemyList) {
+            if (enemy != null) {
+                if (enemy.x < x1 && enemy.x + 32 > x2 && enemy.y < y1 && enemy.y + 64 > y2) {
+                    enemy.health -= calculateDamage(Inventory.getAttack(), enemy.defense);
+                    if (Player.x < enemy.x) {
+                        enemy.xspeed = calculateKnockback(enemy.stability, knockback);
                     } else {
-                        zombie.xspeed = -calculateKnockback(zombie.stability, knockback);
+                        enemy.xspeed = -calculateKnockback(enemy.stability, knockback);
                     }
                 }
             }
@@ -111,15 +112,26 @@ abstract public class CombatSystem {
 
     private static void performCollisions() {
         if (!Player.invincible) {
-            for (ZombieAI zombie : EnemyHandler.zombieList) {
-                if (zombie != null) {
-                    if (Player.x < zombie.x + 32 && Player.x + 32 > zombie.x
-                            && Player.y < zombie.y + 64 && Player.y + 64 > zombie.y) {
-                        Player.xspeed = Math.signum(Player.x - zombie.x)
-                                * CombatSystem.calculateKnockback(Inventory.getStability(), zombie.knockback);
-                        zombie.x -= zombie.xspeed;
-                        zombie.xspeed = 0;
-                        Player.health -= CombatSystem.calculateDamage(zombie.damage, Inventory.getDefense());
+            for (Enemy enemy : EnemyHandler.enemyList) {
+                if (enemy != null) {
+                    if (Player.x < enemy.x + enemy.width && Player.x + 32 > enemy.x
+                            && Player.y < enemy.y + enemy.height && Player.y + 64 > enemy.y) {
+                        
+//                        Player.xspeed = Math.signum(Player.x - zombie.x)
+//                                * CombatSystem.calculateKnockback(Inventory.getStability(), zombie.knockback);
+                        
+                        float speed = calculateKnockback(Inventory.getStability(), enemy.knockback);
+                        int dir = (int) Math.toDegrees(Math.atan2(-(Player.x - enemy.x), Player.y - enemy.y)) + 90;
+                        
+                        Player.xspeed = (float) (speed * Math.cos(dir * (Math.PI / 180)));
+                        Player.yspeed = (float) (speed * Math.sin(dir * (Math.PI / 180)));
+                        
+                        System.out.println("Speed: " + speed);
+                        System.out.println("Xspeed: " + Player.xspeed + ", Yspeed: " + Player.yspeed + ".");
+                        
+                        enemy.x -= enemy.xspeed;
+                        enemy.xspeed = 0;
+                        Player.health -= CombatSystem.calculateDamage(enemy.damage, Inventory.getDefense());
                         Player.invincibilityTimer = Player.invincibilityTimerMAX;
                         Player.invincible = true;
                     }
@@ -127,24 +139,30 @@ abstract public class CombatSystem {
             }
         }
 
-        for (ZombieAI zombie : EnemyHandler.zombieList) {
-            if (zombie != null) {
+        for (Enemy enemy : EnemyHandler.enemyList) {
+            if (enemy != null) {
                 Iterator iterator = Projectile.projectileList.iterator();
                 while (iterator.hasNext()) {
                     Projectile projectile = (Projectile) iterator.next();
 
-                    Rectangle zombieHitBox = new Rectangle(zombie.x, zombie.y, 32, 64);
+                    Rectangle zombieHitBox = new Rectangle(enemy.x, enemy.y, enemy.width, enemy.height);
 
                     if (projectile.hitBox.intersects(zombieHitBox)) {
                         iterator.remove();
-                        zombie.health -= calculateDamage(projectile.damage, zombie.defense);
+                        enemy.health -= calculateDamage(projectile.damage, enemy.defense);
                         
-                        int dir = (int) Math.signum(Player.x-zombie.x);
+                        int dir = (int) Math.signum(Player.x-enemy.x);
+                        if (enemy.getClass().getCanonicalName().equals("platformgame.enemies.FlyingAI")) {
+                            FlyingAI flyingAI = (FlyingAI) enemy;
+                            //flyingAI.dir = (int) Math.toDegrees(Math.atan2(-(enemy.x - projectile.x), enemy.y - projectile.y)) + 90;
+                            flyingAI.dir = (int) projectile.dir;
+                            flyingAI.speed = calculateKnockback(enemy.stability, projectile.knockback);
+                        }
                         
-                        if (Math.signum(zombie.xspeed) == dir) {
-                            zombie.xspeed += -dir*calculateKnockback(zombie.stability, projectile.knockback);
+                        if (Math.signum(enemy.xspeed) == dir) {
+                            enemy.xspeed += -dir*calculateKnockback(enemy.stability, projectile.knockback);
                         } else {
-                            zombie.xspeed = -dir*calculateKnockback(zombie.stability, projectile.knockback);
+                            enemy.xspeed = -dir*calculateKnockback(enemy.stability, projectile.knockback);
                         }
                     }
                 }

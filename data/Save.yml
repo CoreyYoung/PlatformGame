@@ -11,7 +11,7 @@ InventorySlot[0][1].Item: none
 InventorySlot[0][2].Item: none
 InventorySlot[0][3].Item: none
 
-InventorySlot[1][0].Item: none
+InventorySlot[1][0].Item: data/items/RingOfSwiftness.yml
 InventorySlot[1][1].Item: none
 InventorySlot[1][2].Item: none
 InventorySlot[1][3].Item: none

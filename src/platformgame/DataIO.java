@@ -1,6 +1,6 @@
 package platformgame;
 
-import platformgame.Enemies.ZombieAI;
+import platformgame.enemies.ZombieAI;
 import java.io.BufferedWriter;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -12,6 +12,8 @@ import java.util.logging.Logger;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.yaml.snakeyaml.Yaml;
+import platformgame.enemies.Enemy;
+import platformgame.enemies.FlyingAI;
 import platformgame.inventory.*;
 
 public class DataIO {
@@ -214,6 +216,15 @@ public class DataIO {
 
                 return new RangedItem(name, path, sprite, icon, attack, speed);
             }
+            
+            case "RingItem": {
+                int effect = RingItem.NONE;
+                if (fileMap.get("Effect").equals("SPEED")) {
+                    effect = RingItem.SPEED;
+                }
+                
+                return new RingItem(name, path, sprite, icon, effect);
+            }
 
             case "SheildItem": {
                 int defense = (int) fileMap.get("Defense");
@@ -230,7 +241,7 @@ public class DataIO {
         return null;
     }
     
-    public static ZombieAI loadEnemy(String path) throws SlickException {
+    public static Enemy loadEnemy(String path) throws SlickException {
         HashMap<String, Object> fileMap = loadHashMap(path);
 
         String type = (String) fileMap.get("Type");
@@ -251,6 +262,18 @@ public class DataIO {
                         JUMP_SPEED, ACCELERATION, defense, stability, damage, knockback);
             }
             
+            case "FlyingAI": {
+                int MAX_HEALTH = (int) fileMap.get("MAX_HEALTH");
+                int MAX_SPEED = (int) fileMap.get("MAX_SPEED");
+                float ACCELERATION = (float) ((double) fileMap.get("ACCELERATION"));
+                int defense = (int) fileMap.get("Defense");
+                int stability = (int) fileMap.get("Stability");
+                int damage = (int) fileMap.get("Damage");
+                int knockback = (int) fileMap.get("Knockback");
+                
+                return new FlyingAI(sprite, 0, 0, false, MAX_HEALTH, MAX_SPEED,
+                        ACCELERATION, defense, stability, damage, knockback);
+            }
         }
         
         return null;

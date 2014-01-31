@@ -3,9 +3,7 @@ This is a hobby project that I work on in my spare time.
 
 TODO
 Planned:
-Make data filetypes consistant
-Make current enemy type generic, change Enemy class to generic enemy parent object
-Make enemy type loaded be defined in TiledMap, not Enemy class
+Seperate collision boxes from sprites
 Add new enemy AI types
 	Walking/Ranged
 	Flying/Chasing/Melee
@@ -17,6 +15,7 @@ Improve collision system (make more modular/generic)
 Add SFX
 Add music
 Improve graphics
+    Shaders
 	Atmospheric effects
 		Weather (wind (swaying grass, leaves), rain)
 	Lighting System
