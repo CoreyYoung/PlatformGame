@@ -3,9 +3,10 @@ package platformgame.inventory;
 import org.newdawn.slick.Image;
 
 public class AmmoItem extends Item {
+
     public int attack;
     public float knockback;
-    
+
     public AmmoItem(String name, String path, Image sprite, Image icon, int attack, float knockback) {
         this.name = name;
         this.path = path;
@@ -14,7 +15,7 @@ public class AmmoItem extends Item {
         this.attack = attack;
         this.knockback = knockback;
     }
-    
+
     @Override
     public void renderSprite(int x, int y, int dir) {
         sprite.setRotation(dir);

@@ -5,7 +5,7 @@ import org.newdawn.slick.geom.Rectangle;
 
 public class CollisionBox extends Rectangle {
 
-    private CollisionBox(float x, float y, float width, float height) {
+    private CollisionBox(float x, float y, int width, int height) {
         super(x, y, width, height);
     }
 
@@ -29,7 +29,7 @@ public class CollisionBox extends Rectangle {
         int x2 = (int) (x + width) / 32;
         int y2 = (int) (y + height) / 32;
 
-        return (World.isBlockAtPoint(x1, y1) || World.isBlockAtPoint(x1, y2)
-                || World.isBlockAtPoint(x2, y1) || World.isBlockAtPoint(x2, y2));
+        return (World.isBlockInLine(x1, x2, y1, y1) || World.isBlockInLine(x1, x2, y2, y2)
+                || World.isBlockInLine(x1, x1, y1, y2) || World.isBlockInLine(x2, x2, y1, y2));
     }
 }

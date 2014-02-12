@@ -9,7 +9,6 @@ Add new enemy AI types
 	Flying/Chasing/Melee
 	Flying/Ranged
 Make mobs drop items
-Improve knockback (any direction)
 Improve weapon collisions
 Improve collision system (make more modular/generic)
 Add SFX

@@ -46,7 +46,7 @@ public class StateDeathScreen extends BasicGameState {
             game.enterState(Game.STATE_PLAYING);
             DataIO.loadGame();
         }
-        
+
         if (exitGame.isPressed(container.getInput())) {
             game.enterState(Game.STATE_PLAYING);
             System.exit(0);

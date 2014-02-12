@@ -25,10 +25,11 @@ abstract public class Player {
     public static final int healthMAX = 10;
     public static int health = healthMAX;
     public static int dir = 0;
-    public static float x = 32;
-    public static float y = 384;
-    public static float yspeed = 0;
-    public static float xspeed = 0;
+
+    public static float xspeed;
+    public static float yspeed;
+    public static float x;
+    public static float y;
 
     public static void init() throws SlickException {
         health = healthMAX;
@@ -37,7 +38,7 @@ abstract public class Player {
         dir = 0;
         invincibilityTimer = 0;
         invincible = false;
-        
+
         spriteSheet = new SpriteSheet("data/graphics/Player.gif", 32, 64);
         sprStand = new Animation(spriteSheet, 0, 0, 0, 0, false, 1000 * 1, true);
         sprWalk = new Animation(spriteSheet, 0, 0, 3, 0, true, (int) (1000 * 0.25), true);
@@ -76,19 +77,19 @@ abstract public class Player {
 
     private static void movement(Input input) {
         int tempMAX_XSPEED = MAX_XSPEED;
-        if (Inventory.getRingItem()!= null) {
+        if (Inventory.getRingItem() != null) {
             if (Inventory.getRingItem().effect == RingItem.SPEED) {
                 tempMAX_XSPEED = 5;
             }
         }
-        
+
         if (input.isKeyDown(Input.KEY_A)) {
             if (input.isKeyPressed(Input.KEY_A) || !input.isKeyDown(Input.KEY_D)) {
                 dir = 180;
             }
-            
+
             xspeed = Math.max(xspeed - ACCELERATION, -tempMAX_XSPEED);
-            
+
         } else {
             if (xspeed < 0) {
                 xspeed = Math.min(xspeed + FRICTION, 0);
@@ -99,9 +100,9 @@ abstract public class Player {
             if (input.isKeyPressed(Input.KEY_D) || !input.isKeyDown(Input.KEY_A)) {
                 dir = 0;
             }
-            
+
             xspeed = Math.min(xspeed + ACCELERATION, tempMAX_XSPEED);
-            
+
         } else {
             if (xspeed > 0) {
                 xspeed = Math.max(xspeed - FRICTION, 0);
@@ -191,7 +192,7 @@ abstract public class Player {
 
     private static void performBlockCollisions() {
         if (xspeed < 0) {
-            if (! World.isBlockInLine((int) Math.floor((x - 3) / 32), (int) Math.floor((x - 3) / 32), (int) Math.floor(y / 32), (int) Math.floor((y + 63) / 32))) {
+            if (!World.isBlockInLine((int) Math.floor((x - 3) / 32), (int) Math.floor((x - 3) / 32), (int) Math.floor(y / 32), (int) Math.floor((y + 63) / 32))) {
                 x += xspeed;
             } else {
                 xspeed = 0;
@@ -223,11 +224,11 @@ abstract public class Player {
                 }
             }
         }
-        
+
         float speed = Math.abs(xspeed);
         int x1 = Math.round(x + speed);
         int x2 = Math.round((x + 32 - 1) - speed);
-        
+
         if (!World.isBlockAtPoint((int) Math.floor(x1 / 32), (int) Math.floor((y + 64 + yspeed) / 32))
                 && !World.isBlockAtPoint((int) Math.floor(x2 / 32), (int) Math.floor((y + 64 + yspeed) / 32))
                 && World.isBlockAtPoint((int) Math.floor((x - speed) / 32), (int) Math.floor((y + 64 + yspeed) / 32))

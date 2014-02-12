@@ -28,7 +28,7 @@ public class EquipmentSlot extends InventorySlot {
             itemStack = tempStack;
         }
     }
-    
+
     @Override
     public void onRightClick() {
         if (itemStack != null) {
@@ -54,12 +54,12 @@ public class EquipmentSlot extends InventorySlot {
                 || (itemType == MELEE_SLOT && itemStack.item instanceof MeleeItem)
                 || (itemType == BOOTS_SLOT && itemStack.item instanceof BootsItem));
     }
-    
+
     static public boolean canAnyEquipItem(ItemStack itemStack) {
         if (itemStack == null) {
             return false;
         }
-        
+
         return (itemStack.item instanceof RingItem
                 || itemStack.item instanceof HelmetItem
                 || itemStack.item instanceof SheildItem

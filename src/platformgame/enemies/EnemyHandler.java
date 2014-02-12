@@ -1,6 +1,5 @@
 package platformgame.enemies;
 
-import platformgame.enemies.ZombieAI;
 import java.util.ArrayList;
 import java.util.Iterator;
 import org.newdawn.slick.SlickException;
@@ -8,6 +7,7 @@ import platformgame.DataIO;
 import platformgame.World;
 
 abstract public class EnemyHandler {
+
     public static ArrayList<Enemy> enemyList = new ArrayList<>();
 
     public static void init() throws SlickException {
@@ -22,7 +22,7 @@ abstract public class EnemyHandler {
                 iterator.remove();
             }
         }
-        
+
         for (Enemy enemy : enemyList) {
             if (enemy != null) {
                 if (enemy.awake) {
@@ -44,7 +44,7 @@ abstract public class EnemyHandler {
 
     public static void clearEnemies() {
         Iterator iterator = enemyList.iterator();
-        
+
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();

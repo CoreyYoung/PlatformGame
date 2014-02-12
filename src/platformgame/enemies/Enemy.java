@@ -1,8 +1,10 @@
 package platformgame.enemies;
 
 import org.newdawn.slick.Image;
+import platformgame.Vector;
 
 public abstract class Enemy {
+
     public int healthMAX;
     public int speedMAX;
     public float ACCELERATION;
@@ -18,17 +20,16 @@ public abstract class Enemy {
 
     public float x;
     public float y;
-    public float xspeed = 0;
-    public float yspeed = 0;
-    
+    public Vector velocity = new Vector(0, 0);
+
     public boolean awake;
     public int health;
-    
+
     public void update() {
-        
+
     }
-    
+
     public void render(int camX, int camY) {
-        
+
     }
 }

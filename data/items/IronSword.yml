@@ -3,5 +3,5 @@ Type: MeleeItem
 Sprite: data/graphics/items/sprites/IronSword.gif
 Icon: data/graphics/items/icons/IronSword.gif
 Attack: 5
-Knockback: !!float 3
+Knockback: 3.1
 Speed: 30

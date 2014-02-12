@@ -1,11 +1,10 @@
 package platformgame;
 
-import platformgame.enemies.EnemyHandler;
 import java.util.Iterator;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.geom.Rectangle;
 import platformgame.enemies.Enemy;
-import platformgame.enemies.FlyingAI;
+import platformgame.enemies.EnemyHandler;
 import platformgame.inventory.AmmoItem;
 import platformgame.inventory.Inventory;
 import platformgame.inventory.Item;
@@ -42,7 +41,6 @@ abstract public class CombatSystem {
 
     private static int calculateDamage(int attack, int defense) {
         int damage = Math.max(attack - defense, 1);
-        System.out.println(damage);
         return damage;
     }
 
@@ -81,11 +79,17 @@ abstract public class CombatSystem {
             if (enemy != null) {
                 if (enemy.x < x1 && enemy.x + 32 > x2 && enemy.y < y1 && enemy.y + 64 > y2) {
                     enemy.health -= calculateDamage(Inventory.getAttack(), enemy.defense);
+
+                    float magnitude = calculateKnockback(enemy.stability, knockback);
+                    float dir;
+
                     if (Player.x < enemy.x) {
-                        enemy.xspeed = calculateKnockback(enemy.stability, knockback);
+                        dir = 0;
                     } else {
-                        enemy.xspeed = -calculateKnockback(enemy.stability, knockback);
+                        dir = 180;
                     }
+
+                    enemy.velocity = new Vector(dir, magnitude);
                 }
             }
         }
@@ -116,21 +120,15 @@ abstract public class CombatSystem {
                 if (enemy != null) {
                     if (Player.x < enemy.x + enemy.width && Player.x + 32 > enemy.x
                             && Player.y < enemy.y + enemy.height && Player.y + 64 > enemy.y) {
-                        
-//                        Player.xspeed = Math.signum(Player.x - zombie.x)
-//                                * CombatSystem.calculateKnockback(Inventory.getStability(), zombie.knockback);
-                        
                         float speed = calculateKnockback(Inventory.getStability(), enemy.knockback);
                         int dir = (int) Math.toDegrees(Math.atan2(-(Player.x - enemy.x), Player.y - enemy.y)) + 90;
-                        
+
                         Player.xspeed = (float) (speed * Math.cos(dir * (Math.PI / 180)));
                         Player.yspeed = (float) (speed * Math.sin(dir * (Math.PI / 180)));
-                        
-                        System.out.println("Speed: " + speed);
-                        System.out.println("Xspeed: " + Player.xspeed + ", Yspeed: " + Player.yspeed + ".");
-                        
-                        enemy.x -= enemy.xspeed;
-                        enemy.xspeed = 0;
+
+                        enemy.x -= enemy.velocity.getXMagnitude();
+                        enemy.velocity = new Vector(Vector.getDir(0, 0, 0, enemy.velocity.getYMagnitude()), enemy.velocity.getYMagnitude());
+
                         Player.health -= CombatSystem.calculateDamage(enemy.damage, Inventory.getDefense());
                         Player.invincibilityTimer = Player.invincibilityTimerMAX;
                         Player.invincible = true;
@@ -150,20 +148,9 @@ abstract public class CombatSystem {
                     if (projectile.hitBox.intersects(zombieHitBox)) {
                         iterator.remove();
                         enemy.health -= calculateDamage(projectile.damage, enemy.defense);
-                        
-                        int dir = (int) Math.signum(Player.x-enemy.x);
-                        if (enemy.getClass().getCanonicalName().equals("platformgame.enemies.FlyingAI")) {
-                            FlyingAI flyingAI = (FlyingAI) enemy;
-                            //flyingAI.dir = (int) Math.toDegrees(Math.atan2(-(enemy.x - projectile.x), enemy.y - projectile.y)) + 90;
-                            flyingAI.dir = (int) projectile.dir;
-                            flyingAI.speed = calculateKnockback(enemy.stability, projectile.knockback);
-                        }
-                        
-                        if (Math.signum(enemy.xspeed) == dir) {
-                            enemy.xspeed += -dir*calculateKnockback(enemy.stability, projectile.knockback);
-                        } else {
-                            enemy.xspeed = -dir*calculateKnockback(enemy.stability, projectile.knockback);
-                        }
+
+                        Vector knockback = new Vector((float) projectile.dir, calculateKnockback(enemy.stability, projectile.knockback));
+                        enemy.velocity = knockback;
                     }
                 }
             }

@@ -69,7 +69,7 @@ abstract public class Hud {
     }
 
     private static void drawMessage(Graphics g) {
-        g.drawString(formatString(message[0].substring(0, stringIndex+1)), 32, 372);
+        g.drawString(formatString(message[0].substring(0, stringIndex + 1)), 32, 372);
     }
 
     public static void addMessage(String string) {
@@ -97,19 +97,19 @@ abstract public class Hud {
     private static String formatString(String str) {
         int spaceIndex = 0;
         int lineStart = 0;
-        
+
         for (int i = 0; i < str.length(); i++) {
             if (str.charAt(i) == ' ') {
                 spaceIndex = i;
             }
-            
+
             if (i - lineStart == 65) {
                 String first = str.substring(0, spaceIndex);
                 String seperator = System.lineSeparator();
                 String last = str.substring(spaceIndex + 1, str.length() - 1);
-                
+
                 str = first.concat(seperator).concat(last);
-                
+
                 lineStart = spaceIndex + 1;
             }
         }
