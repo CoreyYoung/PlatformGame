@@ -46,10 +46,8 @@ public class ZombieAI extends Enemy {
     public void movement() {
         if (Player.x < x) {
             velocity.setXMagnitude(Math.max(velocity.getXMagnitude() - ACCELERATION, -speedMAX));
-        } else if (Player.x > x) {
-            velocity.setXMagnitude(Math.min(velocity.getXMagnitude() + ACCELERATION, speedMAX));
         } else {
-            velocity.setXMagnitude(0);
+            velocity.setXMagnitude(Math.min(velocity.getXMagnitude() + ACCELERATION, speedMAX));
         }
 
         if (Player.y + 64 + 48 < y + height) {
@@ -166,8 +164,8 @@ public class ZombieAI extends Enemy {
                 x += velocity.getXMagnitude();
             } else {
                 jump();
-
                 velocity.setXMagnitude(0);
+
                 if (!World.isBlockInLine(pos, pos, (int) Math.floor(y / 32), (int) Math.floor((y + height - 1) / 32))) {
                     x = destX;
                 } else {
@@ -179,7 +177,7 @@ public class ZombieAI extends Enemy {
         int pos = 0;
         int gridPadding = (int) (Math.ceil((double) height / 32) * 32) - height;
         if (velocity.getYMagnitude() < 0) {
-            pos = (int) Math.floor(y / 32) * 32 + 1;
+            pos = (int) Math.floor(y / 32) * 32;
         } else if (velocity.getYMagnitude() > 0) {
             pos = (int) Math.floor((y + 32 - (gridPadding + 1)) / 32) * 32;
         }
@@ -191,9 +189,6 @@ public class ZombieAI extends Enemy {
             y += velocity.getYMagnitude();
         } else {
             if (velocity.getYMagnitude() != 0) {
-                if (velocity.getYMagnitude() < 0) {
-                    System.out.println("Y: " + y);
-                }
                 y = pos;
             }
             velocity.setYMagnitude(0);
@@ -203,7 +198,6 @@ public class ZombieAI extends Enemy {
     public void jump() {
         if (World.isBlockAtPoint((int) (x / 32), (int) ((y + height) / 32))
                 || World.isBlockAtPoint((int) ((x + width - 1) / 32), (int) ((y + height) / 32))) {
-
             velocity.setYMagnitude(JUMP_SPEED);
         }
     }

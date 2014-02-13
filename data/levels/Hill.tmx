@@ -1,21 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE map SYSTEM "http://mapeditor.org/dtd/1.0/map.dtd">
 <map version="1.0" orientation="orthogonal" width="20" height="15" tilewidth="32" tileheight="32">
- <tileset name="Block" firstgid="1" tilewidth="32" tileheight="32">
-  <image source="Block.gif"/>
+ <tileset firstgid="1" name="Block" tilewidth="32" tileheight="32">
+  <image source="Block.gif" width="96" height="32"/>
  </tileset>
  <layer name="Tile Layer 1" width="20" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAAGNkYGBgpDKmFhg1b9Q8Ys0gJv0xoaljpsB96GYRYy4u8/CZhc9MbOYRYxYuM9HNI8UsemEAJmXs0LAEAAA=
+   H4sIAAAAAAAAC2NkYGBgpDKmFhg1b9S84WjeSMtv1MQARTqxorAEAAA=
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="0" height="0">
-  <object name="Zombie" type="Enemy" x="555" y="305" width="32" height="64">
+  <object name="Zombie" type="Enemy" x="560" y="384" width="32" height="64">
    <properties>
     <property name="Type" value="data/enemies/Zombie.yml"/>
    </properties>
   </object>
-  <object name="Door" type="Door" x="32" y="384" width="32" height="64">
+  <object name="Door" type="Door" x="32" y="288" width="32" height="64">
    <properties>
     <property name="path" value="data/levels/Hub.tmx"/>
    </properties>

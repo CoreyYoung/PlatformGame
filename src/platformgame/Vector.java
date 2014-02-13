@@ -35,29 +35,47 @@ public class Vector {
     }
 
     public static float getDir(float x1, float y1, float x2, float y2) {
-        return (int) Math.toDegrees(Math.atan2(-(x1 - x2), y1 - y2)) + 90;
+        return (float) Math.toDegrees(Math.atan2(-(x1 - x2), y1 - y2)) + 90;
     }
 
     public static float getMagnitude(float x, float y) {
         return (float) Math.sqrt(x * x + y * y);
     }
 
+    public void addVector(Vector addedVector) {
+        float x = getXMagnitude() + addedVector.getXMagnitude();
+        float y = getYMagnitude() + addedVector.getYMagnitude();
+
+        magnitude = (float) Math.sqrt(x * x + y * y);
+        direction = (float) (Math.atan(y / x) * (180 / Math.PI));
+
+        if (x < 0) {
+            direction += 180;
+        } else {
+            if (y >= 0) {
+                direction += 360;
+            }
+        }
+    }
+
     public void setMagnitude(float magnitude) {
         this.magnitude = magnitude;
     }
 
-    public void setYMagnitude(float yMagnitude) {
-        Vector tempVector = cartesianToVector(getXMagnitude(), yMagnitude);
+    public void setXMagnitude(float xMagnitude) {
+        float x = xMagnitude;
+        float y = getYMagnitude();
 
-        direction = tempVector.direction;
-        magnitude = tempVector.magnitude;
+        direction = Vector.getDir(x, y, 0, 0);
+        magnitude = Vector.getMagnitude(x, y);
     }
 
-    public void setXMagnitude(float xMagnitude) {
-        Vector tempVector = cartesianToVector(xMagnitude, getYMagnitude());
+    public void setYMagnitude(float yMagnitude) {
+        float x = getXMagnitude();
+        float y = yMagnitude;
 
-        direction = tempVector.direction;
-        magnitude = tempVector.magnitude;
+        direction = Vector.getDir(x, y, 0, 0);
+        magnitude = Vector.getMagnitude(x, y);
     }
 
     public float getDir() {
