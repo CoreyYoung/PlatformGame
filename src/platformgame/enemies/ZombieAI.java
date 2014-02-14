@@ -31,9 +31,9 @@ public class ZombieAI extends Enemy {
     @Override
     public void render(int camX, int camY) {
         if (x <= Player.x) {
-            sprite.draw(x + camX, y + camY);
+            sprite.draw((int) (x + camX), (int) (y + camY));
         } else {
-            sprite.draw((int) x + camX, (int) y + camY, width - 1, 0, 0, height);
+            sprite.draw((int) x + camX, (int) y + camY, width, 0, 0, height);
         }
     }
 
@@ -56,7 +56,8 @@ public class ZombieAI extends Enemy {
 
         if (!World.isBlockAtPoint((int) Math.floor(x / 32), (int) Math.floor((y + height) / 32))
                 && !World.isBlockAtPoint((int) Math.floor((x + width - 1) / 32), (int) Math.floor((y + height) / 32))) {
-            velocity.setYMagnitude(Math.min(velocity.getYMagnitude() + World.GRAVITY, World.yspeedMAX));
+            float yspeed = Math.min(velocity.getYMagnitude() + World.GRAVITY, World.yspeedMAX);
+            velocity.setYMagnitude(yspeed);
         }
 
         int tempX;
@@ -183,14 +184,15 @@ public class ZombieAI extends Enemy {
         }
 
         if (!World.isBlockAtPoint((int) Math.floor(x / 32), (int) Math.floor((y + height + velocity.getYMagnitude()) / 32))
-                && !World.isBlockAtPoint((int) Math.floor((x + width - 1) / 32), (int) Math.floor((y + height + velocity.getYMagnitude()) / 32))
+                && !World.isBlockAtPoint((int) Math.floor((x + width - 1.1) / 32), (int) Math.floor((y + height + velocity.getYMagnitude()) / 32))
                 && !World.isBlockAtPoint((int) Math.floor(x / 32), (int) Math.floor((y + velocity.getYMagnitude()) / 32))
-                && !World.isBlockAtPoint((int) Math.floor((x + width - 1) / 32), (int) Math.floor((y + velocity.getYMagnitude()) / 32))) {
+                && !World.isBlockAtPoint((int) Math.floor((x + width - 1.1) / 32), (int) Math.floor((y + velocity.getYMagnitude()) / 32))) {
             y += velocity.getYMagnitude();
         } else {
             if (velocity.getYMagnitude() != 0) {
                 y = pos;
             }
+
             velocity.setYMagnitude(0);
         }
     }

@@ -1,4 +1,4 @@
-PlayerX: 351
+PlayerX: 337
 PlayerY: 384
 
 Level: data/levels/Hub.tmx
@@ -6,7 +6,7 @@ Level: data/levels/Hub.tmx
 NumberOpenedChests: 0
 
 InventorySlot[0][0].Item: data/items/CopperArrow.yml
-InventorySlot[0][0].Amount: 500
+InventorySlot[0][0].Amount: 440
 InventorySlot[0][1].Item: none
 InventorySlot[0][2].Item: none
 InventorySlot[0][3].Item: none

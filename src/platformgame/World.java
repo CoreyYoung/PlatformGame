@@ -5,9 +5,8 @@ import java.util.Iterator;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.tiled.TiledMap;
-import platformgame.inventory.ItemStack;
-
 import platformgame.enemies.EnemyHandler;
+import platformgame.inventory.ItemStack;
 abstract public class World {
 
     private static final int blockSize = 32;
@@ -122,7 +121,7 @@ abstract public class World {
         if (!backgroundPath.equals("")) {
             background = new Image(backgroundPath);
         } else {
-            background = null;
+            background = new Image("/data/graphics/Background.gif");
         }
     }
 
