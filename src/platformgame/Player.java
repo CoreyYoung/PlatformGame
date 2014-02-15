@@ -133,13 +133,31 @@ abstract public class Player {
     }
 
     private static void collisions() {
-
         if (onSlope(World.LEFT_SLOPE)) {
             performLeftSlopeCollision();
         } else if (onSlope(World.RIGHT_SLOPE)) {
             performRightSlopeCollision();
         } else {
             performBlockCollisions();
+        }
+
+        if (!invincible) {
+            for (Spikes spikes : World.spikesList) {
+                if (spikes.x <= x + 32 && spikes.x + 32 >= x
+                        && spikes.y <= y + 64 && spikes.y + 32 >= y) {
+                    health -= Spikes.DAMAGE;
+                    invincibilityTimer = invincibilityTimerMAX;
+                    invincible = true;
+
+                    if (x > spikes.x) {
+                        xspeed = MAX_XSPEED;
+                    } else {
+                        xspeed = -MAX_XSPEED;
+                    }
+
+                    yspeed = JUMPSPEED;
+                }
+            }
         }
     }
 

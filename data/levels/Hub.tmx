@@ -39,5 +39,6 @@
     <property name="Type" value="data/enemies/Bat.yml"/>
    </properties>
   </object>
+  <object name="Spikes" type="Spikes" x="448" y="416" width="32" height="32"/>
  </objectgroup>
 </map>

@@ -30,6 +30,7 @@ abstract public class World {
     public static final int RIGHT_SLOPE = 2;
 
     public static ArrayList<String> openedChestList = new ArrayList<>();
+    public static ArrayList<Spikes> spikesList = new ArrayList<>();
 
     public static void init(String path) throws SlickException {
         clearWorld();
@@ -37,6 +38,7 @@ abstract public class World {
         EnemyHandler.init();
         Sign.init();
         Door.init();
+        Spikes.init();
         Chest.init();
         FloppyDisk.init();
     }
@@ -64,6 +66,10 @@ abstract public class World {
                 sign[i].render(camX, camY);
             }
         }
+
+        for (Spikes spikes : spikesList) {
+            spikes.render(camX, camY);
+        }
     }
 
     public static void loadLevel(String path) throws SlickException {
@@ -83,6 +89,7 @@ abstract public class World {
         createBackground();
         createDoors();
         createSigns();
+        createSpikes();
         createChests();
         createFloppyDisks();
     }
@@ -155,6 +162,17 @@ abstract public class World {
         }
     }
 
+    private static void createSpikes() {
+        for (int i = 0; i < level.getObjectCount(0); i++) {
+            if (level.getObjectType(0, i).equals("Spikes")) {
+                int x = level.getObjectX(0, i);
+                int y = level.getObjectY(0, i);
+
+                spikesList.add(new Spikes(x, y));
+            }
+        }
+    }
+
     private static void createChests() {
         for (int i = 0; i < level.getObjectCount(0); i++) {
             if (level.getObjectType(0, i).equals("Chest")) {
@@ -198,6 +216,7 @@ abstract public class World {
         EnemyHandler.clearEnemies();
         clearDoors();
         clearSigns();
+        clearSpikes();
         clearChests();
         clearFloppyDisks();
         clearTileMap();
@@ -213,6 +232,10 @@ abstract public class World {
         for (int i = 0; i < signMAX; i++) {
             sign[i] = null;
         }
+    }
+
+    private static void clearSpikes() {
+        spikesList.clear();
     }
 
     private static void clearChests() {
