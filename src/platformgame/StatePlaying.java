@@ -1,12 +1,12 @@
 package platformgame;
 
-import platformgame.enemies.EnemyHandler;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import org.newdawn.slick.SlickException;
 import org.newdawn.slick.state.BasicGameState;
 import org.newdawn.slick.state.StateBasedGame;
+import platformgame.enemies.EnemyHandler;
 import platformgame.inventory.Inventory;
 
 public class StatePlaying extends BasicGameState {
@@ -14,6 +14,8 @@ public class StatePlaying extends BasicGameState {
     private final int stateID;
     private Button exit;
     private Input input;
+
+    public static Player player;
 
     public StatePlaying(int stateID) {
         this.stateID = stateID;
@@ -35,7 +37,7 @@ public class StatePlaying extends BasicGameState {
                 "/data/graphics/gui/HoverButtonExit.png");
         Hud.init();
         World.init("data/levels/Hub.tmx");
-        Player.init();
+        player = new Player();
         Inventory.init();
 
         DataIO.loadGame();
@@ -60,7 +62,7 @@ public class StatePlaying extends BasicGameState {
                 game.enterState(Game.STATE_DEATH_SCREEN);
             }
             CombatSystem.update(input);
-            Player.update(input);
+            player.update(input);
             Inventory.update();
             Camera.update(input);
             EnemyHandler.update();

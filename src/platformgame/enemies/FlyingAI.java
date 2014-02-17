@@ -1,7 +1,7 @@
 package platformgame.enemies;
 
 import org.newdawn.slick.Image;
-import platformgame.Player;
+import platformgame.StatePlaying;
 import platformgame.Vector;
 
 public class FlyingAI extends Enemy {
@@ -28,7 +28,7 @@ public class FlyingAI extends Enemy {
 
     @Override
     public void update() {
-        float dir = Vector.getDir(Player.x, Player.y, x, y);
+        float dir = Vector.getDir(StatePlaying.player.x, StatePlaying.player.y, x, y);
         Vector acceleration = new Vector(dir, ACCELERATION);
 
         velocity.addVector(acceleration);

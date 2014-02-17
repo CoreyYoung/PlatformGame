@@ -1,9 +1,9 @@
 package platformgame.enemies;
 
 import org.newdawn.slick.Image;
-import platformgame.Vector;
+import platformgame.MovingEntity;
 
-public abstract class Enemy {
+public abstract class Enemy extends MovingEntity {
 
     public int healthMAX;
     public int speedMAX;
@@ -15,21 +15,21 @@ public abstract class Enemy {
     public int stability;
     public int damage;
     public int knockback;
-    public int width;
-    public int height;
-
-    public float x;
-    public float y;
-    public Vector velocity = new Vector(0, 0);
 
     public boolean awake;
     public int health;
 
+    @Override
     public void update() {
-
+        super.update();
     }
 
     public void render(int camX, int camY) {
 
+    }
+
+    @Override
+    public void jump() {
+        super.jump();
     }
 }

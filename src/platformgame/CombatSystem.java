@@ -34,7 +34,7 @@ abstract public class CombatSystem {
     public static void render(Input input, int camX, int camY) {
         if (attackTimer > 0) {
             if (attackItem != null) {
-                attackItem.renderSprite((int) Player.x + camX, (int) Player.y + camY, Player.dir);
+                attackItem.renderSprite((int) StatePlaying.player.x + camX, (int) StatePlaying.player.y + camY, (int) StatePlaying.player.dir);
             }
         }
     }
@@ -65,14 +65,14 @@ abstract public class CombatSystem {
 
         int x1, x2, y1, y2;
         if (Player.dir == 0) {
-            x1 = (int) (Player.x + 32 + boxWidth);
-            x2 = (int) (Player.x);
+            x1 = (int) (StatePlaying.player.x + 32 + boxWidth);
+            x2 = (int) (StatePlaying.player.x);
         } else {
-            x1 = (int) (Player.x);
-            x2 = (int) (Player.x - boxWidth);
+            x1 = (int) (StatePlaying.player.x);
+            x2 = (int) (StatePlaying.player.x - boxWidth);
         }
-        y1 = (int) (Player.y + 32 + (boxHeight / 2));
-        y2 = (int) (Player.y + 32 - (boxHeight / 2));
+        y1 = (int) (StatePlaying.player.y + 32 + (boxHeight / 2));
+        y2 = (int) (StatePlaying.player.y + 32 - (boxHeight / 2));
 
         //perform collisions
         for (Enemy enemy : EnemyHandler.enemyList) {
@@ -83,7 +83,7 @@ abstract public class CombatSystem {
                     float magnitude = calculateKnockback(enemy.stability, knockback);
                     float dir;
 
-                    if (Player.x < enemy.x) {
+                    if (StatePlaying.player.x < enemy.x) {
                         dir = 0;
                     } else {
                         dir = 180;
@@ -100,8 +100,8 @@ abstract public class CombatSystem {
             int mouseX = input.getMouseX() + Camera.x;
             int mouseY = input.getMouseY() + Camera.y;
 
-            int x = (int) Player.x;
-            int y = (int) Player.y + 16;
+            int x = (int) StatePlaying.player.x;
+            int y = (int) StatePlaying.player.y + 16;
             int speed = 16;
             int dir = (int) Math.toDegrees(Math.atan2(-(mouseX - x), mouseY - y)) + 90;
             RangedItem ranged = Inventory.getRangedItem();
@@ -118,13 +118,12 @@ abstract public class CombatSystem {
         if (!Player.invincible) {
             for (Enemy enemy : EnemyHandler.enemyList) {
                 if (enemy != null) {
-                    if (Player.x < enemy.x + enemy.width && Player.x + 32 > enemy.x
-                            && Player.y < enemy.y + enemy.height && Player.y + 64 > enemy.y) {
+                    if (StatePlaying.player.x < enemy.x + enemy.width && StatePlaying.player.x + 32 > enemy.x
+                            && StatePlaying.player.y < enemy.y + enemy.height && StatePlaying.player.y + 64 > enemy.y) {
                         float speed = calculateKnockback(Inventory.getStability(), enemy.knockback);
-                        int dir = (int) Math.toDegrees(Math.atan2(-(Player.x - enemy.x), Player.y - enemy.y)) + 90;
+                        int dir = (int) Math.toDegrees(Math.atan2(-(StatePlaying.player.x - enemy.x), StatePlaying.player.y - enemy.y)) + 90;
 
-                        Player.xspeed = (float) (speed * Math.cos(dir * (Math.PI / 180)));
-                        Player.yspeed = (float) (speed * Math.sin(dir * (Math.PI / 180)));
+                        StatePlaying.player.velocity = new Vector(dir, speed);
 
                         enemy.x -= enemy.velocity.getXMagnitude();
                         enemy.velocity = new Vector(Vector.getDir(0, 0, 0, enemy.velocity.getYMagnitude()), enemy.velocity.getYMagnitude());

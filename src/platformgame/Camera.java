@@ -1,9 +1,9 @@
 package platformgame;
 
-import platformgame.enemies.EnemyHandler;
 import org.newdawn.slick.Graphics;
 import org.newdawn.slick.Input;
 import platformgame.enemies.Enemy;
+import platformgame.enemies.EnemyHandler;
 
 abstract public class Camera {
 
@@ -25,7 +25,7 @@ abstract public class Camera {
         World.render(-x, -y);
 
         EnemyHandler.render(-x, -y);
-        Player.render(-x, -y, g);
+        StatePlaying.player.render(-x, -y, g);
 
         CombatSystem.render(input, -x, -y);
 
@@ -64,8 +64,8 @@ abstract public class Camera {
     }
 
     private static void elasticCamera(Input input) {
-        x = (int) ((Player.x + 16) - (cameraWidth / 2)) + xOffset;
-        y = (int) ((Player.y + 32) - (cameraHeight / 2)) + yOffset;
+        x = (int) ((StatePlaying.player.x + 16) - (cameraWidth / 2)) + xOffset;
+        y = (int) ((StatePlaying.player.y + 32) - (cameraHeight / 2)) + yOffset;
 
         x = inRange(x, 0, World.getWidth() - cameraWidth);
         y = inRange(y, 0, World.getHeight() - cameraHeight);

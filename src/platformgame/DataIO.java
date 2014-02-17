@@ -42,8 +42,8 @@ public class DataIO {
     }
 
     private static void loadPlayerData(HashMap<String, Object> fileMap) {
-        Player.x = (int) fileMap.get("PlayerX");
-        Player.y = (int) fileMap.get("PlayerY");
+        StatePlaying.player.x = (int) fileMap.get("PlayerX");
+        StatePlaying.player.y = (int) fileMap.get("PlayerY");
         Player.health = Player.healthMAX;
     }
 
@@ -119,9 +119,9 @@ public class DataIO {
     }
 
     private static void savePlayerData(BufferedWriter bufferedWriter) throws IOException {
-        bufferedWriter.write("PlayerX: " + Integer.toString((int) Player.x));
+        bufferedWriter.write("PlayerX: " + Integer.toString((int) StatePlaying.player.x));
         bufferedWriter.newLine();
-        bufferedWriter.write("PlayerY: " + Integer.toString((int) Player.y));
+        bufferedWriter.write("PlayerY: " + Integer.toString((int) StatePlaying.player.y));
         bufferedWriter.newLine();
     }
 
