@@ -10,7 +10,7 @@ public class Game extends StateBasedGame {
     private static final boolean fullscreen = false;
     private static final boolean showFPS = true;
     private static final boolean vSync = true;
-    private static final String title = "Sandbox Platform Action? Game";
+    private static final String title = "";
     private static final int fpslimit = 60;
 
     public static final int STATE_TITLE_SCREEN = 0;

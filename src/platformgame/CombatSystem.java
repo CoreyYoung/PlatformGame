@@ -111,6 +111,8 @@ abstract public class CombatSystem {
 
             attackTimer = ranged.speed;
             attackItem = ranged;
+
+            ranged.bowSound.play();
         }
     }
 

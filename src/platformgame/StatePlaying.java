@@ -39,6 +39,8 @@ public class StatePlaying extends BasicGameState {
         World.init("data/levels/Hub.tmx");
         player = new Player();
         Inventory.init();
+        WeatherSystem.init();
+        WeatherSystem.setWeather(WeatherSystem.RAIN);
 
         DataIO.loadGame();
     }
@@ -46,6 +48,7 @@ public class StatePlaying extends BasicGameState {
     @Override
     public void render(GameContainer container, StateBasedGame game, Graphics g) throws SlickException {
         Camera.render(g, input);
+        WeatherSystem.render();
 
         if (Game.inventory) {
             exit.render(input);
@@ -54,6 +57,7 @@ public class StatePlaying extends BasicGameState {
 
     @Override
     public void update(GameContainer gc, StateBasedGame game, int delta) throws SlickException {
+        WeatherSystem.update();
         input = gc.getInput();
         Hud.update(input);
 

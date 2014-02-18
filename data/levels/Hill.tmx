@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.0" orientation="orthogonal" width="20" height="15" tilewidth="32" tileheight="32">
  <tileset firstgid="1" name="Block" tilewidth="32" tileheight="32">
-  <image source="Block.gif" width="128" height="32"/>
+  <image source="Block.gif" width="96" height="32"/>
  </tileset>
  <layer name="Tile Layer 1" width="20" height="15">
   <data encoding="base64" compression="gzip">
-   H4sIAAAAAAAAC2NkYGBgpDKmFhg1b9Q8eprHgoTJNY+JgTr5gxhz8JlHin5C5lFiFrUxAEhqPlmwBAAA
+   H4sIAAAAAAAAC2NkYGBgpDKmFhg1b9S8oWYeEwN18gcx5uAzjxT9hMyjxCxqYwBel0XusAQAAA==
   </data>
  </layer>
  <objectgroup name="Object Layer 1" width="0" height="0">
