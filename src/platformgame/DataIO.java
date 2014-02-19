@@ -8,8 +8,10 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import org.newdawn.slick.Animation;
 import org.newdawn.slick.Image;
 import org.newdawn.slick.SlickException;
+import org.newdawn.slick.SpriteSheet;
 import org.yaml.snakeyaml.Yaml;
 import platformgame.enemies.Enemy;
 import platformgame.enemies.FlyingAI;
@@ -256,10 +258,10 @@ public class DataIO {
         HashMap<String, Object> fileMap = loadHashMap(path);
 
         String type = (String) fileMap.get("Type");
-        Image sprite = new Image((String) fileMap.get("Sprite"));
 
         switch (type) {
             case "ZombieAI": {
+                Image sprite = new Image((String) fileMap.get("Sprite"));
                 int healthMAX = (int) fileMap.get("HealthMAX");
                 int speedMAX = (int) fileMap.get("SpeedMAX");
                 int JUMP_SPEED = (int) fileMap.get("JUMP_SPEED");
@@ -274,6 +276,7 @@ public class DataIO {
             }
 
             case "FlyingAI": {
+                Animation animation = loadSprite((String) fileMap.get("Sprite"));
                 int MAX_HEALTH = (int) fileMap.get("MAX_HEALTH");
                 int MAX_SPEED = (int) fileMap.get("MAX_SPEED");
                 float ACCELERATION = (float) ((double) fileMap.get("ACCELERATION"));
@@ -282,12 +285,26 @@ public class DataIO {
                 int damage = (int) fileMap.get("Damage");
                 int knockback = (int) fileMap.get("Knockback");
 
-                return new FlyingAI(sprite, 0, 0, false, MAX_HEALTH, MAX_SPEED,
+                return new FlyingAI(animation, 0, 0, false, MAX_HEALTH, MAX_SPEED,
                         ACCELERATION, defense, stability, damage, knockback);
             }
         }
 
         return null;
+    }
+
+    public static Animation loadSprite(String path) throws SlickException {
+        HashMap<String, Object> fileMap = loadHashMap(path);
+
+        String image = (String) fileMap.get("Image");
+        int width = (int) fileMap.get("Width");
+        int height = (int) fileMap.get("Height");
+        int duration = (int) fileMap.get("Duration");
+
+        SpriteSheet spriteSheet = new SpriteSheet(image, width, height);
+        Animation sprite = new Animation(spriteSheet, duration);
+
+        return sprite;
     }
 
     private static HashMap<String, Object> loadHashMap(String path) {

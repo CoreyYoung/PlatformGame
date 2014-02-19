@@ -15,7 +15,7 @@ public abstract class WeatherSystem {
     private static Sound rainSound;
 
     public static void init() throws SlickException {
-        rainImage = new Image("data/graphics/Rain.png");
+        rainImage = new Image("data/graphics/weather/Rain.png");
         rainSound = new Sound("data/sounds/Rain.ogg");
     }
 
