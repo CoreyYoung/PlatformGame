@@ -1,12 +1,12 @@
 package platformgame.enemies;
 
-import org.newdawn.slick.Image;
+import org.newdawn.slick.Animation;
 import platformgame.StatePlaying;
 import platformgame.World;
 
 public class ZombieAI extends Enemy {
 
-    public ZombieAI(Image sprite, int x, int y, boolean awake, int healthMAX, int speedMAX,
+    public ZombieAI(Animation sprite, int x, int y, boolean awake, int healthMAX, int speedMAX,
             int JUMP_SPEED, float ACCELERATION, int defense, int stability, int damage, int knockback) {
         this.sprite = sprite;
         this.x = x;
@@ -24,15 +24,6 @@ public class ZombieAI extends Enemy {
         health = healthMAX;
         width = sprite.getWidth();
         height = sprite.getHeight();
-    }
-
-    @Override
-    public void render(int camX, int camY) {
-        if (x <= StatePlaying.player.x) {
-            sprite.draw((int) (x + camX), (int) (y + camY));
-        } else {
-            sprite.draw((int) x + camX, (int) y + camY, width, 0, 0, height);
-        }
     }
 
     @Override

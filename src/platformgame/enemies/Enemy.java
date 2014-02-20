@@ -1,7 +1,8 @@
 package platformgame.enemies;
 
-import org.newdawn.slick.Image;
+import org.newdawn.slick.Animation;
 import platformgame.MovingEntity;
+import platformgame.StatePlaying;
 
 public abstract class Enemy extends MovingEntity {
 
@@ -9,7 +10,7 @@ public abstract class Enemy extends MovingEntity {
     public int speedMAX;
     public float ACCELERATION;
 
-    public Image sprite;
+    public Animation sprite;
 
     public int defense;
     public int stability;
@@ -25,7 +26,11 @@ public abstract class Enemy extends MovingEntity {
     }
 
     public void render(int camX, int camY) {
-
+        if (x < StatePlaying.player.x) {
+            sprite.draw((int) (camX + x), (int) (camY + y));
+        } else {
+            sprite.draw((int) (camX + x + width), (int) (camY + y), -width, height);
+        }
     }
 
     @Override

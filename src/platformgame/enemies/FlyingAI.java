@@ -7,7 +7,6 @@ import platformgame.Vector;
 public class FlyingAI extends Enemy {
 
     private final int MAX_SPEED;
-    private final Animation sprite;
 
     public FlyingAI(Animation sprite, int x, int y, boolean awake, int healthMAX, int MAX_SPEED,
             float ACCELERATION, int defense, int stability, int damage, int knockback) {
@@ -38,14 +37,5 @@ public class FlyingAI extends Enemy {
 
         x += velocity.getXMagnitude();
         y += velocity.getYMagnitude();
-    }
-
-    @Override
-    public void render(int camX, int camY) {
-        if (velocity.getXMagnitude() > 0) {
-            sprite.draw(camX + x, camY + y);
-        } else {
-            sprite.draw(camX + x + width, camY + y, -width, height);
-        }
     }
 }

@@ -3,6 +3,7 @@ This is a hobby project that I work on in my spare time.
 
 TODO
 Planned:
+Skeletal animation (player's hand holds sword, body wears amour etc).
 Seperate collision boxes from sprites
 Add new enemy AI types
 	Walking/Ranged

@@ -1,7 +1,7 @@
 Type: ZombieAI
-Sprite: data/graphics/enemies/Zombie.png
-HealthMAX: 10
-SpeedMAX: 3
+Sprite: data/graphics/enemies/Zombie.spr
+MAX_HEALTH: 10
+MAX_SPEED: 3
 JUMP_SPEED: -8
 ACCELERATION: 0.1
 Defense: 2

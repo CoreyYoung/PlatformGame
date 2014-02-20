@@ -258,34 +258,26 @@ public class DataIO {
         HashMap<String, Object> fileMap = loadHashMap(path);
 
         String type = (String) fileMap.get("Type");
+        Animation sprite = loadSprite((String) fileMap.get("Sprite"));
+        int MAX_HEALTH = (int) fileMap.get("MAX_HEALTH");
+        int MAX_SPEED = (int) fileMap.get("MAX_SPEED");
+        float ACCELERATION = (float) ((double) fileMap.get("ACCELERATION"));
+        int defense = (int) fileMap.get("Defense");
+        int stability = (int) fileMap.get("Stability");
+        int damage = (int) fileMap.get("Damage");
+        int knockback = (int) fileMap.get("Knockback");
 
         switch (type) {
             case "ZombieAI": {
-                Image sprite = new Image((String) fileMap.get("Sprite"));
-                int healthMAX = (int) fileMap.get("HealthMAX");
-                int speedMAX = (int) fileMap.get("SpeedMAX");
                 int JUMP_SPEED = (int) fileMap.get("JUMP_SPEED");
-                float ACCELERATION = (float) ((double) fileMap.get("ACCELERATION"));
-                int defense = (int) fileMap.get("Defense");
-                int stability = (int) fileMap.get("Stability");
-                int damage = (int) fileMap.get("Damage");
-                int knockback = (int) fileMap.get("Knockback");
 
-                return new ZombieAI(sprite, 0, 0, false, healthMAX, speedMAX,
+                return new ZombieAI(sprite, 0, 0, false, MAX_HEALTH, MAX_SPEED,
                         JUMP_SPEED, ACCELERATION, defense, stability, damage, knockback);
             }
 
             case "FlyingAI": {
-                Animation animation = loadSprite((String) fileMap.get("Sprite"));
-                int MAX_HEALTH = (int) fileMap.get("MAX_HEALTH");
-                int MAX_SPEED = (int) fileMap.get("MAX_SPEED");
-                float ACCELERATION = (float) ((double) fileMap.get("ACCELERATION"));
-                int defense = (int) fileMap.get("Defense");
-                int stability = (int) fileMap.get("Stability");
-                int damage = (int) fileMap.get("Damage");
-                int knockback = (int) fileMap.get("Knockback");
-
-                return new FlyingAI(animation, 0, 0, false, MAX_HEALTH, MAX_SPEED,
+                
+                return new FlyingAI(sprite, 0, 0, false, MAX_HEALTH, MAX_SPEED,
                         ACCELERATION, defense, stability, damage, knockback);
             }
         }

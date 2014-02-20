@@ -10,8 +10,6 @@ import platformgame.inventory.ItemStack;
 abstract public class World {
 
     private static final int blockSize = 32;
-    private static final int doorMAX = 10;
-    private static final int signMAX = 10;
 
     private static int[][] tileMap;
     private static int levelWidth;
@@ -21,15 +19,14 @@ abstract public class World {
     public static Image background;
     public static String levelName;
 
-    public static Door[] door = new Door[doorMAX];
-    public static Sign[] sign = new Sign[signMAX];
-
     public static final float GRAVITY = 0.3f;
     public static final int yspeedMAX = 10;
     public static final int LEFT_SLOPE = 3;
     public static final int RIGHT_SLOPE = 2;
 
     public static ArrayList<String> openedChestList = new ArrayList<>();
+    public static ArrayList<Door> doorList = new ArrayList<>();
+    public static ArrayList<Sign> signList = new ArrayList<>();
     public static ArrayList<Spikes> spikesList = new ArrayList<>();
 
     public static void init(String path) throws SlickException {
@@ -55,16 +52,12 @@ abstract public class World {
             level.render(camX, camY, 0, 0, 640, 480);
         }
 
-        for (int i = 0; i < doorMAX; i++) {
-            if (door[i] != null) {
-                door[i].render(camX, camY);
-            }
+        for (Door door : doorList) {
+            door.render(camX, camY);
         }
 
-        for (int i = 0; i < signMAX; i++) {
-            if (sign[i] != null) {
-                sign[i].render(camX, camY);
-            }
+        for (Sign sign : signList) {
+            sign.render(camX, camY);
         }
 
         for (Spikes spikes : spikesList) {
@@ -133,31 +126,25 @@ abstract public class World {
     }
 
     private static void createDoors() {
-        int num = 0;
         for (int i = 0; i < level.getObjectCount(0); i++) {
             if (level.getObjectType(0, i).equals("Door")) {
-                if (num < doorMAX) {
-                    door[num] = new Door(
-                            level.getObjectX(0, i),
-                            level.getObjectY(0, i),
-                            level.getObjectProperty(0, i, "path", ""));
-                    num++;
-                }
+                int x = level.getObjectX(0, i);
+                int y = level.getObjectY(0, i);
+                String path = level.getObjectProperty(0, i, "path", "");
+
+                doorList.add(new Door(x, y, path));
             }
         }
     }
 
     private static void createSigns() {
-        int num = 0;
         for (int i = 0; i < level.getObjectCount(0); i++) {
             if (level.getObjectType(0, i).equals("Sign")) {
-                if (num < signMAX) {
-                    sign[num] = new Sign(
-                            level.getObjectX(0, i),
-                            level.getObjectY(0, i),
-                            level.getObjectProperty(0, i, "message", ""));
-                    num++;
-                }
+                int x = level.getObjectX(0, i);
+                int y = level.getObjectY(0, i);
+                String path = level.getObjectProperty(0, i, "message", "");
+
+                signList.add(new Sign(x, y, path));
             }
         }
     }
