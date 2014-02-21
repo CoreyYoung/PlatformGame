@@ -210,15 +210,11 @@ abstract public class World {
     }
 
     private static void clearDoors() {
-        for (int i = 0; i < doorMAX; i++) {
-            door[i] = null;
-        }
+        doorList.clear();
     }
 
     private static void clearSigns() {
-        for (int i = 0; i < signMAX; i++) {
-            sign[i] = null;
-        }
+        signList.clear();
     }
 
     private static void clearSpikes() {

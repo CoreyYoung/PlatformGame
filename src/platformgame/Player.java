@@ -148,7 +148,7 @@ public class Player extends MovingEntity {
 
     private void interact(Input input) throws SlickException {
         if (input.isKeyPressed(Input.KEY_S)) {
-            for (Door door : World.door) {
+            for (Door door : World.doorList) {
                 if (door != null) {
                     if (x + 32 >= door.x + 16 && x < door.x + 16
                             && y + 64 >= door.y && y <= door.y + 64) {
@@ -158,7 +158,7 @@ public class Player extends MovingEntity {
                 }
             }
 
-            for (Sign sign : World.sign) {
+            for (Sign sign : World.signList) {
                 if (sign != null) {
                     if (x + 32 >= sign.x + 16 && x <= sign.x + 16
                             && y + 64 >= sign.y && y <= sign.y + 32) {
@@ -196,7 +196,7 @@ public class Player extends MovingEntity {
 
         velocity = new Vector(0, 0);
 
-        for (Door door : World.door) {
+        for (Door door : World.doorList) {
             if (door != null) {
                 if (door.path.equals(levelDeparting)) {
                     x = door.x;
