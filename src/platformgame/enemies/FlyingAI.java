@@ -1,6 +1,6 @@
 package platformgame.enemies;
 
-import org.newdawn.slick.Animation;
+import platformgame.Sprite;
 import platformgame.StatePlaying;
 import platformgame.Vector;
 
@@ -8,7 +8,7 @@ public class FlyingAI extends Enemy {
 
     private final int MAX_SPEED;
 
-    public FlyingAI(Animation sprite, int x, int y, boolean awake, int healthMAX, int MAX_SPEED,
+    public FlyingAI(Sprite sprite, int x, int y, boolean awake, int healthMAX, int MAX_SPEED,
             float ACCELERATION, int defense, int stability, int damage, int knockback) {
         this.sprite = sprite;
         this.x = x;
@@ -22,8 +22,8 @@ public class FlyingAI extends Enemy {
         this.knockback = knockback;
 
         health = healthMAX;
-        width = sprite.getWidth();
-        height = sprite.getHeight();
+        width = sprite.hitBox.getWidth();
+        height = sprite.hitBox.getHeight();
     }
 
     @Override

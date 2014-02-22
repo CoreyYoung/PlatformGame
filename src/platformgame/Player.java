@@ -37,6 +37,7 @@ public class Player extends MovingEntity {
 
     public void update(Input input) throws SlickException {
         movement(input);
+        collisions();
         interact(input); //checks context sensitive 'interact' button (talk, pickup item, use door etc.)
 
         if (invincibilityTimer <= 0) {
@@ -118,8 +119,6 @@ public class Player extends MovingEntity {
         if (velocity.getYMagnitude() < World.yspeedMAX) {
             velocity.setYMagnitude(velocity.getYMagnitude() + World.GRAVITY);
         }
-
-        collisions();
     }
 
     @Override

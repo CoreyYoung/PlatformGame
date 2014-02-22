@@ -3,8 +3,8 @@ package platformgame;
 public class MovingEntity {
 
     public int JUMP_SPEED;
-    public int width = 32;
-    public int height = 64;
+    public int width;
+    public int height;
     public float x, y;
     public Vector velocity = new Vector(0, 0);
 
@@ -115,11 +115,10 @@ public class MovingEntity {
         }
 
         int pos = 0;
-        int gridPadding = (int) (Math.ceil((double) height / 32) * 32) - height;
         if (velocity.getYMagnitude() < 0) {
             pos = (int) Math.floor(y / 32) * 32;
         } else if (velocity.getYMagnitude() > 0) {
-            pos = (int) Math.floor((y + 32 - (gridPadding + 1)) / 32) * 32;
+            pos = (int) Math.round((y + height) / 32) * 32 - height;
         }
 
         if (!World.isBlockAtPoint((int) Math.floor(x / 32), (int) Math.floor((y + height + velocity.getYMagnitude()) / 32))

@@ -2,3 +2,8 @@ Image: /data/graphics/enemies/Zombie.png
 Width: 32
 Height: 64
 Duration: 200
+Collision:
+    Width: 32
+    Height: 64
+    XOffset: 0
+    YOffset: 0

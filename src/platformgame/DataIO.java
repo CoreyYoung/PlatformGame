@@ -258,7 +258,7 @@ public class DataIO {
         HashMap<String, Object> fileMap = loadHashMap(path);
 
         String type = (String) fileMap.get("Type");
-        Animation sprite = loadSprite((String) fileMap.get("Sprite"));
+        Sprite sprite = loadSprite((String) fileMap.get("Sprite"));
         int MAX_HEALTH = (int) fileMap.get("MAX_HEALTH");
         int MAX_SPEED = (int) fileMap.get("MAX_SPEED");
         float ACCELERATION = (float) ((double) fileMap.get("ACCELERATION"));
@@ -276,7 +276,7 @@ public class DataIO {
             }
 
             case "FlyingAI": {
-                
+
                 return new FlyingAI(sprite, 0, 0, false, MAX_HEALTH, MAX_SPEED,
                         ACCELERATION, defense, stability, damage, knockback);
             }
@@ -285,7 +285,7 @@ public class DataIO {
         return null;
     }
 
-    public static Animation loadSprite(String path) throws SlickException {
+    public static Sprite loadSprite(String path) throws SlickException {
         HashMap<String, Object> fileMap = loadHashMap(path);
 
         String image = (String) fileMap.get("Image");
@@ -294,7 +294,15 @@ public class DataIO {
         int duration = (int) fileMap.get("Duration");
 
         SpriteSheet spriteSheet = new SpriteSheet(image, width, height);
-        Animation sprite = new Animation(spriteSheet, duration);
+        Animation animation = new Animation(spriteSheet, duration);
+
+        HashMap<String, Object> collisionMap = (HashMap<String, Object>) fileMap.get("Collision");
+        width = (int) collisionMap.get("Width");
+        height = (int) collisionMap.get("Height");
+        int xOffset = (int) collisionMap.get("XOffset");
+        int yOffset = (int) collisionMap.get("YOffset");
+        HitBox hitBox = new HitBox(width, height, xOffset, yOffset);
+        Sprite sprite = new Sprite(animation, hitBox);
 
         return sprite;
     }
