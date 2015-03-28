@@ -9,24 +9,6 @@ public class Vector {
         this.magnitude = speed;
     }
 
-    public static Vector addVectors(Vector vector1, Vector vector2) {
-        float x = vector1.getXMagnitude() + vector2.getXMagnitude();
-        float y = vector1.getYMagnitude() + vector2.getYMagnitude();
-
-        float speed = (float) Math.sqrt(x * x + y * y);
-
-        float dir = (float) (Math.atan(y / x) * (180 / Math.PI));
-        if (x < 0) {
-            dir += 180;
-        } else {
-            if (y >= 0) {
-                dir += 360;
-            }
-        }
-
-        return new Vector(dir, speed);
-    }
-
     public static Vector cartesianToVector(float x, float y) {
         float dir = Vector.getDir(x, y, 0, 0);
         float magnitude = Vector.getMagnitude(x, y);
@@ -57,7 +39,7 @@ public class Vector {
             }
         }
     }
-
+	
     public void setMagnitude(float magnitude) {
         this.magnitude = magnitude;
     }

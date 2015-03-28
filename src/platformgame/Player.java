@@ -60,7 +60,7 @@ public class Player extends MovingEntity {
         }
 
         if (dir == 180) {
-            sprite.draw((int) x + 32 + camX, y + camY, -width, height);
+            sprite.draw((int) x + width + camX, y + camY, -width, height);
         } else {
             sprite.draw((int) x + camX, y + camY);
         }
@@ -68,39 +68,36 @@ public class Player extends MovingEntity {
 
     private void movement(Input input) {
         int tempMAX_XSPEED = MAX_XSPEED;
+		
         if (Inventory.getRingItem() != null) {
             if (Inventory.getRingItem().effect == RingItem.SPEED) {
                 tempMAX_XSPEED = 5;
             }
         }
 
-        if (input.isKeyDown(Input.KEY_A)) {
-            if (input.isKeyPressed(Input.KEY_A) || !input.isKeyDown(Input.KEY_D)) {
+        if (input.isKeyDown(Game.INPUT_LEFT)) {
+            if (input.isKeyPressed(Game.INPUT_LEFT) || !input.isKeyDown(Game.INPUT_RIGHT)) {
                 dir = 180;
             }
 
-            velocity.setXMagnitude(Math.max(velocity.getXMagnitude() - ACCELERATION, -tempMAX_XSPEED));
+			velocity.setXMagnitude(Math.max(velocity.getXMagnitude() - ACCELERATION, -tempMAX_XSPEED));
 
-        } else {
-            if (velocity.getXMagnitude() < 0) {
+        } else if (velocity.getXMagnitude() < 0) {
                 velocity.setXMagnitude(Math.min(velocity.getXMagnitude() + FRICTION, 0));
-            }
         }
 
-        if (input.isKeyDown(Input.KEY_D)) {
-            if (input.isKeyPressed(Input.KEY_D) || !input.isKeyDown(Input.KEY_A)) {
+        if (input.isKeyDown(Game.INPUT_RIGHT)) {
+            if (input.isKeyPressed(Game.INPUT_RIGHT) || !input.isKeyDown(Game.INPUT_LEFT)) {
                 dir = 0;
             }
 
             velocity.setXMagnitude(Math.min(velocity.getXMagnitude() + ACCELERATION, tempMAX_XSPEED));
 
-        } else {
-            if (velocity.getXMagnitude() > 0) {
-                velocity.setXMagnitude(Math.max(velocity.getXMagnitude() - FRICTION, 0));
-            }
+        } else if (velocity.getXMagnitude() > 0) {
+            velocity.setXMagnitude(Math.max(velocity.getXMagnitude() - FRICTION, 0));
         }
 
-        if (input.isKeyPressed(Input.KEY_SPACE)) {
+        if (input.isKeyPressed(Game.INPUT_JUMP)) {
             if ((World.isBlockAtPoint((int) (x / 32), (int) ((y + 64 + 1) / 32))
                     && !World.isBlockAtPoint((int) (x / 32), (int) ((y + 32 + 1) / 32)))
                     || (World.isBlockAtPoint((int) ((x + 32 - 1) / 32), (int) ((y + 64 + 1) / 32))
@@ -110,7 +107,7 @@ public class Player extends MovingEntity {
 
                 velocity.setYMagnitude(JUMPSPEED);
             }
-        } else if (!input.isKeyDown(Input.KEY_SPACE)) {
+        } else if (!input.isKeyDown(Game.INPUT_JUMP)) {
             if (velocity.getYMagnitude() < 0) {
                 velocity.setYMagnitude(velocity.getYMagnitude() * 0.75f);
             }
@@ -146,7 +143,7 @@ public class Player extends MovingEntity {
     }
 
     private void interact(Input input) throws SlickException {
-        if (input.isKeyPressed(Input.KEY_S)) {
+        if (input.isKeyPressed(Game.INPUT_DOWN)) {
             for (Door door : World.doorList) {
                 if (door != null) {
                     if (x + 32 >= door.x + 16 && x < door.x + 16

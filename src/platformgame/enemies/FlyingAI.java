@@ -30,7 +30,6 @@ public class FlyingAI extends Enemy {
     public void update() {
         float dir = Vector.getDir(StatePlaying.player.x, StatePlaying.player.y, x, y);
         Vector acceleration = new Vector(dir, ACCELERATION);
-
         velocity.addVector(acceleration);
 
         velocity.setMagnitude(Math.min(velocity.getMagnitude(), MAX_SPEED));

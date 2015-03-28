@@ -32,38 +32,38 @@ public class MovingEntity {
 
         final int tempY = (int) (y + height - 1);
 
-        return (World.getTileAtPoint((int) x1 / 32, tempY / 32) == tileTypeNum
-                || World.getTileAtPoint((int) x2 / 32, tempY / 32) == tileTypeNum);
+        return (World.getTileAtPoint(x1 / World.BLOCK_WIDTH, tempY / World.BLOCK_WIDTH) == tileTypeNum
+                || World.getTileAtPoint(x2 / World.BLOCK_WIDTH, tempY / World.BLOCK_WIDTH) == tileTypeNum);
     }
 
     private void performLeftSlopeCollision() {
-        int gridPadding = (int) (Math.ceil((double) height / 32) * 32) - height;
+        int gridPadding = (int) (Math.ceil((double) height / World.BLOCK_WIDTH) * World.BLOCK_WIDTH) - height;
         int tempX = (int) x + 1;
-        int roundedY = (int) (Math.floor((y - 1 + 32 - gridPadding) / 32) * 32);
+        int roundedY = (int) (Math.floor((y - 1 + World.BLOCK_WIDTH - gridPadding) / World.BLOCK_WIDTH) * World.BLOCK_WIDTH);
 
-        int moveY = roundedY + (gridPadding - 32) + (int) (tempX - Math.floor(tempX / 32) * 32);
+        int moveY = roundedY + (gridPadding - World.BLOCK_WIDTH) + (int) (tempX - Math.floor(tempX / World.BLOCK_WIDTH) * World.BLOCK_WIDTH);
 
         performSlopeCollisions(World.LEFT_SLOPE, -1, tempX, moveY);
     }
 
     private void performRightSlopeCollision() {
-        int gridPadding = (int) (Math.ceil((double) height / 32) * 32) - height;
+        int gridPadding = (int) (Math.ceil((double) height / World.BLOCK_WIDTH) * World.BLOCK_WIDTH) - height;
         int tempX = (int) x + width - 1;
-        int roundedY = (int) (Math.floor((y - 1 + 32 - gridPadding) / 32) * 32);
+        int roundedY = (int) (Math.floor((y - 1 + World.BLOCK_WIDTH - gridPadding) / World.BLOCK_WIDTH) * World.BLOCK_WIDTH);
 
-        int moveY = roundedY + (gridPadding - 32) + (int) (32 - (tempX - Math.floor(tempX / 32) * 32));
+        int moveY = roundedY + (gridPadding - World.BLOCK_WIDTH) + (int) (World.BLOCK_WIDTH - (tempX - Math.floor(tempX / World.BLOCK_WIDTH) * World.BLOCK_WIDTH));
 
         performSlopeCollisions(World.RIGHT_SLOPE, 1, tempX, moveY);
     }
 
     private void performSlopeCollisions(int tileTypeNum, int dir, int tempX, int moveY) {
-        int gridPadding = (int) (Math.ceil((double) height / 32) * 32) - height;
-        int roundedY = (int) (Math.floor((y - 1) / 32) * 32);
+        int gridPadding = (int) (Math.ceil((double) height / World.BLOCK_WIDTH) * World.BLOCK_WIDTH) - height;
+        int roundedY = (int) (Math.floor((y - 1) / World.BLOCK_WIDTH) * World.BLOCK_WIDTH);
         int slopeTop = roundedY + gridPadding;
 
         x += velocity.getXMagnitude();
 
-        if (World.getTileAtPoint((int) (tempX + velocity.getXMagnitude()) / 32, (int) (y + height - 1) / 32) == tileTypeNum
+        if (World.getTileAtPoint((int) (tempX + velocity.getXMagnitude()) / World.BLOCK_WIDTH, (int) (y + height - 1) / World.BLOCK_WIDTH) == tileTypeNum
                 || Math.signum(velocity.getXMagnitude()) != dir) {
             if (y > moveY) {
                 y = moveY;
@@ -79,10 +79,10 @@ public class MovingEntity {
             y = moveY;
         }
 
-        if (World.isBlockAtPoint((int) (x + 32) / 32, (int) y / 32)) {
-            x = (int) (x / 32) * 32;
-        } else if (World.isBlockAtPoint((int) (x) / 32, (int) y / 32)) {
-            x = (int) ((x + 32) / 32) * 32;
+        if (World.isBlockAtPoint((int) (x + World.BLOCK_WIDTH) / World.BLOCK_WIDTH, (int) y / World.BLOCK_WIDTH)) {
+            x = (int) (x / World.BLOCK_WIDTH) * World.BLOCK_WIDTH;
+        } else if (World.isBlockAtPoint((int) (x) / World.BLOCK_WIDTH, (int) y / World.BLOCK_WIDTH)) {
+            x = (int) ((x + World.BLOCK_WIDTH) / World.BLOCK_WIDTH) * World.BLOCK_WIDTH;
         }
     }
 
@@ -92,21 +92,21 @@ public class MovingEntity {
             int tempX, pos, destX;
 
             if (sign == -1) {
-                tempX = (int) Math.floor((x + velocity.getXMagnitude()) / 32);
-                pos = (int) Math.floor(x / 32);
-                destX = (int) Math.floor(x / 32) * 32;
+                tempX = (int) Math.floor((x + velocity.getXMagnitude()) / World.BLOCK_WIDTH);
+                pos = (int) Math.floor(x / World.BLOCK_WIDTH);
+                destX = (int) Math.floor(x / World.BLOCK_WIDTH) * World.BLOCK_WIDTH;
             } else {
-                tempX = (int) Math.floor((x + velocity.getXMagnitude() + width) / 32);
-                pos = (int) (Math.ceil(x / 32) - Math.floor((32 - width) / 32) + 1);
-                destX = (int) Math.floor(x / 32) * 32 + 32 - width;
+                tempX = (int) Math.floor((x + velocity.getXMagnitude() + width) / World.BLOCK_WIDTH);
+                pos = (int) (Math.ceil(x / World.BLOCK_WIDTH) - Math.floor((World.BLOCK_WIDTH - width) / World.BLOCK_WIDTH) + 1);
+                destX = (int) Math.floor(x / World.BLOCK_WIDTH) * World.BLOCK_WIDTH + World.BLOCK_WIDTH - width;
             }
 
-            if (!World.isBlockInLine(tempX, tempX, (int) Math.floor(y / 32), (int) Math.floor((y + height - 1) / 32))) {
+            if (!World.isBlockInLine(tempX, tempX, (int) Math.floor(y / World.BLOCK_WIDTH), (int) Math.floor((y + height - 1) / World.BLOCK_WIDTH))) {
                 x += velocity.getXMagnitude();
             } else {
                 velocity.setXMagnitude(0);
 
-                if (!World.isBlockInLine(pos, pos, (int) Math.floor(y / 32), (int) Math.floor((y + height - 1) / 32))) {
+                if (!World.isBlockInLine(pos, pos, (int) Math.floor(y / World.BLOCK_WIDTH), (int) Math.floor((y + height - 1) / World.BLOCK_WIDTH))) {
                     x = destX;
                 } else {
                     x = Math.round(x);
@@ -116,15 +116,15 @@ public class MovingEntity {
 
         int pos = 0;
         if (velocity.getYMagnitude() < 0) {
-            pos = (int) Math.floor(y / 32) * 32;
+            pos = (int) Math.floor(y / World.BLOCK_WIDTH) * World.BLOCK_WIDTH;
         } else if (velocity.getYMagnitude() > 0) {
-            pos = (int) Math.round((y + height) / 32) * 32 - height;
+            pos = Math.round((y + height) / World.BLOCK_WIDTH) * World.BLOCK_WIDTH - height;
         }
 
-        if (!World.isBlockAtPoint((int) Math.floor(x / 32), (int) Math.floor((y + height + velocity.getYMagnitude()) / 32))
-                && !World.isBlockAtPoint((int) Math.floor((x + width - 1.1) / 32), (int) Math.floor((y + height + velocity.getYMagnitude()) / 32))
-                && !World.isBlockAtPoint((int) Math.floor(x / 32), (int) Math.floor((y + velocity.getYMagnitude()) / 32))
-                && !World.isBlockAtPoint((int) Math.floor((x + width - 1.1) / 32), (int) Math.floor((y + velocity.getYMagnitude()) / 32))) {
+        if (!World.isBlockAtPoint((int) Math.floor(x / World.BLOCK_WIDTH), (int) Math.floor((y + height + velocity.getYMagnitude()) / World.BLOCK_WIDTH))
+                && !World.isBlockAtPoint((int) Math.floor((x + width - 1.1) / World.BLOCK_WIDTH), (int) Math.floor((y + height + velocity.getYMagnitude()) / World.BLOCK_WIDTH))
+                && !World.isBlockAtPoint((int) Math.floor(x / World.BLOCK_WIDTH), (int) Math.floor((y + velocity.getYMagnitude()) / World.BLOCK_WIDTH))
+                && !World.isBlockAtPoint((int) Math.floor((x + width - 1.1) / World.BLOCK_WIDTH), (int) Math.floor((y + velocity.getYMagnitude()) / World.BLOCK_WIDTH))) {
             y += velocity.getYMagnitude();
         } else {
             if (velocity.getYMagnitude() != 0) {
@@ -136,8 +136,8 @@ public class MovingEntity {
     }
 
     public void jump() {
-        if (World.isBlockAtPoint((int) (x / 32), (int) ((y + height) / 32))
-                || World.isBlockAtPoint((int) ((x + width - 1) / 32), (int) ((y + height) / 32))) {
+        if (World.isBlockAtPoint((int) (x / World.BLOCK_WIDTH), (int) ((y + height) / World.BLOCK_WIDTH))
+                || World.isBlockAtPoint((int) ((x + width - 1) / World.BLOCK_WIDTH), (int) ((y + height) / World.BLOCK_WIDTH))) {
             velocity.setYMagnitude(JUMP_SPEED);
         }
     }

@@ -9,8 +9,6 @@ import platformgame.enemies.EnemyHandler;
 import platformgame.inventory.ItemStack;
 abstract public class World {
 
-    private static final int blockSize = 32;
-
     private static int[][] tileMap;
     private static int levelWidth;
     private static int levelHeight;
@@ -19,6 +17,7 @@ abstract public class World {
     public static Image background;
     public static String levelName;
 
+	public static final int BLOCK_WIDTH = 32;
     public static final float GRAVITY = 0.3f;
     public static final int yspeedMAX = 10;
     public static final int LEFT_SLOPE = 3;
@@ -70,8 +69,8 @@ abstract public class World {
         level = new TiledMap(path);
 
         tileMap = new int[level.getWidth()][level.getHeight()];
-        levelWidth = level.getWidth() * blockSize;
-        levelHeight = level.getHeight() * blockSize;
+        levelWidth = level.getWidth() * BLOCK_WIDTH;
+        levelHeight = level.getHeight() * BLOCK_WIDTH;
 
         for (int i = 0; i < level.getWidth(); i++) {
             for (int ii = 0; ii < level.getHeight(); ii++) {
@@ -222,7 +221,7 @@ abstract public class World {
     }
 
     private static void clearChests() {
-        Iterator iterator = Chest.chestList.iterator();
+        Iterator<Chest> iterator = Chest.chestList.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();
@@ -230,7 +229,7 @@ abstract public class World {
     }
 
     private static void clearFloppyDisks() {
-        Iterator iterator = FloppyDisk.floppyDiskList.iterator();
+        Iterator<FloppyDisk> iterator = FloppyDisk.floppyDiskList.iterator();
         while (iterator.hasNext()) {
             iterator.next();
             iterator.remove();

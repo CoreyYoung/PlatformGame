@@ -23,8 +23,8 @@ abstract public class Hud {
         }
         if (message[0] != null) {
             boolean escapePressed = input.isKeyPressed(Input.KEY_ESCAPE);
-            boolean spacePressed = input.isKeyPressed(Input.KEY_SPACE);
-            boolean spaceDown = input.isKeyDown(Input.KEY_SPACE);
+            boolean spacePressed = input.isKeyPressed(Game.INPUT_JUMP);
+            boolean spaceDown = input.isKeyDown(Game.INPUT_JUMP);
             Game.paused = true;
 
             if (spaceDown) {
